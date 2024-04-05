@@ -1,0 +1,28 @@
+# Django
+# ------------------------------------------------------------------------------
+django==5.0.4 # https://www.djangoproject.com/
+djangorestframework==3.15.1 # https://github.com/encode/django-rest-framework
+django-extensions==3.2.3  # https://github.com/django-extensions/django-extensions
+django-cors-headers==4.3.1  # https://github.com/adamchainz/django-cors-headers
+python-decouple==3.8
+
+# Database
+# ------------------------------------------------------------------------------
+psycopg2==3.1.18
+
+# Testing
+# ------------------------------------------------------------------------------
+pytest==8.1.1  # https://github.com/pytest-dev/pytest
+pytest-django==4.8.0  # https://github.com/pytest-dev/pytest-django
+pytest-cov==5.0.0
+pytest-xdist==3.5.0
+
+# Code quality
+# ------------------------------------------------------------------------------
+flake8==7.0.0  # https://github.com/PyCQA/flake8
+flake8-isort==6.1.1  # https://github.com/gforcada/flake8-isort
+coverage==7.4.4  # https://github.com/nedbat/coveragepy
+black==24.3.0  # https://github.com/psf/black
+pylint-django==2.5.5  # https://github.com/PyCQA/pylint-django
+pylint-celery==0.3  # https://github.com/PyCQA/pylint-celery
+pre-commit==3.7.0  # https://github.com/pre-commit/pre-commit
