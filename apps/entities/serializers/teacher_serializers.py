@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.fields import CurrentUserDefault
 
 from apps.entities.models.teacher_models import Teacher
 from apps.rbac.models.role_models import Role, UserRole
@@ -20,7 +21,7 @@ class TeacherSerializer(serializers.ModelSerializer):
         fields = ["user", "faculty", "departments", "first_name", "middle_name", "last_name"]
 
     def validate(self, attrs):
-        request_user = self.context["request"].user
+        request_user = CurrentUserDefault()
 
         if hasattr(request_user, "user_role") and request_user.user_role.role.name != "Super Admin":
             faculty_admin = request_user.faculty_admin.faculty
@@ -41,6 +42,9 @@ class TeacherSerializer(serializers.ModelSerializer):
         """
         user_data = validated_data.pop("user")
         departments = validated_data.pop("departments")
+        validated_data["first_name"] = user_data.get("first_name")
+        validated_data["middle_name"] = user_data.get("middle_name")
+        validated_data["last_name"] = user_data.get("last_name")
         user = UserSerializer.create(UserSerializer(), validated_data=user_data)
         teacher = Teacher.objects.create(user=user, **validated_data)
         teacher.departments.set(departments)

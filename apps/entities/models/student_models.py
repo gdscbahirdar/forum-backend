@@ -13,7 +13,6 @@ class Student(BaseModel):
         user (User): The user associated with the student.
         faculty (Faculty): The faculty the student belongs to.
         department (Department): The department the student belongs to.
-        student_id (str): The unique identifier for the student.
         first_name (str): The first name of the student.
         middle_name (str): The middle name of the student.
         last_name (str): The last name of the student.
@@ -25,7 +24,6 @@ class Student(BaseModel):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="student", on_delete=models.CASCADE)
     faculty = models.ForeignKey(Faculty, related_name="students", on_delete=models.CASCADE)
     department = models.ForeignKey(Department, related_name="students", on_delete=models.CASCADE)
-    student_id = models.CharField(max_length=255, unique=True)
     first_name = models.CharField(max_length=255)
     middle_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)

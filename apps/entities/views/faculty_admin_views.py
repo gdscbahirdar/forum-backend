@@ -1,4 +1,5 @@
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -8,7 +9,10 @@ from apps.rbac.permissions import IsUserSuperAdminOrFacultyAdmin
 
 
 class CreateEntityAPIView(APIView):
-    permission_classes = (IsUserSuperAdminOrFacultyAdmin,)
+    permission_classes = (
+        IsAuthenticated,
+        IsUserSuperAdminOrFacultyAdmin,
+    )
 
     def post(self, request, entity_type):
         if entity_type == "student":

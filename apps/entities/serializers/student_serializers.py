@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.fields import CurrentUserDefault
 
 from apps.entities.models.student_models import Student
 from apps.rbac.models.role_models import Role, UserRole
@@ -21,7 +22,6 @@ class StudentSerializer(serializers.ModelSerializer):
             "user",
             "faculty",
             "department",
-            "student_id",
             "first_name",
             "middle_name",
             "last_name",
@@ -29,9 +29,10 @@ class StudentSerializer(serializers.ModelSerializer):
             "admission_date",
             "graduation_date",
         ]
+        read_only_fields = ["first_name", "middle_name", "last_name"]
 
     def validate(self, attrs):
-        request_user = self.context["request"].user
+        request_user = CurrentUserDefault()
 
         if hasattr(request_user, "user_role") and request_user.user_role.role.name != "Super Admin":
             faculty_admin = request_user.faculty_admin.faculty
@@ -51,6 +52,9 @@ class StudentSerializer(serializers.ModelSerializer):
             student (Student): The created student instance.
         """
         user_data = validated_data.pop("user")
+        validated_data["first_name"] = user_data.get("first_name")
+        validated_data["middle_name"] = user_data.get("middle_name")
+        validated_data["last_name"] = user_data.get("last_name")
         user = UserSerializer.create(UserSerializer(), validated_data=user_data)
         student = Student.objects.create(user=user, **validated_data)
         role = Role.objects.get(name="Student")

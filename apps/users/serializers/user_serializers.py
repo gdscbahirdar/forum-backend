@@ -2,6 +2,8 @@ from dj_rest_auth.serializers import UserDetailsSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from apps.entities.utils import generate_password
+
 User = get_user_model()
 
 
@@ -16,11 +18,19 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(max_length=255, required=True, write_only=True)
+    middle_name = serializers.CharField(max_length=255, required=True, write_only=True)
+    last_name = serializers.CharField(max_length=255, required=True, write_only=True)
+
     class Meta:
         model = User
-        fields = ("username",)
-        extra_kwargs = {"password": {"write_only": True}}
+        fields = ("username", "first_name", "middle_name", "last_name")
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
+        username = validated_data.pop("username")
+        first_name = validated_data.pop("first_name")
+        middle_name = validated_data.pop("middle_name")
+        last_name = validated_data.pop("last_name")
+        password = generate_password(first_name, middle_name, last_name)
+        user = User.objects.create_user(username=username, password=password)
         return user

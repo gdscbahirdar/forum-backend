@@ -30,8 +30,8 @@ admin.site.register(Faculty, FacultyAdmin)
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ("student_id", "first_name", "last_name", "department", "year_in_school")
-    search_fields = ("student_id", "first_name", "last_name")
+    list_display = ("user", "first_name", "last_name", "department", "year_in_school")
+    search_fields = ("user", "first_name", "last_name")
     list_filter = ("faculty", "department", "year_in_school")
 
 
