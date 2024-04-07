@@ -1,6 +1,6 @@
 # Django
 # ------------------------------------------------------------------------------
-django==5.0.4 # https://www.djangoproject.com/
+django==4.2 # https://www.djangoproject.com/
 djangorestframework==3.15.1 # https://github.com/encode/django-rest-framework
 django-extensions==3.2.3  # https://github.com/django-extensions/django-extensions
 django-cors-headers==4.3.1  # https://github.com/adamchainz/django-cors-headers
@@ -10,7 +10,8 @@ python-decouple==3.8
 
 # Database
 # ------------------------------------------------------------------------------
-psycopg2==3.1.18
+psycopg==3.1.18
+psycopg-binary==3.1.18
 
 # Testing
 # ------------------------------------------------------------------------------
