@@ -44,7 +44,7 @@ THIRD_PARTY_APPS = [
     "dj_rest_auth",
     "corsheaders",
 ]
-LOCAL_APPS = ["apps.common", "apps.users", "apps.rbac"]
+LOCAL_APPS = ["apps.common", "apps.users", "apps.rbac", "apps.entities"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
