@@ -1,3 +1,5 @@
+import re
+
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
 
@@ -38,6 +40,17 @@ class StudentSerializer(serializers.ModelSerializer):
             faculty_admin = request_user.faculty_admin.faculty
             if attrs["faculty"] != faculty_admin:
                 raise serializers.ValidationError({"faculty": "You can only create students within your faculty."})
+
+        username = attrs.get("user").get("username")
+        username_regex = r"^(bdu)?\d{7}$"
+
+        if not re.match(username_regex, username):
+            raise serializers.ValidationError(
+                {"username": "Username must be in the format 'bdu1234567' or '1234567'."}
+            )
+
+        if not username.startswith("bdu"):
+            attrs["user"]["username"] = f"bdu{username}"
 
         return attrs
 

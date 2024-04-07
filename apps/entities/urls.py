@@ -1,9 +1,12 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views.faculty_admin_views import EntityViewSet
 
-from apps.entities.views.faculty_admin_views import CreateEntityAPIView
+router = DefaultRouter()
+router.register(r"(?P<entity_type>[^/.]+)", EntityViewSet, basename="entity")
 
 app_name = "entities"
 
 urlpatterns = [
-    path("create_entity/<str:entity_type>/", CreateEntityAPIView.as_view(), name="create_entity"),
+    path("", include(router.urls)),
 ]
