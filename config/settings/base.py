@@ -40,11 +40,13 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "rest_framework.authtoken",
+    "dj_rest_auth",
     "corsheaders",
 ]
-LOCAL_APPS = ["apps.common"]
+LOCAL_APPS = ["apps.common", "apps.users", "apps.rbac"]
 
-INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -111,6 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "users.User"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -147,3 +150,25 @@ EMAIL_BACKEND = config("DJANGO_EMAIL_BACKEND", default="django.core.mail.backend
 
 # Admin
 ADMIN_URL = config("DJANGO_ADMIN_URL", default="admin/")
+
+# django-rest-framework
+# -------------------------------------------------------------------------------
+# django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ("dj_rest_auth.jwt_auth.JWTCookieAuthentication",),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+}
+
+# dj-rest-auth
+# -------------------------------------------------------------------------------
+# dj-rest-auth - https://dj-rest-auth.readthedocs.io/en/latest/configuration.html#configuration
+REST_AUTH = {
+    "USER_DETAILS_SERIALIZER": "apps.users.serializers.CustomUserDetailsSerializer",
+    "OLD_PASSWORD_FIELD_ENABLED": True,
+    "LOGOUT_ON_PASSWORD_CHANGE": True,
+    "USE_JWT": True,
+    "JWT_AUTH_HTTPONLY": False,
+    "JWT_AUTH_RETURN_EXPIRATION": True,
+    "JWT_AUTH_COOKIE": "forum-access-token",
+    "JWT_AUTH_REFRESH_COOKIE": "forum-refresh-token",
+}

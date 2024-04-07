@@ -4,6 +4,8 @@ django==5.0.4 # https://www.djangoproject.com/
 djangorestframework==3.15.1 # https://github.com/encode/django-rest-framework
 django-extensions==3.2.3  # https://github.com/django-extensions/django-extensions
 django-cors-headers==4.3.1  # https://github.com/adamchainz/django-cors-headers
+dj-rest-auth==5.1.0 # https://dj-rest-auth.readthedocs.io/en/latest/
+djangorestframework-simplejwt==5.3.1
 python-decouple==3.8
 
 # Database

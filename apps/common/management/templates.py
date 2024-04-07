@@ -11,7 +11,7 @@ class CustomAppTemplateCommand(TemplateCommand):
         Loads custom app template defined
         """
         if template is None:
-            return os.path.join(getattr(settings, "BASE_DIR"), "config", subdir)
+            return os.path.join(getattr(settings, "BASE_DIR"), "../config", subdir)
         else:
             if template.startswith("file://"):
                 template = template[7:]
