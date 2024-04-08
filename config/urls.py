@@ -6,4 +6,5 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     path("", include("rest_framework.urls", namespace="rest_framework")),  # DRF Browsable API
     path("api/users/", include("apps.users.urls")),
+    path("api/entities/", include("apps.entities.urls", namespace="entities")),
 ]

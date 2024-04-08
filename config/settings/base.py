@@ -44,7 +44,7 @@ THIRD_PARTY_APPS = [
     "dj_rest_auth",
     "corsheaders",
 ]
-LOCAL_APPS = ["apps.common", "apps.users", "apps.rbac"]
+LOCAL_APPS = ["apps.common", "apps.users", "apps.rbac", "apps.entities"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -155,7 +155,10 @@ ADMIN_URL = config("DJANGO_ADMIN_URL", default="admin/")
 # -------------------------------------------------------------------------------
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": ("dj_rest_auth.jwt_auth.JWTCookieAuthentication",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+    ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
 
