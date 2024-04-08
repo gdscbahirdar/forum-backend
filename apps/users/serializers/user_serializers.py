@@ -11,20 +11,17 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
     role_name = serializers.SerializerMethodField()
 
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + ("role_name",)
+        fields = UserDetailsSerializer.Meta.fields + ("middle_name", "role_name", "is_first_time_login")
 
     def get_role_name(self, obj):
         return obj.user_role.role.name
 
 
 class UserSerializer(serializers.ModelSerializer):
-    first_name = serializers.CharField(max_length=255, required=True, write_only=True)
-    middle_name = serializers.CharField(max_length=255, required=True, write_only=True)
-    last_name = serializers.CharField(max_length=255, required=True, write_only=True)
-
     class Meta:
         model = User
-        fields = ("username", "first_name", "middle_name", "last_name")
+        fields = ("username", "first_name", "middle_name", "last_name", "is_first_time_login")
+        read_only_fields = ("is_first_time_login",)
 
     def create(self, validated_data):
         username = validated_data.pop("username")
@@ -32,5 +29,12 @@ class UserSerializer(serializers.ModelSerializer):
         middle_name = validated_data.pop("middle_name")
         last_name = validated_data.pop("last_name")
         password = generate_password(first_name, middle_name, last_name)
-        user = User.objects.create_user(username=username, password=password)
+        user = User.objects.create_user(
+            username=username,
+            first_name=first_name,
+            middle_name=middle_name,
+            last_name=last_name,
+            password=password,
+            is_first_time_login=True,
+        )
         return user

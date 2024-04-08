@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from rest_framework.fields import CurrentUserDefault
 
 from apps.entities.models.admin_models import FacultyAdmin
+from apps.entities.models.faculty_models import Faculty
+from apps.entities.serializers.related_fields import FacultyRelatedField
 from apps.rbac.models.role_models import Role, UserRole
-from apps.users.models import User
 from apps.users.serializers.user_serializers import UserSerializer
 
 
@@ -15,32 +15,22 @@ class FacultyAdminSerializer(serializers.ModelSerializer):
     It includes the user information and the faculty where the faculty admin is assigned to.
     """
 
-    user = serializers.JSONField(write_only=True)
+    user = UserSerializer()
+    faculty = FacultyRelatedField(queryset=Faculty.objects.all())
 
     class Meta:
         model = FacultyAdmin
-        fields = ["user", "faculty"]
+        fields = [
+            "pk",
+            "user",
+            "faculty",
+            "created_at",
+            "updated_at",
+        ]
 
     def validate(self, attrs):
         faculty = attrs.get("faculty")
-        if FacultyAdmin.objects.filter(faculty=faculty).exists():
-            raise serializers.ValidationError("A faculty admin already exists for this faculty.")
-
-        user_data = attrs.get("user")
-        if isinstance(user_data, dict):
-            user_serializer = UserSerializer(data=user_data)
-            user_serializer.is_valid(raise_exception=True)
-            user_serializer.save()
-            attrs["user"] = user_serializer.validated_data
-        elif isinstance(user_data, int):
-            try:
-                attrs["user"] = User.objects.get(pk=user_data)
-            except User.DoesNotExist:
-                raise serializers.ValidationError({"user": "No such user exists."})
-        else:
-            raise serializers.ValidationError({"user": "Invalid user data."})
-
-        if FacultyAdmin.objects.filter(faculty=attrs["faculty"]).exists():
+        if hasattr(faculty, "faculty_admin"):
             raise serializers.ValidationError({"faculty": "A faculty admin already exists for this faculty."})
 
         return attrs
@@ -55,8 +45,9 @@ class FacultyAdminSerializer(serializers.ModelSerializer):
         Returns:
             FacultyAdmin: The created FacultyAdmin object.
         """
-        faculty_admin = FacultyAdmin.objects.create(**validated_data)
+        user_data = validated_data.pop("user")
+        user = UserSerializer.create(UserSerializer(), validated_data=user_data)
+        faculty_admin = FacultyAdmin.objects.create(user=user, **validated_data)
         role = Role.objects.get(name="Faculty Admin")
         UserRole.objects.create(user=faculty_admin.user, role=role)
-
         return faculty_admin

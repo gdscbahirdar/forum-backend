@@ -279,3 +279,5 @@ eccounting_backend_api/media/
 .env
 .envs/*
 !.envs/.local/
+
+.vscode/

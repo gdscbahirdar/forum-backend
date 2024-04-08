@@ -21,9 +21,6 @@ class Teacher(BaseModel):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="teacher", on_delete=models.CASCADE)
     faculty = models.ForeignKey(Faculty, related_name="teachers", on_delete=models.CASCADE)
     departments = models.ManyToManyField(Department)
-    first_name = models.CharField(max_length=255)
-    middle_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
 
     def __str__(self):
         return f"Teacher: {self.user}, Faculty: {self.faculty}"
