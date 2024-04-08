@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from decouple import Csv, config
@@ -174,4 +175,12 @@ REST_AUTH = {
     "JWT_AUTH_RETURN_EXPIRATION": True,
     "JWT_AUTH_COOKIE": "forum-access-token",
     "JWT_AUTH_REFRESH_COOKIE": "forum-refresh-token",
+}
+
+# simple-jwt
+# -------------------------------------------------------------------------------
+# simple-jwt - https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=config("ACCESS_TOKEN_LIFETIME", cast=int)),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=config("REFRESH_TOKEN_LIFETIME", cast=int)),
 }
