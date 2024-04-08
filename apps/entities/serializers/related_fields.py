@@ -11,7 +11,10 @@ class FacultyRelatedField(serializers.RelatedField):
         return value.name
 
     def to_internal_value(self, data):
-        return Faculty.objects.get(name=data)
+        try:
+            return Faculty.objects.get(name=data)
+        except Faculty.DoesNotExist:
+            raise serializers.ValidationError(f"Faculty with name '{data}' does not exist.")
 
 
 class DepartmentRelatedField(serializers.RelatedField):
@@ -22,4 +25,7 @@ class DepartmentRelatedField(serializers.RelatedField):
         return value.name
 
     def to_internal_value(self, data):
-        return Department.objects.get(name=data)
+        try:
+            return Department.objects.get(name=data)
+        except Department.DoesNotExist:
+            raise serializers.ValidationError(f"Department with name '{data}' does not exist.")

@@ -157,3 +157,53 @@ class EntityViewSet(viewsets.ViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, entity_type=None, pk=None):
+        """
+        Delete an entity based on entity_type and pk.
+
+        Parameters:
+        - entity_type (str): The type of entity to delete. Choices are `student`, `teacher`, and `faculty_admin`.
+        - pk (int): The primary key of the entity to delete.
+
+        Returns:
+        - Response: A response indicating the success or failure of the delete operation.
+        """
+        if not is_valid_uuid(pk):
+            return Response(
+                {"error": "Invalid ID."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        models = {
+            "student": Student,
+            "teacher": Teacher,
+            "faculty_admin": FacultyAdmin,
+        }
+
+        model = models.get(entity_type)
+
+        if not model:
+            return Response(
+                {"error": "Invalid entity type. Choices are `student`, `teacher`, and `faculty_admin`"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            entity = model.objects.get(pk=pk)
+        except model.DoesNotExist:
+            return Response(
+                {"error": f"{entity_type.capitalize()} with id {pk} does not exist."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        if hasattr(request.user, "user_role") and request.user.user_role.role.name != "Super Admin":
+            faculty = request.user.faculty_admin.faculty
+            if entity.faculty != faculty:
+                return Response(
+                    {"error": "You do not have permission to view this entity."},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+
+        entity.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
