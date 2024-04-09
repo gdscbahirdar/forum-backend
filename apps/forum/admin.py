@@ -11,6 +11,11 @@ class CommentInline(GenericTabularInline):
     extra = 1
 
 
+class AnswerInline(admin.TabularInline):
+    model = Answer
+    extra = 1
+
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ["user", "body", "vote_count", "created_at"]
@@ -24,6 +29,7 @@ class QuestionAdmin(admin.ModelAdmin):
     list_display = ["title", "is_answered", "is_closed", "view_count", "answer_count", "get_created_at"]
     search_fields = ["title", "post__body"]
     list_filter = ["is_answered", "is_closed", "post__created_at"]
+    prepopulated_fields = {"slug": ("title",)}
 
     def get_created_at(self, obj):
         return obj.post.created_at
@@ -31,7 +37,7 @@ class QuestionAdmin(admin.ModelAdmin):
     get_created_at.admin_order_field = "post__created_at"
     get_created_at.short_description = "Created At"
 
-    inlines = [CommentInline]
+    inlines = [CommentInline, AnswerInline]
 
 
 @admin.register(Answer)

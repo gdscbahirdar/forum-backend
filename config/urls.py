@@ -7,4 +7,5 @@ urlpatterns = [
     path("", include("rest_framework.urls", namespace="rest_framework")),  # DRF Browsable API
     path("api/users/", include("apps.users.urls")),
     path("api/entities/", include("apps.entities.urls", namespace="entities")),
+    path("api/forum/", include("apps.forum.urls", namespace="forum")),
 ]
