@@ -1,36 +1,41 @@
-from rest_framework import status, viewsets
+from django.contrib.auth import get_user_model
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 
-from apps.entities.models.admin_models import FacultyAdmin
-from apps.entities.models.student_models import Student
-from apps.entities.models.teacher_models import Teacher
-from apps.entities.serializers.faculty_serializers import FacultyAdminSerializer
-from apps.entities.serializers.student_serializers import StudentSerializer
-from apps.entities.serializers.teacher_serializers import TeacherSerializer
-from apps.entities.utils import is_valid_uuid
+from apps.entities.serializers.entity_serializers import EntitySerializer
 from apps.rbac.permissions import IsUserSuperAdmin, IsUserSuperAdminOrFacultyAdmin
 
+User = get_user_model()
 
-class EntityViewSet(viewsets.ViewSet):
+
+class EntityViewSet(viewsets.ModelViewSet):
     """
-    A viewset for managing entities of different types.
+    A viewset for managing entities.
 
-    This viewset provides the following actions:
-        - list: List entities based on entity_type.
-        - create: Create an entity based on entity_type.
+    This viewset provides CRUD operations for entities and applies permissions based on the entity type.
 
-    The supported entity types are `student`, `teacher`, and `faculty_admin`.
+    Attributes:
+        permission_classes (tuple): A tuple of permission classes to apply for the viewset.
+        serializer_class (Serializer): The serializer class to use for serializing and deserializing entities.
 
-    Permissions:
-        - Only authenticated users with role `Super Admin` or `Faculty Admin` can access this viewset.
+    Methods:
+        get_permissions(): Returns the permission classes based on the action and entity type.
+        get_queryset(): Returns the queryset of entities based on the entity type and user role.
+        get_serializer_context(): Overrides the default method to add the 'entity_type' to the serializer context.
     """
 
     permission_classes = (IsAuthenticated,)
+    serializer_class = EntitySerializer
 
     def get_permissions(self):
         """
-        Instantiates and returns the list of permissions that this view requires.
+        Returns the permission classes based on the action and entity type.
+
+        If the action is 'create' and the entity type is 'faculty_admin', adds 'IsUserSuperAdmin' permission class.
+        Otherwise, adds 'IsUserSuperAdminOrFacultyAdmin' permission class.
+
+        Returns:
+            tuple: A tuple of permission classes.
         """
         if self.action == "create":
             if self.kwargs.get("entity_type") == "faculty_admin":
@@ -42,168 +47,34 @@ class EntityViewSet(viewsets.ViewSet):
 
         return super().get_permissions()
 
-    def list(self, request, entity_type=None):
+    def get_queryset(self):
         """
-        List entities based on entity_type.
+        Returns the queryset of entities based on the entity type and user role.
 
-        Parameters:
-        - entity_type (str): The type of entity to list. Choices are `student`, `teacher`, and `faculty_admin`.
+        Filters the queryset based on the entity type.
+        If the user has a 'user_role' attribute and it's not 'Super Admin', filters by faculty.
 
         Returns:
-        - Response: A response containing the serialized data of the entities.
+            QuerySet: The filtered queryset of entities.
         """
-        if entity_type == "student":
-            queryset = Student.objects.all()
-            serializer = StudentSerializer(queryset, many=True)
-        elif entity_type == "teacher":
-            queryset = Teacher.objects.all()
-            serializer = TeacherSerializer(queryset, many=True)
-        elif entity_type == "faculty_admin":
-            queryset = FacultyAdmin.objects.all()
-            serializer = FacultyAdminSerializer(queryset, many=True)
-        else:
-            return Response(
-                {"error": "Invalid entity type. Choices are `student`, `teacher`, and `faculty_admin`"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+        entity_type = self.kwargs.get("entity_type")
+        filter = {f"{entity_type}__isnull": False}
+        queryset = User.objects.filter(**filter)
 
-        if hasattr(request.user, "user_role") and request.user.user_role.role.name != "Super Admin":
-            faculty = request.user.faculty_admin.faculty
+        if hasattr(self.request.user, "user_role") and self.request.user.user_role.role.name != "Super Admin":
+            faculty = self.request.user.faculty_admin.faculty
             queryset = queryset.filter(faculty=faculty)
 
-        return Response(serializer.data)
+        return queryset
 
-    def retrieve(self, request, entity_type=None, pk=None):
+    def get_serializer_context(self):
         """
-        Retrieve an entity based on entity_type and pk.
-
-        Parameters:
-        - entity_type (str): The type of entity to retrieve. Choices are `student`, `teacher`, and `faculty_admin`.
-        - pk (int): The primary key of the entity to retrieve.
+        Overrides the default method to add the 'entity_type' to the serializer context.
 
         Returns:
-        - Response: A response containing the serialized data of the entities.
+            dict: The serializer context with the 'entity_type' added.
         """
-        if not is_valid_uuid(pk):
-            return Response(
-                {"error": "Invalid ID."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        model_classes = {
-            "student": Student,
-            "teacher": Teacher,
-            "faculty_admin": FacultyAdmin,
-        }
-        serializer_classes = {
-            "student": StudentSerializer,
-            "teacher": TeacherSerializer,
-            "faculty_admin": FacultyAdminSerializer,
-        }
-        model_class = model_classes.get(entity_type)
-        serializer_class = serializer_classes.get(entity_type)
-
-        if not model_class or not serializer_class:
-            return Response(
-                {"error": "Invalid entity type. Choices are `student`, `teacher`, and `faculty_admin`"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        try:
-            entity = model_class.objects.get(pk=pk)
-        except model_class.DoesNotExist:
-            return Response(
-                {"error": f"{entity_type.title()} with the provided ID does not exist."},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
-        if hasattr(request.user, "user_role") and request.user.user_role.role.name != "Super Admin":
-            faculty = request.user.faculty_admin.faculty
-            if entity.faculty != faculty:
-                return Response(
-                    {"error": "You do not have permission to view this entity."},
-                    status=status.HTTP_403_FORBIDDEN,
-                )
-
-        serializer = serializer_class(entity)
-        return Response(serializer.data)
-
-    def create(self, request, entity_type=None):
-        """
-        Create an entity based on entity_type.
-
-        Parameters:
-        - entity_type (str): The type of entity to create. Choices are `student`, `teacher`, and `faculty_admin`.
-
-        Returns:
-        - Response: A response containing the serialized data of the created entity.
-        """
-        serializers = {
-            "student": StudentSerializer,
-            "teacher": TeacherSerializer,
-            "faculty_admin": FacultyAdminSerializer,
-        }
-
-        serializer_class = serializers.get(entity_type)
-
-        if not serializer_class:
-            return Response(
-                {"error": "Invalid entity type. Choices are `student`, `teacher`, and `faculty_admin`"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        serializer = serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def destroy(self, request, entity_type=None, pk=None):
-        """
-        Delete an entity based on entity_type and pk.
-
-        Parameters:
-        - entity_type (str): The type of entity to delete. Choices are `student`, `teacher`, and `faculty_admin`.
-        - pk (int): The primary key of the entity to delete.
-
-        Returns:
-        - Response: A response indicating the success or failure of the delete operation.
-        """
-        if not is_valid_uuid(pk):
-            return Response(
-                {"error": "Invalid ID."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        models = {
-            "student": Student,
-            "teacher": Teacher,
-            "faculty_admin": FacultyAdmin,
-        }
-
-        model = models.get(entity_type)
-
-        if not model:
-            return Response(
-                {"error": "Invalid entity type. Choices are `student`, `teacher`, and `faculty_admin`"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        try:
-            entity = model.objects.get(pk=pk)
-        except model.DoesNotExist:
-            return Response(
-                {"error": f"{entity_type.capitalize()} with id {pk} does not exist."},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
-        if hasattr(request.user, "user_role") and request.user.user_role.role.name != "Super Admin":
-            faculty = request.user.faculty_admin.faculty
-            if entity.faculty != faculty:
-                return Response(
-                    {"error": "You do not have permission to view this entity."},
-                    status=status.HTTP_403_FORBIDDEN,
-                )
-
-        entity.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        context = super().get_serializer_context()
+        entity_type = self.kwargs.get("entity_type")
+        context.update({"entity_type": entity_type})
+        return context

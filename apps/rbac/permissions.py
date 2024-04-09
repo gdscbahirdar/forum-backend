@@ -70,3 +70,21 @@ class IsUserSuperAdminOrFacultyAdmin(BasePermission):
             return user_role.role.name in ["Super Admin", "Faculty Admin"]
         except UserRole.DoesNotExist:
             return False
+
+    def has_object_permission(self, request, view, obj):
+        """
+        Check if the user has permission to access the object.
+
+        Args:
+            request (HttpRequest): The request object.
+            view (View): The view object.
+            obj (object): The object being accessed.
+
+        Returns:
+            bool: True if the user has the permission, False otherwise.
+        """
+        try:
+            user_role = UserRole.objects.get(user=request.user)
+            return user_role.role.name == "Super Admin" or obj.faculty == request.user.faculty_admin.faculty
+        except UserRole.DoesNotExist:
+            return False
