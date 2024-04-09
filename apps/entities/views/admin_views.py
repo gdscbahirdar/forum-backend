@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from apps.entities.models.admin_models import FacultyAdmin
 from apps.entities.models.student_models import Student
 from apps.entities.models.teacher_models import Teacher
-from apps.entities.serializers.faculty_admin_serializers import FacultyAdminSerializer
+from apps.entities.serializers.faculty_serializers import FacultyAdminSerializer
 from apps.entities.serializers.student_serializers import StudentSerializer
 from apps.entities.serializers.teacher_serializers import TeacherSerializer
 from apps.entities.utils import is_valid_uuid

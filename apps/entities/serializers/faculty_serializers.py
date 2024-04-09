@@ -5,6 +5,7 @@ from apps.entities.models.faculty_models import Faculty
 from apps.entities.serializers.related_fields import FacultyRelatedField
 from apps.rbac.models.role_models import Role, UserRole
 from apps.users.serializers.user_serializers import UserSerializer
+from apps.entities.serializers.related_fields import DepartmentRelatedField
 
 
 class FacultyAdminSerializer(serializers.ModelSerializer):
@@ -51,3 +52,24 @@ class FacultyAdminSerializer(serializers.ModelSerializer):
         role = Role.objects.get(name="Faculty Admin")
         UserRole.objects.create(user=faculty_admin.user, role=role)
         return faculty_admin
+
+
+class FacultySerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Faculty model.
+
+    This serializer is used to serialize/deserialize Faculty objects.
+    It includes the departments related to the faculty.
+    """
+
+    departments = DepartmentRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = Faculty
+        fields = [
+            "pk",
+            "name",
+            "departments",
+            "created_at",
+            "updated_at",
+        ]
