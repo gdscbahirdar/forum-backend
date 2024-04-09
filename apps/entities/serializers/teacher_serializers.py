@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
 
@@ -6,6 +7,8 @@ from apps.entities.models.teacher_models import Teacher
 from apps.entities.serializers.related_fields import DepartmentRelatedField, FacultyRelatedField
 from apps.rbac.models.role_models import Role, UserRole
 from apps.users.serializers.user_serializers import UserSerializer
+
+User = get_user_model()
 
 
 class TeacherSerializer(serializers.ModelSerializer):
@@ -33,6 +36,12 @@ class TeacherSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         request_user = CurrentUserDefault()
+
+        if Teacher.objects.filter(user__username=attrs["user"]["username"]).exists():
+            raise serializers.ValidationError({"username": "Teacher is already registered."})
+
+        if User.objects.filter(username=attrs["user"]["username"]).exists():
+            raise serializers.ValidationError({"username": "Username is already taken."})
 
         if hasattr(request_user, "user_role") and request_user.user_role.role.name != "Super Admin":
             faculty = request_user.faculty_admin.faculty

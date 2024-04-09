@@ -1,5 +1,6 @@
 import re
 
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
 
@@ -8,6 +9,8 @@ from apps.entities.models.student_models import Student
 from apps.entities.serializers.related_fields import DepartmentRelatedField, FacultyRelatedField
 from apps.rbac.models.role_models import Role, UserRole
 from apps.users.serializers.user_serializers import UserSerializer
+
+User = get_user_model()
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -54,6 +57,18 @@ class StudentSerializer(serializers.ModelSerializer):
 
         if not username.startswith("bdu"):
             attrs["user"]["username"] = f"bdu{username}"
+
+        if Student.objects.filter(user__username=attrs["user"]["username"]).exists():
+            raise serializers.ValidationError({"username": "Student is already registered."})
+
+        if User.objects.filter(username=attrs["user"]["username"]).exists():
+            raise serializers.ValidationError({"username": "Username is already taken."})
+
+        if attrs.get("admission_date") >= attrs.get("graduation_date"):
+            raise serializers.ValidationError({"admission_date": "Admission date must be before graduation date."})
+
+        if attrs.get("year_in_school") > 5:
+            raise serializers.ValidationError({"year_in_school": "Year in school must not be greater than 5."})
 
         return attrs
 
