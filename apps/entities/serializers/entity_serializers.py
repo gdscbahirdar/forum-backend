@@ -61,7 +61,7 @@ class EntitySerializer(serializers.ModelSerializer):
                 )
 
             if not username.startswith("bdu"):
-                attrs["student"]["user"]["username"] = f"bdu{username}"
+                attrs["username"] = f"bdu{username}"
 
         return attrs
 
