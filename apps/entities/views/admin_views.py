@@ -31,6 +31,7 @@ class EntityViewSet(viewsets.ModelViewSet):
     filterset_fields = (
         "student__faculty",
         "student__department",
+        "student__department__name",
         "student__year_in_school",
         "teacher__faculty",
         "teacher__departments",
