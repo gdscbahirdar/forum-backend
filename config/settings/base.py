@@ -44,6 +44,7 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "dj_rest_auth",
     "corsheaders",
+    "django_filters",
 ]
 LOCAL_APPS = ["apps.common", "apps.users", "apps.rbac", "apps.entities"]
 
@@ -152,6 +153,10 @@ EMAIL_BACKEND = config("DJANGO_EMAIL_BACKEND", default="django.core.mail.backend
 # Admin
 ADMIN_URL = config("DJANGO_ADMIN_URL", default="admin/")
 
+# Page size
+PAGE_SIZE = config("PAGE_SIZE", default=30, cast=int)
+MAX_PAGE_SIZE = config("MAX_PAGE_SIZE", default=100, cast=int)
+
 # django-rest-framework
 # -------------------------------------------------------------------------------
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
@@ -161,6 +166,9 @@ REST_FRAMEWORK = {
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_PAGINATION_CLASS": ("apps.common.pagination.DynamicPageSizePagination"),
+    "PAGE_SIZE": PAGE_SIZE,
+    "ORDERING_PARAM": "sort",
 }
 
 # dj-rest-auth

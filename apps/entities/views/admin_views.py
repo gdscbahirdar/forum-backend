@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
-from rest_framework import viewsets
+from django_filters import rest_framework as django_filters
+from rest_framework import filters, viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from apps.entities.serializers.entity_serializers import EntitySerializer
@@ -26,6 +27,17 @@ class EntityViewSet(viewsets.ModelViewSet):
 
     permission_classes = (IsAuthenticated,)
     serializer_class = EntitySerializer
+    filter_backends = (django_filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    filterset_fields = (
+        "student__faculty",
+        "student__department",
+        "student__year_in_school",
+        "teacher__faculty",
+        "teacher__departments",
+    )
+    search_fields = ("username", "first_name", "middle_name", "last_name")
+    ordering_fields = ("username",)
+    ordering = ("username",)
 
     def get_permissions(self):
         """

@@ -7,6 +7,7 @@ django-cors-headers==4.3.1  # https://github.com/adamchainz/django-cors-headers
 dj-rest-auth==5.1.0 # https://dj-rest-auth.readthedocs.io/en/latest/
 djangorestframework-simplejwt==5.3.1
 python-decouple==3.8
+django-filter==24.2
 
 # Database
 # ------------------------------------------------------------------------------
