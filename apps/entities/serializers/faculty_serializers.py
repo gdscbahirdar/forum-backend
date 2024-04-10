@@ -38,10 +38,3 @@ class FacultyAdminSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
-
-    def validate(self, attrs):
-        faculty = attrs.get("faculty")
-        if hasattr(faculty, "faculty_admin"):
-            raise serializers.ValidationError({"faculty": "A faculty admin already exists for this faculty."})
-
-        return attrs

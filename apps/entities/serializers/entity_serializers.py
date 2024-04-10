@@ -83,6 +83,7 @@ class EntitySerializer(serializers.ModelSerializer):
             role = Role.objects.get(name="Teacher")
             UserRole.objects.create(user=user, role=role)
         elif faculty_admin_data:
+            FacultyAdmin.objects.filter(faculty=faculty_admin_data.get("faculty")).delete()
             FacultyAdmin.objects.create(user=user, **faculty_admin_data)
             role = Role.objects.get(name="Faculty Admin")
             UserRole.objects.create(user=user, role=role)
