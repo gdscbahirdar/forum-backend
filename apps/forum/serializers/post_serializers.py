@@ -69,7 +69,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 class BaseQuestionSerializer(serializers.ModelSerializer):
     post = PostSerializer()
-    tags = serializers.SlugRelatedField(many=True, queryset=Tag.objects.all(), slug_field="name")
+    tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all())
     user = serializers.SerializerMethodField()
     accepted_answer = serializers.PrimaryKeyRelatedField(
         queryset=Answer.objects.all(), required=False, allow_null=True
@@ -102,7 +102,11 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
         post = Post.objects.create(**post_data)
         slug = slugify(f"{validated_data['title']}-{int(datetime.now().timestamp())}")
         validated_data["slug"] = slug
+
+        tags_data = validated_data.pop("tags", [])
         question = Question.objects.create(post=post, **validated_data)
+        question.tags.set(tags_data)
+
         return question
 
     def update(self, instance, validated_data):
@@ -113,6 +117,10 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
         if "title" in validated_data:
             slug = slugify(f"{validated_data['title']}-{int(datetime.now().timestamp())}")
             validated_data["slug"] = slug
+
+        tags_data = validated_data.pop("tags", [])
+        instance.tags.set(tags_data)
+
         return super().update(instance, validated_data)
 
 

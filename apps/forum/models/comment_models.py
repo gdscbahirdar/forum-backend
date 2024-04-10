@@ -1,10 +1,11 @@
 from django.conf import settings
 from django.db import models
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import gettext_lazy as _
 
 from apps.common.models import BaseModel
+from apps.forum.models.vote_models import Vote
 
 
 class Comment(BaseModel):
@@ -24,6 +25,8 @@ class Comment(BaseModel):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.UUIDField()
     content_object = GenericForeignKey("content_type", "object_id")
+    vote_count = models.IntegerField(default=0)
+    votes = GenericRelation(Vote, related_query_name="comment")
 
     def __str__(self):
         return f"Comment by {self.user}"

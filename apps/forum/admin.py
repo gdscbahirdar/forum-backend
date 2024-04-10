@@ -4,6 +4,7 @@ from django.contrib.contenttypes.admin import GenericTabularInline
 from apps.forum.models.comment_models import Comment
 from apps.forum.models.qa_models import Answer, Post, Question
 from apps.forum.models.tag_models import Tag
+from apps.forum.models.vote_models import Vote
 
 
 class CommentInline(GenericTabularInline):
@@ -16,12 +17,18 @@ class AnswerInline(admin.TabularInline):
     extra = 1
 
 
+class VoteInline(GenericTabularInline):
+    model = Vote
+    extra = 0
+
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ["user", "body", "vote_count", "created_at"]
     search_fields = ["body"]
     list_filter = ["created_at"]
     date_hierarchy = "created_at"
+    inlines = [CommentInline, VoteInline]
 
 
 @admin.register(Question)
@@ -37,7 +44,7 @@ class QuestionAdmin(admin.ModelAdmin):
     get_created_at.admin_order_field = "post__created_at"
     get_created_at.short_description = "Created At"
 
-    inlines = [CommentInline, AnswerInline]
+    inlines = [AnswerInline, VoteInline]
 
 
 @admin.register(Answer)
@@ -52,7 +59,7 @@ class AnswerAdmin(admin.ModelAdmin):
     get_created_at.admin_order_field = "post__created_at"
     get_created_at.short_description = "Created At"
 
-    inlines = [CommentInline]
+    inlines = [VoteInline]
 
 
 @admin.register(Tag)
@@ -60,3 +67,18 @@ class TagAdmin(admin.ModelAdmin):
     list_display = ["name", "created_at"]
     search_fields = ["name"]
     list_filter = ["created_at"]
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ["user", "content_object", "text", "created_at"]
+    search_fields = ["text"]
+    list_filter = ["created_at"]
+    inlines = [VoteInline]
+
+
+@admin.register(Vote)
+class VoteAdmin(admin.ModelAdmin):
+    list_display = ["user", "vote_type", "content_type", "object_id", "content_object"]
+    search_fields = ["user__username", "vote_type"]
+    list_filter = ["vote_type", "content_type"]
