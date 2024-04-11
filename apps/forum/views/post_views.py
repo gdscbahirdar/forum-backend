@@ -31,13 +31,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
             return [IsAuthenticated(), IsOwnerOrReadOnly()]
         return super().get_permissions()
 
-    def create(self, request, question_slug):
-        question = Question.objects.filter(slug=question_slug).first()
-        if not question:
-            return Response({"error": "Question not found."}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(question=question, user=request.user)
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["question_slug"] = self.kwargs.get("question_slug")
+        return context

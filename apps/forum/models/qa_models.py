@@ -17,7 +17,7 @@ class Post(BaseModel):
     votes = GenericRelation(Vote, related_query_name="post")
 
 
-class Question(models.Model):
+class Question(BaseModel):
     post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name="question")
     title = models.CharField(max_length=255, db_index=True)
     tags = models.ManyToManyField("Tag", related_name="questions")
@@ -34,7 +34,7 @@ class Question(models.Model):
         return self.title
 
 
-class Answer(models.Model):
+class Answer(BaseModel):
     post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name="answer")
     question = models.ForeignKey(Question, related_name="answers", on_delete=models.CASCADE)
     is_accepted = models.BooleanField(default=False)

@@ -14,7 +14,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = "__all__"
-        read_only_fields = ("user", "created_at", "updated_at")
+        read_only_fields = ("user", "created_at", "updated_at", "vote_count")
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -31,25 +31,24 @@ class AnswerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Answer
-        fields = ["id", "post", "question", "user", "comments"]
+        fields = ["id", "post", "user", "comments"]
 
     def get_user(self, obj):
         return obj.post.user.username
 
     def validate(self, data):
-        question = data.get("question")
-
-        if not question:
+        question_slug = self.context.get("question_slug")
+        if not question_slug:
             raise serializers.ValidationError("Question is required to create an answer.")
 
-        question = Question.objects.filter(id=question).first()
-
+        question = Question.objects.filter(slug=question_slug).first()
         if not question:
             raise serializers.ValidationError("Question does not exist.")
 
         if question.is_closed:
             raise serializers.ValidationError("Answer can not be added to a closed question.")
 
+        data["question"] = question
         return data
 
     def create(self, validated_data):
@@ -69,7 +68,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 class BaseQuestionSerializer(serializers.ModelSerializer):
     post = PostSerializer()
-    tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all())
+    tags = serializers.SlugRelatedField(slug_field="name", many=True, queryset=Tag.objects.all())
     user = serializers.SerializerMethodField()
     accepted_answer = serializers.PrimaryKeyRelatedField(
         queryset=Answer.objects.all(), required=False, allow_null=True
@@ -90,7 +89,10 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
             "accepted_answer",
             "user",
             "slug",
+            "created_at",
+            "updated_at",
         ]
+        read_only_fields = ("view_count", "answer_count", "is_answered", "is_closed", "user", "slug")
 
     def get_user(self, obj):
         return obj.post.user.username
