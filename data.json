@@ -1,179 +1,19 @@
 [
 {
     "model": "users.user",
-    "pk": 4,
+    "pk": 1,
     "fields": {
-        "password": "pbkdf2_sha256$600000$JifkF18Dw9EUxg2Arv4k25$ytdas9AC/fDX+5TMzwJ+oROcJUq4yjnCgcuSFWknDyA=",
-        "last_login": "2024-04-08T10:35:58.383Z",
+        "password": "pbkdf2_sha256$600000$3q1WdpXpIX6DbMy1SwM6GD$9gF2NRIzS/xjSa7LIslCTaGiq3Ej2NXjbnuuxGCfqkE=",
+        "last_login": "2024-04-11T11:25:15.748Z",
         "is_superuser": true,
-        "username": "hana",
+        "username": "admin",
         "email": "",
         "is_staff": true,
         "is_active": true,
-        "date_joined": "2024-04-08T08:11:32.364Z",
-        "first_name": "Hana",
-        "middle_name": "Getnet",
-        "last_name": "Belay",
-        "is_first_time_login": false,
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "users.user",
-    "pk": 5,
-    "fields": {
-        "password": "pbkdf2_sha256$600000$3CmIQCRTLpVP0OKqk2NhmX$zmljT7AEIw8+Ld6roaZHZLTwMdL3eIR/uxw8hK4jzeA=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "bdu1234556",
-        "email": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2024-04-08T08:27:32.360Z",
-        "first_name": "Jane",
-        "middle_name": "Bob",
-        "last_name": "Doe",
-        "is_first_time_login": true,
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "users.user",
-    "pk": 6,
-    "fields": {
-        "password": "pbkdf2_sha256$600000$Ko2bwQvqN2nv9ctsCilA15$ZMpQZrPthxrqXS4CbYIHHVNukE5InShg/qbXLsocGvE=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "bdu1234552",
-        "email": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2024-04-08T08:29:28.411Z",
-        "first_name": "Jane",
-        "middle_name": "Bob",
-        "last_name": "Doe",
-        "is_first_time_login": true,
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "users.user",
-    "pk": 7,
-    "fields": {
-        "password": "pbkdf2_sha256$600000$tS1EOR8pJ70SHAJi1lzxQ0$CucEns2at9AtWdE/4mwToGCfDBh21nsBzN+95qAvyqA=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "goodteacher",
-        "email": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2024-04-08T08:30:38.587Z",
-        "first_name": "Jane",
-        "middle_name": "Bob",
-        "last_name": "Doe",
-        "is_first_time_login": true,
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "users.user",
-    "pk": 8,
-    "fields": {
-        "password": "pbkdf2_sha256$600000$tFd5ogOtfldQnr8wNRAmx1$/BSudkSiKyfyJB+9gW8AH1JSvFb27H0ogt39dOhzBWw=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "bdu1234052",
-        "email": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2024-04-08T08:35:05.200Z",
-        "first_name": "Jane",
-        "middle_name": "Bob",
-        "last_name": "Doe",
-        "is_first_time_login": true,
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "users.user",
-    "pk": 9,
-    "fields": {
-        "password": "pbkdf2_sha256$600000$bNIyPdRsyW9QmdGQUN2HRz$p8vGv9HgmyUwHcZ4w+ADXxkMGtJ6/bvQR+/PmG4d5Qs=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "bdu1230552",
-        "email": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2024-04-08T09:41:48.453Z",
-        "first_name": "Jane",
-        "middle_name": "Bob",
-        "last_name": "Doe",
-        "is_first_time_login": true,
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "users.user",
-    "pk": 10,
-    "fields": {
-        "password": "pbkdf2_sha256$600000$itWJ8cnaXvSGwnZ3ttKeAn$gfyshr/DWNaDPQf4WCRBRJd696ogBxxHO9Rm9q/PClI=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "bdu0230552",
-        "email": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2024-04-08T09:48:15.836Z",
-        "first_name": "Jane",
-        "middle_name": "Bob",
-        "last_name": "Doe",
-        "is_first_time_login": true,
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "users.user",
-    "pk": 11,
-    "fields": {
-        "password": "pbkdf2_sha256$600000$huTaaYh1QmoaZnhtI5ie3D$LfEUoyBfHpPZPt88v8eOLLiMtvmTkebRo5Qdq5xbPqU=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "bdu0030552",
-        "email": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2024-04-08T09:49:08.663Z",
-        "first_name": "Jane",
-        "middle_name": "Bob",
-        "last_name": "Doe",
-        "is_first_time_login": true,
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "users.user",
-    "pk": 12,
-    "fields": {
-        "password": "pbkdf2_sha256$600000$avI8TEQWTWvcFxHjyKJ50x$xv70cZMlm/MyQRwHYWgjfQdTxrkla6Ufq4anPofmh6s=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "admin",
-        "email": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2024-04-08T09:56:21.794Z",
-        "first_name": "Jane",
-        "middle_name": "Bob",
-        "last_name": "Doe",
+        "date_joined": "2024-04-11T11:21:16.662Z",
+        "first_name": "Abel",
+        "middle_name": "Gashaw",
+        "last_name": "Ayalew",
         "is_first_time_login": true,
         "groups": [],
         "user_permissions": []
@@ -181,489 +21,472 @@
 },
 {
     "model": "rbac.module",
-    "pk": "e75bc092-66f8-4768-a02a-1ee95b283d7a",
+    "pk": "da052e24-2bea-4731-832d-f3a7db653bf0",
     "fields": {
-        "created_at": "2024-04-08T07:32:34.306Z",
-        "updated_at": "2024-04-08T07:32:34.306Z",
+        "created_at": "2024-04-11T11:20:32.770Z",
+        "updated_at": "2024-04-11T11:20:32.770Z",
         "name": "User Management"
     }
 },
 {
     "model": "rbac.permission",
-    "pk": "365a66a8-e9dd-4321-a5c4-99d36a05f06d",
+    "pk": "066324d8-eb8d-4b1a-8685-e52fc690fb42",
     "fields": {
-        "created_at": "2024-04-08T07:32:34.316Z",
-        "updated_at": "2024-04-08T07:32:34.316Z",
-        "name": "can_delete_teacher",
-        "module": "e75bc092-66f8-4768-a02a-1ee95b283d7a"
-    }
-},
-{
-    "model": "rbac.permission",
-    "pk": "36b9c4cd-b734-4bc1-a545-51861fcc61da",
-    "fields": {
-        "created_at": "2024-04-08T07:32:34.313Z",
-        "updated_at": "2024-04-08T07:32:34.313Z",
-        "name": "can_retrieve_faculty_admin",
-        "module": "e75bc092-66f8-4768-a02a-1ee95b283d7a"
-    }
-},
-{
-    "model": "rbac.permission",
-    "pk": "4d9bb2de-4d96-4984-b52a-180d87d79b6f",
-    "fields": {
-        "created_at": "2024-04-08T07:32:34.309Z",
-        "updated_at": "2024-04-08T07:32:34.309Z",
-        "name": "can_create_student",
-        "module": "e75bc092-66f8-4768-a02a-1ee95b283d7a"
-    }
-},
-{
-    "model": "rbac.permission",
-    "pk": "4f47bab7-ac21-4140-8ed2-6e334d2b2aa9",
-    "fields": {
-        "created_at": "2024-04-08T07:32:34.314Z",
-        "updated_at": "2024-04-08T07:32:34.314Z",
-        "name": "can_retrieve_teacher",
-        "module": "e75bc092-66f8-4768-a02a-1ee95b283d7a"
-    }
-},
-{
-    "model": "rbac.permission",
-    "pk": "56b08c00-f362-452a-9155-491af023b57e",
-    "fields": {
-        "created_at": "2024-04-08T07:32:34.312Z",
-        "updated_at": "2024-04-08T07:32:34.312Z",
-        "name": "can_update_teacher",
-        "module": "e75bc092-66f8-4768-a02a-1ee95b283d7a"
-    }
-},
-{
-    "model": "rbac.permission",
-    "pk": "60d58dd2-4476-477e-9c46-dd3da196eb33",
-    "fields": {
-        "created_at": "2024-04-08T07:32:34.314Z",
-        "updated_at": "2024-04-08T07:32:34.314Z",
-        "name": "can_retrieve_student",
-        "module": "e75bc092-66f8-4768-a02a-1ee95b283d7a"
-    }
-},
-{
-    "model": "rbac.permission",
-    "pk": "6d746eb3-08ef-4f6c-bbe4-a669f31b7479",
-    "fields": {
-        "created_at": "2024-04-08T07:32:34.315Z",
-        "updated_at": "2024-04-08T07:32:34.315Z",
-        "name": "can_delete_student",
-        "module": "e75bc092-66f8-4768-a02a-1ee95b283d7a"
-    }
-},
-{
-    "model": "rbac.permission",
-    "pk": "9c82ad3d-4184-4e46-a615-d9f8750db863",
-    "fields": {
-        "created_at": "2024-04-08T07:32:34.312Z",
-        "updated_at": "2024-04-08T07:32:34.312Z",
-        "name": "can_update_student",
-        "module": "e75bc092-66f8-4768-a02a-1ee95b283d7a"
-    }
-},
-{
-    "model": "rbac.permission",
-    "pk": "a95a3029-0c6a-4032-8cad-c8c74097619a",
-    "fields": {
-        "created_at": "2024-04-08T07:32:34.310Z",
-        "updated_at": "2024-04-08T07:32:34.310Z",
-        "name": "can_create_teacher",
-        "module": "e75bc092-66f8-4768-a02a-1ee95b283d7a"
-    }
-},
-{
-    "model": "rbac.permission",
-    "pk": "c21fd2e7-2215-43cc-8d7d-c21d9de6a50b",
-    "fields": {
-        "created_at": "2024-04-08T07:32:34.311Z",
-        "updated_at": "2024-04-08T07:32:34.311Z",
+        "created_at": "2024-04-11T11:20:32.775Z",
+        "updated_at": "2024-04-11T11:20:32.775Z",
         "name": "can_update_faculty_admin",
-        "module": "e75bc092-66f8-4768-a02a-1ee95b283d7a"
+        "module": "da052e24-2bea-4731-832d-f3a7db653bf0"
     }
 },
 {
     "model": "rbac.permission",
-    "pk": "ed3663e5-3a54-4af2-9f84-504c3a004a13",
+    "pk": "168bc78a-5b9a-443e-b93a-e74b5697453c",
     "fields": {
-        "created_at": "2024-04-08T07:32:34.308Z",
-        "updated_at": "2024-04-08T07:32:34.308Z",
-        "name": "can_create_faculty_admin",
-        "module": "e75bc092-66f8-4768-a02a-1ee95b283d7a"
+        "created_at": "2024-04-11T11:20:32.776Z",
+        "updated_at": "2024-04-11T11:20:32.776Z",
+        "name": "can_update_teacher",
+        "module": "da052e24-2bea-4731-832d-f3a7db653bf0"
     }
 },
 {
     "model": "rbac.permission",
-    "pk": "fe99f4e6-f4c3-4471-b736-0c07e9c24160",
+    "pk": "168fe233-b799-410a-ab9f-13150f90f82b",
     "fields": {
-        "created_at": "2024-04-08T07:32:34.314Z",
-        "updated_at": "2024-04-08T07:32:34.314Z",
+        "created_at": "2024-04-11T11:20:32.777Z",
+        "updated_at": "2024-04-11T11:20:32.777Z",
         "name": "can_delete_faculty_admin",
-        "module": "e75bc092-66f8-4768-a02a-1ee95b283d7a"
+        "module": "da052e24-2bea-4731-832d-f3a7db653bf0"
+    }
+},
+{
+    "model": "rbac.permission",
+    "pk": "23437c79-6316-45db-a5fb-62c31b0dadf1",
+    "fields": {
+        "created_at": "2024-04-11T11:20:32.773Z",
+        "updated_at": "2024-04-11T11:20:32.773Z",
+        "name": "can_create_student",
+        "module": "da052e24-2bea-4731-832d-f3a7db653bf0"
+    }
+},
+{
+    "model": "rbac.permission",
+    "pk": "4da91b35-2bb0-497c-b59d-460fe49ddb94",
+    "fields": {
+        "created_at": "2024-04-11T11:20:32.772Z",
+        "updated_at": "2024-04-11T11:20:32.772Z",
+        "name": "can_create_faculty_admin",
+        "module": "da052e24-2bea-4731-832d-f3a7db653bf0"
+    }
+},
+{
+    "model": "rbac.permission",
+    "pk": "684e7cb6-4215-4826-b90f-674fb33389f5",
+    "fields": {
+        "created_at": "2024-04-11T11:20:32.777Z",
+        "updated_at": "2024-04-11T11:20:32.777Z",
+        "name": "can_retrieve_teacher",
+        "module": "da052e24-2bea-4731-832d-f3a7db653bf0"
+    }
+},
+{
+    "model": "rbac.permission",
+    "pk": "981ca3e1-f2a2-4aec-ae2e-55f93d75342f",
+    "fields": {
+        "created_at": "2024-04-11T11:20:32.778Z",
+        "updated_at": "2024-04-11T11:20:32.778Z",
+        "name": "can_delete_student",
+        "module": "da052e24-2bea-4731-832d-f3a7db653bf0"
+    }
+},
+{
+    "model": "rbac.permission",
+    "pk": "9d872524-7a61-4e11-8251-56f04c7cf536",
+    "fields": {
+        "created_at": "2024-04-11T11:20:32.774Z",
+        "updated_at": "2024-04-11T11:20:32.774Z",
+        "name": "can_create_teacher",
+        "module": "da052e24-2bea-4731-832d-f3a7db653bf0"
+    }
+},
+{
+    "model": "rbac.permission",
+    "pk": "c1ba6a81-2ce8-4f70-877f-3655492de4db",
+    "fields": {
+        "created_at": "2024-04-11T11:20:32.775Z",
+        "updated_at": "2024-04-11T11:20:32.775Z",
+        "name": "can_update_student",
+        "module": "da052e24-2bea-4731-832d-f3a7db653bf0"
+    }
+},
+{
+    "model": "rbac.permission",
+    "pk": "cc11b99e-d8d3-4a43-8b46-aa482ad886ae",
+    "fields": {
+        "created_at": "2024-04-11T11:20:32.778Z",
+        "updated_at": "2024-04-11T11:20:32.778Z",
+        "name": "can_delete_teacher",
+        "module": "da052e24-2bea-4731-832d-f3a7db653bf0"
+    }
+},
+{
+    "model": "rbac.permission",
+    "pk": "d2aaae67-8c76-406c-b20c-8d6b811bb1f1",
+    "fields": {
+        "created_at": "2024-04-11T11:20:32.776Z",
+        "updated_at": "2024-04-11T11:20:32.776Z",
+        "name": "can_retrieve_faculty_admin",
+        "module": "da052e24-2bea-4731-832d-f3a7db653bf0"
+    }
+},
+{
+    "model": "rbac.permission",
+    "pk": "fa04621f-e479-486a-9a19-96add05ab6f5",
+    "fields": {
+        "created_at": "2024-04-11T11:20:32.777Z",
+        "updated_at": "2024-04-11T11:20:32.777Z",
+        "name": "can_retrieve_student",
+        "module": "da052e24-2bea-4731-832d-f3a7db653bf0"
     }
 },
 {
     "model": "rbac.role",
-    "pk": "00f3c733-78e3-4ae0-9d90-bbc9b4ba64fb",
+    "pk": "2a5454a1-cc04-4e70-a337-62632222789a",
     "fields": {
-        "created_at": "2024-04-08T07:32:34.317Z",
-        "updated_at": "2024-04-08T07:32:34.321Z",
-        "name": "Super Admin",
+        "created_at": "2024-04-11T11:20:32.786Z",
+        "updated_at": "2024-04-11T11:20:32.791Z",
+        "name": "Faculty Admin",
         "permissions": [
-            "60d58dd2-4476-477e-9c46-dd3da196eb33",
-            "4f47bab7-ac21-4140-8ed2-6e334d2b2aa9",
-            "ed3663e5-3a54-4af2-9f84-504c3a004a13",
-            "365a66a8-e9dd-4321-a5c4-99d36a05f06d",
-            "4d9bb2de-4d96-4984-b52a-180d87d79b6f",
-            "c21fd2e7-2215-43cc-8d7d-c21d9de6a50b",
-            "56b08c00-f362-452a-9155-491af023b57e",
-            "fe99f4e6-f4c3-4471-b736-0c07e9c24160",
-            "36b9c4cd-b734-4bc1-a545-51861fcc61da",
-            "a95a3029-0c6a-4032-8cad-c8c74097619a",
-            "6d746eb3-08ef-4f6c-bbe4-a669f31b7479",
-            "9c82ad3d-4184-4e46-a615-d9f8750db863"
+            "981ca3e1-f2a2-4aec-ae2e-55f93d75342f",
+            "684e7cb6-4215-4826-b90f-674fb33389f5",
+            "fa04621f-e479-486a-9a19-96add05ab6f5",
+            "9d872524-7a61-4e11-8251-56f04c7cf536",
+            "c1ba6a81-2ce8-4f70-877f-3655492de4db",
+            "168bc78a-5b9a-443e-b93a-e74b5697453c",
+            "23437c79-6316-45db-a5fb-62c31b0dadf1",
+            "cc11b99e-d8d3-4a43-8b46-aa482ad886ae"
         ]
     }
 },
 {
     "model": "rbac.role",
-    "pk": "7e5c05f3-c865-478f-bcbb-7d97233de924",
+    "pk": "384e00fa-f3cb-4074-9f25-14a25b42bfb5",
     "fields": {
-        "created_at": "2024-04-08T07:32:34.344Z",
-        "updated_at": "2024-04-08T07:32:34.346Z",
-        "name": "Teacher",
-        "permissions": []
+        "created_at": "2024-04-11T11:20:32.779Z",
+        "updated_at": "2024-04-11T11:20:32.784Z",
+        "name": "Super Admin",
+        "permissions": [
+            "981ca3e1-f2a2-4aec-ae2e-55f93d75342f",
+            "684e7cb6-4215-4826-b90f-674fb33389f5",
+            "168fe233-b799-410a-ab9f-13150f90f82b",
+            "fa04621f-e479-486a-9a19-96add05ab6f5",
+            "9d872524-7a61-4e11-8251-56f04c7cf536",
+            "d2aaae67-8c76-406c-b20c-8d6b811bb1f1",
+            "4da91b35-2bb0-497c-b59d-460fe49ddb94",
+            "168bc78a-5b9a-443e-b93a-e74b5697453c",
+            "c1ba6a81-2ce8-4f70-877f-3655492de4db",
+            "066324d8-eb8d-4b1a-8685-e52fc690fb42",
+            "23437c79-6316-45db-a5fb-62c31b0dadf1",
+            "cc11b99e-d8d3-4a43-8b46-aa482ad886ae"
+        ]
     }
 },
 {
     "model": "rbac.role",
-    "pk": "bcbfc8b9-4833-4f18-9e8e-9aba43f33c1c",
+    "pk": "665db6c1-be4d-4120-8d18-b9188a90f514",
     "fields": {
-        "created_at": "2024-04-08T07:32:34.348Z",
-        "updated_at": "2024-04-08T07:32:34.350Z",
+        "created_at": "2024-04-11T11:20:32.795Z",
+        "updated_at": "2024-04-11T11:20:32.797Z",
         "name": "Student",
         "permissions": []
     }
 },
 {
     "model": "rbac.role",
-    "pk": "d168e5c3-ae36-469b-b9f9-6fc7f3eeddcd",
+    "pk": "b58f19ff-4489-4929-80aa-c2bcf7adfcff",
     "fields": {
-        "created_at": "2024-04-08T07:32:34.322Z",
-        "updated_at": "2024-04-08T07:32:34.342Z",
-        "name": "Faculty Admin",
-        "permissions": [
-            "60d58dd2-4476-477e-9c46-dd3da196eb33",
-            "4f47bab7-ac21-4140-8ed2-6e334d2b2aa9",
-            "365a66a8-e9dd-4321-a5c4-99d36a05f06d",
-            "4d9bb2de-4d96-4984-b52a-180d87d79b6f",
-            "56b08c00-f362-452a-9155-491af023b57e",
-            "a95a3029-0c6a-4032-8cad-c8c74097619a",
-            "6d746eb3-08ef-4f6c-bbe4-a669f31b7479",
-            "9c82ad3d-4184-4e46-a615-d9f8750db863"
-        ]
-    }
-},
-{
-    "model": "rbac.userrole",
-    "pk": "0bfe8fcb-397e-4326-9fcb-679e7a1aae40",
-    "fields": {
-        "created_at": "2024-04-08T08:30:38.821Z",
-        "updated_at": "2024-04-08T08:30:38.821Z",
-        "user": [
-            "goodteacher"
-        ],
-        "role": "7e5c05f3-c865-478f-bcbb-7d97233de924"
-    }
-},
-{
-    "model": "rbac.userrole",
-    "pk": "37495c2b-6e74-4eb9-bdcf-ead4dc0d790b",
-    "fields": {
-        "created_at": "2024-04-08T09:49:08.833Z",
-        "updated_at": "2024-04-08T09:49:08.833Z",
-        "user": [
-            "bdu0030552"
-        ],
-        "role": "bcbfc8b9-4833-4f18-9e8e-9aba43f33c1c"
-    }
-},
-{
-    "model": "rbac.userrole",
-    "pk": "4fa9c359-7d0e-4b1a-88af-5f45e35c3621",
-    "fields": {
-        "created_at": "2024-04-08T08:29:28.633Z",
-        "updated_at": "2024-04-08T08:29:28.633Z",
-        "user": [
-            "bdu1234552"
-        ],
-        "role": "bcbfc8b9-4833-4f18-9e8e-9aba43f33c1c"
-    }
-},
-{
-    "model": "rbac.userrole",
-    "pk": "77929a9d-309f-485a-aece-108b6a67899c",
-    "fields": {
-        "created_at": "2024-04-08T09:41:48.598Z",
-        "updated_at": "2024-04-08T09:41:48.598Z",
-        "user": [
-            "bdu1230552"
-        ],
-        "role": "bcbfc8b9-4833-4f18-9e8e-9aba43f33c1c"
-    }
-},
-{
-    "model": "rbac.userrole",
-    "pk": "c84bc1d9-5c3a-46bc-80f4-d21b411dd434",
-    "fields": {
-        "created_at": "2024-04-08T08:27:32.565Z",
-        "updated_at": "2024-04-08T08:27:32.565Z",
-        "user": [
-            "bdu1234556"
-        ],
-        "role": "bcbfc8b9-4833-4f18-9e8e-9aba43f33c1c"
-    }
-},
-{
-    "model": "rbac.userrole",
-    "pk": "d85c1d90-707b-4692-b9ef-3dbb8da7bdd3",
-    "fields": {
-        "created_at": "2024-04-08T08:35:05.404Z",
-        "updated_at": "2024-04-08T08:35:05.404Z",
-        "user": [
-            "bdu1234052"
-        ],
-        "role": "bcbfc8b9-4833-4f18-9e8e-9aba43f33c1c"
-    }
-},
-{
-    "model": "rbac.userrole",
-    "pk": "e27df26b-aedc-4dbf-b09f-1eb96d63cc0f",
-    "fields": {
-        "created_at": "2024-04-08T08:11:32.546Z",
-        "updated_at": "2024-04-08T08:11:32.546Z",
-        "user": [
-            "hana"
-        ],
-        "role": "00f3c733-78e3-4ae0-9d90-bbc9b4ba64fb"
-    }
-},
-{
-    "model": "rbac.userrole",
-    "pk": "eaa5681e-0efd-4232-8221-03a1279739a1",
-    "fields": {
-        "created_at": "2024-04-08T09:56:21.944Z",
-        "updated_at": "2024-04-08T09:56:21.944Z",
-        "user": [
-            "admin"
-        ],
-        "role": "d168e5c3-ae36-469b-b9f9-6fc7f3eeddcd"
-    }
-},
-{
-    "model": "rbac.userrole",
-    "pk": "ff5070ed-a874-4647-9966-159347081f4e",
-    "fields": {
-        "created_at": "2024-04-08T09:48:15.991Z",
-        "updated_at": "2024-04-08T09:48:15.991Z",
-        "user": [
-            "bdu0230552"
-        ],
-        "role": "bcbfc8b9-4833-4f18-9e8e-9aba43f33c1c"
+        "created_at": "2024-04-11T11:20:32.792Z",
+        "updated_at": "2024-04-11T11:20:32.794Z",
+        "name": "Teacher",
+        "permissions": []
     }
 },
 {
     "model": "entities.faculty",
-    "pk": "b2b92c8d-28a4-4e00-b8a2-0ddd0d02e1ce",
+    "pk": "854d6e1f-a968-4e3d-b11a-5f5f74ac00ad",
     "fields": {
-        "created_at": "2024-04-08T07:32:34.232Z",
-        "updated_at": "2024-04-08T07:32:34.232Z",
+        "created_at": "2024-04-11T11:20:32.483Z",
+        "updated_at": "2024-04-11T11:20:32.483Z",
         "name": "FACULTY OF COMPUTING",
         "description": "Faculty dedicated to computing disciplines."
     }
 },
 {
     "model": "entities.department",
-    "pk": "2ab9e835-a953-49c9-9f7a-7f45d52e48ee",
+    "pk": "25774be0-5b2b-42b4-bc9a-a68e45af6eaf",
     "fields": {
-        "created_at": "2024-04-08T07:32:34.237Z",
-        "updated_at": "2024-04-08T07:32:34.237Z",
-        "name": "INFORMATION SYSTEMS",
-        "description": "Department of Information Systems",
-        "faculty": "b2b92c8d-28a4-4e00-b8a2-0ddd0d02e1ce"
-    }
-},
-{
-    "model": "entities.department",
-    "pk": "6b2e3dda-a10f-422e-a9bf-9c599f129101",
-    "fields": {
-        "created_at": "2024-04-08T07:32:34.237Z",
-        "updated_at": "2024-04-08T07:32:34.237Z",
-        "name": "CYBER SECURITY",
-        "description": "Department of Cyber Security",
-        "faculty": "b2b92c8d-28a4-4e00-b8a2-0ddd0d02e1ce"
-    }
-},
-{
-    "model": "entities.department",
-    "pk": "9151cb69-265e-46b4-bd32-d114de9945c9",
-    "fields": {
-        "created_at": "2024-04-08T07:32:34.236Z",
-        "updated_at": "2024-04-08T07:32:34.236Z",
+        "created_at": "2024-04-11T11:20:32.486Z",
+        "updated_at": "2024-04-11T11:20:32.486Z",
         "name": "SOFTWARE ENGINEERING",
         "description": "Department of Software Engineering",
-        "faculty": "b2b92c8d-28a4-4e00-b8a2-0ddd0d02e1ce"
+        "faculty": "854d6e1f-a968-4e3d-b11a-5f5f74ac00ad"
     }
 },
 {
     "model": "entities.department",
-    "pk": "c1958c31-9b73-42c4-999d-99b4001e31a3",
+    "pk": "6c7b40ea-986c-41a5-aa73-d18b43138de0",
     "fields": {
-        "created_at": "2024-04-08T07:32:34.234Z",
-        "updated_at": "2024-04-08T07:32:34.234Z",
-        "name": "COMPUTER SCIENCE",
-        "description": "Department of Computer Science",
-        "faculty": "b2b92c8d-28a4-4e00-b8a2-0ddd0d02e1ce"
-    }
-},
-{
-    "model": "entities.department",
-    "pk": "e82f8c2c-558c-4a65-bd64-59d211be4585",
-    "fields": {
-        "created_at": "2024-04-08T07:32:34.236Z",
-        "updated_at": "2024-04-08T07:32:34.236Z",
+        "created_at": "2024-04-11T11:20:32.486Z",
+        "updated_at": "2024-04-11T11:20:32.486Z",
         "name": "INFORMATION TECHNOLOGY",
         "description": "Department of Information Technology",
-        "faculty": "b2b92c8d-28a4-4e00-b8a2-0ddd0d02e1ce"
+        "faculty": "854d6e1f-a968-4e3d-b11a-5f5f74ac00ad"
     }
 },
 {
-    "model": "entities.student",
-    "pk": "16be575a-8c5f-4135-be73-8aaf9997f577",
+    "model": "entities.department",
+    "pk": "a93e6daa-6521-48ee-ad51-8ad25ea92e8f",
     "fields": {
-        "created_at": "2024-04-08T09:48:15.989Z",
-        "updated_at": "2024-04-08T09:48:15.989Z",
-        "user": [
-            "bdu0230552"
-        ],
-        "faculty": "b2b92c8d-28a4-4e00-b8a2-0ddd0d02e1ce",
-        "department": "2ab9e835-a953-49c9-9f7a-7f45d52e48ee",
-        "year_in_school": 2,
-        "admission_date": "2023-09-01",
-        "graduation_date": "2027-06-01"
+        "created_at": "2024-04-11T11:20:32.487Z",
+        "updated_at": "2024-04-11T11:20:32.487Z",
+        "name": "INFORMATION SYSTEMS",
+        "description": "Department of Information Systems",
+        "faculty": "854d6e1f-a968-4e3d-b11a-5f5f74ac00ad"
     }
 },
 {
-    "model": "entities.student",
-    "pk": "2adf1004-5490-4f5f-b0f3-b41514514f7b",
+    "model": "entities.department",
+    "pk": "e4b6f747-6ca4-468d-98aa-4ad178c68797",
     "fields": {
-        "created_at": "2024-04-08T08:27:32.561Z",
-        "updated_at": "2024-04-08T08:27:32.562Z",
-        "user": [
-            "bdu1234556"
-        ],
-        "faculty": "b2b92c8d-28a4-4e00-b8a2-0ddd0d02e1ce",
-        "department": "2ab9e835-a953-49c9-9f7a-7f45d52e48ee",
-        "year_in_school": 2,
-        "admission_date": "2023-09-01",
-        "graduation_date": "2027-06-01"
+        "created_at": "2024-04-11T11:20:32.484Z",
+        "updated_at": "2024-04-11T11:20:32.484Z",
+        "name": "COMPUTER SCIENCE",
+        "description": "Department of Computer Science",
+        "faculty": "854d6e1f-a968-4e3d-b11a-5f5f74ac00ad"
     }
 },
 {
-    "model": "entities.student",
-    "pk": "55071ada-700c-4742-aad5-b45401acaf33",
+    "model": "entities.department",
+    "pk": "e73fb16f-2ca0-4cd6-a596-eda0e5dce80f",
     "fields": {
-        "created_at": "2024-04-08T08:35:05.401Z",
-        "updated_at": "2024-04-08T08:35:05.401Z",
-        "user": [
-            "bdu1234052"
-        ],
-        "faculty": "b2b92c8d-28a4-4e00-b8a2-0ddd0d02e1ce",
-        "department": "2ab9e835-a953-49c9-9f7a-7f45d52e48ee",
-        "year_in_school": 2,
-        "admission_date": "2023-09-01",
-        "graduation_date": "2027-06-01"
+        "created_at": "2024-04-11T11:20:32.488Z",
+        "updated_at": "2024-04-11T11:20:32.488Z",
+        "name": "CYBER SECURITY",
+        "description": "Department of Cyber Security",
+        "faculty": "854d6e1f-a968-4e3d-b11a-5f5f74ac00ad"
     }
 },
 {
-    "model": "entities.student",
-    "pk": "790dab81-3afb-4ffe-8813-5666162d99af",
+    "model": "forum.post",
+    "pk": "01f7b23d-b750-47c5-8aa2-22b82c3200b4",
     "fields": {
-        "created_at": "2024-04-08T09:49:08.830Z",
-        "updated_at": "2024-04-08T09:49:08.830Z",
+        "created_at": "2024-04-11T11:26:54.294Z",
+        "updated_at": "2024-04-11T11:26:54.294Z",
         "user": [
-            "bdu0030552"
+            "admin"
         ],
-        "faculty": "b2b92c8d-28a4-4e00-b8a2-0ddd0d02e1ce",
-        "department": "2ab9e835-a953-49c9-9f7a-7f45d52e48ee",
-        "year_in_school": 2,
-        "admission_date": "2023-09-01",
-        "graduation_date": "2027-06-01"
+        "body": "This is the third question body",
+        "vote_count": 0
     }
 },
 {
-    "model": "entities.student",
-    "pk": "b60e12db-4923-4089-8187-5692ea9a1048",
+    "model": "forum.post",
+    "pk": "02800d45-c34d-4cb5-99b9-fa21fab32005",
     "fields": {
-        "created_at": "2024-04-08T09:41:48.596Z",
-        "updated_at": "2024-04-08T09:41:48.596Z",
+        "created_at": "2024-04-11T12:29:24.559Z",
+        "updated_at": "2024-04-11T12:29:24.559Z",
         "user": [
-            "bdu1230552"
+            "admin"
         ],
-        "faculty": "b2b92c8d-28a4-4e00-b8a2-0ddd0d02e1ce",
-        "department": "2ab9e835-a953-49c9-9f7a-7f45d52e48ee",
-        "year_in_school": 2,
-        "admission_date": "2023-09-01",
-        "graduation_date": "2027-06-01"
+        "body": "second answer to first question by the same user",
+        "vote_count": 0
     }
 },
 {
-    "model": "entities.student",
-    "pk": "f82f25cb-a4a4-4f7c-ab03-1ff5d7fb5209",
+    "model": "forum.post",
+    "pk": "53860231-a2d1-44f3-b427-446210bc23d6",
     "fields": {
-        "created_at": "2024-04-08T08:29:28.630Z",
-        "updated_at": "2024-04-08T08:29:28.630Z",
+        "created_at": "2024-04-11T12:28:38.579Z",
+        "updated_at": "2024-04-11T12:28:38.579Z",
         "user": [
-            "bdu1234552"
+            "admin"
         ],
-        "faculty": "b2b92c8d-28a4-4e00-b8a2-0ddd0d02e1ce",
-        "department": "2ab9e835-a953-49c9-9f7a-7f45d52e48ee",
-        "year_in_school": 2,
-        "admission_date": "2023-09-01",
-        "graduation_date": "2027-06-01"
+        "body": "first answer to first question",
+        "vote_count": 0
     }
 },
 {
-    "model": "entities.teacher",
-    "pk": "81898002-af4a-4b21-9c08-7dcdf75c9002",
+    "model": "forum.post",
+    "pk": "6691ec09-9f27-4405-bc34-10f3b8e16528",
     "fields": {
-        "created_at": "2024-04-08T08:30:38.810Z",
-        "updated_at": "2024-04-08T08:30:38.810Z",
+        "created_at": "2024-04-11T12:29:06.305Z",
+        "updated_at": "2024-04-11T12:29:06.305Z",
         "user": [
-            "goodteacher"
+            "admin"
         ],
-        "faculty": "b2b92c8d-28a4-4e00-b8a2-0ddd0d02e1ce",
-        "departments": [
-            "2ab9e835-a953-49c9-9f7a-7f45d52e48ee"
+        "body": "first answer to first question",
+        "vote_count": 0
+    }
+},
+{
+    "model": "forum.post",
+    "pk": "6a12a981-0d23-4c37-aa33-ef0a61de9745",
+    "fields": {
+        "created_at": "2024-04-11T11:26:41.734Z",
+        "updated_at": "2024-04-11T11:26:41.734Z",
+        "user": [
+            "admin"
+        ],
+        "body": "This is the second question body",
+        "vote_count": 0
+    }
+},
+{
+    "model": "forum.post",
+    "pk": "ff91f1ce-93cf-4fc0-a59d-70056ee39416",
+    "fields": {
+        "created_at": "2024-04-11T11:26:28.812Z",
+        "updated_at": "2024-04-11T11:26:28.812Z",
+        "user": [
+            "admin"
+        ],
+        "body": "This is the first question body",
+        "vote_count": 0
+    }
+},
+{
+    "model": "forum.question",
+    "pk": "3ca56f2d-6b4a-41ca-b47f-abd32a1ff3d6",
+    "fields": {
+        "created_at": "2024-04-11T11:26:54.297Z",
+        "updated_at": "2024-04-11T11:26:54.297Z",
+        "post": "01f7b23d-b750-47c5-8aa2-22b82c3200b4",
+        "title": "third question",
+        "is_answered": false,
+        "is_closed": false,
+        "view_count": 0,
+        "answer_count": 0,
+        "accepted_answer": null,
+        "slug": "third-question-1712834814",
+        "tags": [
+            "1cb6d2bd-b762-4d74-a8fa-e997ede4337e"
         ]
     }
 },
 {
-    "model": "entities.facultyadmin",
-    "pk": "fa668199-250b-46a7-b9c8-56620cf9a553",
+    "model": "forum.question",
+    "pk": "3dc47963-4a39-403b-afc3-27bd9ce818ab",
     "fields": {
-        "created_at": "2024-04-08T09:56:21.941Z",
-        "updated_at": "2024-04-08T09:56:21.941Z",
-        "user": [
-            "admin"
-        ],
-        "faculty": "b2b92c8d-28a4-4e00-b8a2-0ddd0d02e1ce"
+        "created_at": "2024-04-11T11:26:41.737Z",
+        "updated_at": "2024-04-11T11:26:41.737Z",
+        "post": "6a12a981-0d23-4c37-aa33-ef0a61de9745",
+        "title": "second question",
+        "is_answered": false,
+        "is_closed": false,
+        "view_count": 0,
+        "answer_count": 0,
+        "accepted_answer": null,
+        "slug": "second-question-1712834801",
+        "tags": [
+            "c5e5543e-2c82-4c8a-9504-cfad4e50266b",
+            "4cbeac69-4ab9-488c-8a53-b78f7182019d"
+        ]
+    }
+},
+{
+    "model": "forum.question",
+    "pk": "ab0a35fa-3354-4994-b779-4ae01c4dd9c0",
+    "fields": {
+        "created_at": "2024-04-11T11:26:28.815Z",
+        "updated_at": "2024-04-11T11:26:28.815Z",
+        "post": "ff91f1ce-93cf-4fc0-a59d-70056ee39416",
+        "title": "first question",
+        "is_answered": false,
+        "is_closed": false,
+        "view_count": 0,
+        "answer_count": 0,
+        "accepted_answer": null,
+        "slug": "first-question-1712834788",
+        "tags": [
+            "1cb6d2bd-b762-4d74-a8fa-e997ede4337e",
+            "aec3a09b-6b78-414d-b2b0-d2e995f9ecbc",
+            "8e524576-e5f2-4be5-8db1-d07861e2b64e"
+        ]
+    }
+},
+{
+    "model": "forum.answer",
+    "pk": "10730169-ba80-41f3-8bee-4c24f1bbb41a",
+    "fields": {
+        "created_at": "2024-04-11T12:29:06.309Z",
+        "updated_at": "2024-04-11T12:29:06.309Z",
+        "post": "6691ec09-9f27-4405-bc34-10f3b8e16528",
+        "question": "ab0a35fa-3354-4994-b779-4ae01c4dd9c0",
+        "is_accepted": false
+    }
+},
+{
+    "model": "forum.answer",
+    "pk": "4785d3ae-f37d-4699-924e-5fd458464e1a",
+    "fields": {
+        "created_at": "2024-04-11T12:29:24.562Z",
+        "updated_at": "2024-04-11T12:29:24.562Z",
+        "post": "02800d45-c34d-4cb5-99b9-fa21fab32005",
+        "question": "ab0a35fa-3354-4994-b779-4ae01c4dd9c0",
+        "is_accepted": false
+    }
+},
+{
+    "model": "forum.tag",
+    "pk": "1cb6d2bd-b762-4d74-a8fa-e997ede4337e",
+    "fields": {
+        "created_at": "2024-04-11T11:25:43.174Z",
+        "updated_at": "2024-04-11T11:25:43.174Z",
+        "name": "postgres"
+    }
+},
+{
+    "model": "forum.tag",
+    "pk": "4cbeac69-4ab9-488c-8a53-b78f7182019d",
+    "fields": {
+        "created_at": "2024-04-11T11:25:47.908Z",
+        "updated_at": "2024-04-11T11:25:47.908Z",
+        "name": "react"
+    }
+},
+{
+    "model": "forum.tag",
+    "pk": "8e524576-e5f2-4be5-8db1-d07861e2b64e",
+    "fields": {
+        "created_at": "2024-04-11T11:25:34.391Z",
+        "updated_at": "2024-04-11T11:25:34.391Z",
+        "name": "python"
+    }
+},
+{
+    "model": "forum.tag",
+    "pk": "aec3a09b-6b78-414d-b2b0-d2e995f9ecbc",
+    "fields": {
+        "created_at": "2024-04-11T11:25:37.881Z",
+        "updated_at": "2024-04-11T11:25:37.881Z",
+        "name": "backend"
+    }
+},
+{
+    "model": "forum.tag",
+    "pk": "b41690a7-3bba-44e7-ae30-28770e227810",
+    "fields": {
+        "created_at": "2024-04-11T11:25:30.341Z",
+        "updated_at": "2024-04-11T11:25:30.341Z",
+        "name": "django"
+    }
+},
+{
+    "model": "forum.tag",
+    "pk": "c5e5543e-2c82-4c8a-9504-cfad4e50266b",
+    "fields": {
+        "created_at": "2024-04-11T11:25:45.467Z",
+        "updated_at": "2024-04-11T11:25:45.467Z",
+        "name": "node"
     }
 }
 ]
