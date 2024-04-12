@@ -27,14 +27,14 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class AnswerSerializer(serializers.ModelSerializer):
     post = PostSerializer()
-    user = serializers.SerializerMethodField()
+    answered_by = serializers.SerializerMethodField()
     comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Answer
-        fields = ["id", "post", "user", "comments"]
+        fields = ("id", "post", "answered_by", "comments")
 
-    def get_user(self, obj):
+    def get_answered_by(self, obj):
         return obj.post.user.username
 
     def validate(self, data):

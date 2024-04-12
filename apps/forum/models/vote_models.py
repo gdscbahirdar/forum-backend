@@ -1,7 +1,7 @@
-from django.db import models
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.db import models
 
 from apps.common.models import BaseModel
 
@@ -32,7 +32,7 @@ class Vote(BaseModel):
     content_object = GenericForeignKey("content_type", "object_id")
 
     class Meta:
-        unique_together = ("user", "content_type", "object_id")
+        constraints = [models.UniqueConstraint(fields=("user", "content_type", "object_id"), name="vote__1")]
 
     def __str__(self):
         return f"{self.user} voted {self.vote_type} on {self.content_type.model}"

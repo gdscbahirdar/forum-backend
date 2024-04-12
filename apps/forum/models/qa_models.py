@@ -2,7 +2,6 @@ from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
 
 from apps.common.models import BaseModel
 from apps.forum.models.comment_models import Comment
@@ -15,6 +14,9 @@ class Post(BaseModel):
     vote_count = models.IntegerField(default=0)
     comments = GenericRelation(Comment)
     votes = GenericRelation(Vote, related_query_name="post")
+
+    def __str__(self):
+        return f"Post by {self.user}"
 
 
 class Question(BaseModel):
