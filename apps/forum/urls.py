@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from apps.forum.views.post_views import AnswerViewSet
-from apps.forum.views.post_views import QuestionViewSet
+
+from apps.forum.views.post_views import AnswerViewSet, QuestionViewSet
 from apps.forum.views.vote_views import VoteViewSet
 
 router = DefaultRouter()

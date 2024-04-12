@@ -1,10 +1,10 @@
+from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from django.contrib.contenttypes.models import ContentType
 
-from apps.forum.models.vote_models import Vote
-from apps.forum.models.qa_models import Post
 from apps.forum.models.comment_models import Comment
+from apps.forum.models.qa_models import Post
+from apps.forum.models.vote_models import Vote
 
 
 class VoteSerializer(serializers.ModelSerializer):

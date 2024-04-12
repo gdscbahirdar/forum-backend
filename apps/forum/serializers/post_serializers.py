@@ -1,10 +1,11 @@
 from datetime import datetime
+
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify
 from rest_framework import serializers
 
 from apps.forum.models.comment_models import Comment
-from apps.forum.models.qa_models import Post, Question, Answer
+from apps.forum.models.qa_models import Answer, Post, Question
 from apps.forum.models.tag_models import Tag
 
 User = get_user_model()
@@ -69,7 +70,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 class BaseQuestionSerializer(serializers.ModelSerializer):
     post = PostSerializer()
     tags = serializers.SlugRelatedField(slug_field="name", many=True, queryset=Tag.objects.all())
-    user = serializers.SerializerMethodField()
+    asked_by = serializers.SerializerMethodField()
     accepted_answer = serializers.PrimaryKeyRelatedField(
         queryset=Answer.objects.all(), required=False, allow_null=True
     )
@@ -87,14 +88,14 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
             "view_count",
             "answer_count",
             "accepted_answer",
-            "user",
+            "asked_by",
             "slug",
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ("view_count", "answer_count", "is_answered", "is_closed", "user", "slug")
+        read_only_fields = ("view_count", "answer_count", "is_answered", "is_closed", "asked_by", "slug")
 
-    def get_user(self, obj):
+    def get_asked_by(self, obj):
         return obj.post.user.username
 
     def create(self, validated_data):

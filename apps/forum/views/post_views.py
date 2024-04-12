@@ -1,16 +1,18 @@
-from rest_framework import viewsets, status
-from rest_framework.response import Response
+from django_filters import rest_framework as django_filters
+from rest_framework import filters, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from apps.forum.models.qa_models import Question, Answer
+from apps.forum.models.qa_models import Answer, Question
 from apps.forum.permissions import IsOwnerOrReadOnly
-from apps.forum.serializers.post_serializers import QuestionSerializer, AnswerSerializer, QuestionDetailSerializer
+from apps.forum.serializers.post_serializers import AnswerSerializer, QuestionDetailSerializer, QuestionSerializer
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     permission_classes = (IsAuthenticated,)
     lookup_field = "slug"
+    filter_backends = (django_filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    ordering = ("-created_at",)
 
     def get_serializer_class(self):
         if self.action in ("list", "create", "update", "partial_update", "destroy"):
