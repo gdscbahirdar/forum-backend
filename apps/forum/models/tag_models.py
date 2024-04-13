@@ -9,9 +9,11 @@ class Tag(BaseModel):
 
     Attributes:
         name (str): The name of the tag.
+        description (str): A description of the tag.
     """
 
     name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(blank=True)
 
     def __str__(self):
         return self.name

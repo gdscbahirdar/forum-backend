@@ -35,7 +35,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
     search_fields = ("title",)
     ordering = ("-created_at",)
     ordering_fields = (
-        "-created_at",
+        "created_at",
         "post__vote_count",
         "view_count",
     )
