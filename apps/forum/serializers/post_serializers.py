@@ -148,7 +148,21 @@ class BookmarkedPostSerializer(BaseQuestionSerializer):
     bookmarked_answers = serializers.SerializerMethodField()
 
     class Meta(BaseQuestionSerializer.Meta):
-        fields = "__all__"
+        fields = (
+            "id",
+            "post",
+            "title",
+            "tags",
+            "is_answered",
+            "is_closed",
+            "view_count",
+            "answer_count",
+            "asked_by",
+            "slug",
+            "created_at",
+            "updated_at",
+            "bookmarked_answers",
+        )
 
     def get_bookmarked_answers(self, obj):
         """
