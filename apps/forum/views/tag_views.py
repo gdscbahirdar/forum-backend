@@ -34,5 +34,11 @@ class TagReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     def questions(self, request, *args, **kwargs):
         tag = self.get_object()
         questions = tag.questions.all()
+
+        page = self.paginate_queryset(questions)
+        if page is not None:
+            serializer = QuestionSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = QuestionSerializer(questions, many=True)
         return Response(serializer.data)
