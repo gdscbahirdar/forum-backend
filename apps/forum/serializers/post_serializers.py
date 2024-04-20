@@ -61,9 +61,14 @@ class AnswerSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         post_data = validated_data.pop("post", None)
+        instance = super().update(instance, validated_data)
         if post_data:
-            Post.objects.filter(id=instance.post.id).update(**post_data)
-        return super().update(instance, validated_data)
+            post = instance.post
+            for field, value in post_data.items():
+                setattr(post, field, value)
+            post.save()
+
+        return instance
 
 
 class BaseQuestionSerializer(serializers.ModelSerializer):
@@ -79,6 +84,7 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
         model = Question
         fields = [
             "id",
+            "slug",
             "post",
             "title",
             "tags",
@@ -88,7 +94,6 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
             "answer_count",
             "accepted_answer",
             "asked_by",
-            "slug",
             "created_at",
             "updated_at",
         ]
@@ -113,17 +118,22 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         post_data = validated_data.pop("post", None)
-        if post_data:
-            Post.objects.filter(id=instance.post.id).update(**post_data)
+        tags_data = validated_data.pop("tags", [])
 
-        if "title" in validated_data:
+        if "title" in validated_data and validated_data["title"] != instance.title:
             slug = slugify(f"{validated_data['title']}-{int(datetime.now().timestamp())}")
             validated_data["slug"] = slug
 
-        tags_data = validated_data.pop("tags", [])
+        instance = super().update(instance, validated_data)
         instance.tags.set(tags_data)
 
-        return super().update(instance, validated_data)
+        if post_data:
+            post = instance.post
+            for field, value in post_data.items():
+                setattr(post, field, value)
+            post.save()
+
+        return instance
 
 
 class QuestionSerializer(BaseQuestionSerializer):
@@ -150,6 +160,7 @@ class BookmarkedPostSerializer(BaseQuestionSerializer):
     class Meta(BaseQuestionSerializer.Meta):
         fields = (
             "id",
+            "slug",
             "post",
             "title",
             "tags",
@@ -158,7 +169,6 @@ class BookmarkedPostSerializer(BaseQuestionSerializer):
             "view_count",
             "answer_count",
             "asked_by",
-            "slug",
             "created_at",
             "updated_at",
             "bookmarked_answers",
