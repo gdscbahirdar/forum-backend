@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.forum.models.tag_models import Tag
+from apps.forum.models.qa_meta_models import Tag
 
 
 class TagSerializer(serializers.ModelSerializer):

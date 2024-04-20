@@ -2,15 +2,14 @@ from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from apps.forum.models.comment_models import Comment
+from apps.forum.models.qa_meta_models import Comment, Vote
 from apps.forum.models.qa_models import Post
-from apps.forum.models.vote_models import Vote
 
 
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
-        fields = "__all__"
+        fields = ("pk", "user", "content_type", "object_id", "content_object", "vote_type", "created_at", "updated_at")
         read_only_fields = ("user", "content_type")
 
     def validate(self, data):

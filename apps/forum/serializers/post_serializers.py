@@ -4,9 +4,8 @@ from django.contrib.auth import get_user_model
 from django.utils.text import slugify
 from rest_framework import serializers
 
-from apps.forum.models.comment_models import Comment
+from apps.forum.models.qa_meta_models import Bookmark, Comment, Tag
 from apps.forum.models.qa_models import Answer, Post, Question
-from apps.forum.models.tag_models import Tag
 
 User = get_user_model()
 
@@ -62,9 +61,14 @@ class AnswerSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         post_data = validated_data.pop("post", None)
+        instance = super().update(instance, validated_data)
         if post_data:
-            Post.objects.filter(id=instance.post.id).update(**post_data)
-        return super().update(instance, validated_data)
+            post = instance.post
+            for field, value in post_data.items():
+                setattr(post, field, value)
+            post.save()
+
+        return instance
 
 
 class BaseQuestionSerializer(serializers.ModelSerializer):
@@ -80,6 +84,7 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
         model = Question
         fields = [
             "id",
+            "slug",
             "post",
             "title",
             "tags",
@@ -89,7 +94,6 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
             "answer_count",
             "accepted_answer",
             "asked_by",
-            "slug",
             "created_at",
             "updated_at",
         ]
@@ -114,17 +118,22 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         post_data = validated_data.pop("post", None)
-        if post_data:
-            Post.objects.filter(id=instance.post.id).update(**post_data)
+        tags_data = validated_data.pop("tags", [])
 
-        if "title" in validated_data:
+        if "title" in validated_data and validated_data["title"] != instance.title:
             slug = slugify(f"{validated_data['title']}-{int(datetime.now().timestamp())}")
             validated_data["slug"] = slug
 
-        tags_data = validated_data.pop("tags", [])
+        instance = super().update(instance, validated_data)
         instance.tags.set(tags_data)
 
-        return super().update(instance, validated_data)
+        if post_data:
+            post = instance.post
+            for field, value in post_data.items():
+                setattr(post, field, value)
+            post.save()
+
+        return instance
 
 
 class QuestionSerializer(BaseQuestionSerializer):
@@ -137,3 +146,45 @@ class QuestionDetailSerializer(BaseQuestionSerializer):
 
     class Meta(BaseQuestionSerializer.Meta):
         fields = "__all__"
+
+
+class BookmarkedPostSerializer(BaseQuestionSerializer):
+    """
+    Serializer class for bookmarked posts.
+
+    This serializer is used to serialize bookmarked posts and their associated bookmarked answers.
+    """
+
+    bookmarked_answers = serializers.SerializerMethodField()
+
+    class Meta(BaseQuestionSerializer.Meta):
+        fields = (
+            "id",
+            "slug",
+            "post",
+            "title",
+            "tags",
+            "is_answered",
+            "is_closed",
+            "view_count",
+            "answer_count",
+            "asked_by",
+            "created_at",
+            "updated_at",
+            "bookmarked_answers",
+        )
+
+    def get_bookmarked_answers(self, obj):
+        """
+        Retrieve the bookmarked answers for the given post.
+
+        This method filters the bookmarked answers based on the current user and the associated bookmarks.
+        It returns the serialized data of the bookmarked answers.
+        """
+        user = self.context["request"].user
+        bookmarked_answers = Answer.objects.filter(
+            post__bookmarks__user=user,
+            question=obj,
+            post__pk__in=Bookmark.objects.filter(user=user).values_list("object_id", flat=True),
+        ).distinct()
+        return AnswerSerializer(bookmarked_answers, many=True, context=self.context).data
