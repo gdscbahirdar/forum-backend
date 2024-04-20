@@ -4,9 +4,8 @@ from django.contrib.auth import get_user_model
 from django.utils.text import slugify
 from rest_framework import serializers
 
-from apps.forum.models.comment_models import Comment
+from apps.forum.models.qa_meta_models import Bookmark, Comment, Tag
 from apps.forum.models.qa_models import Answer, Post, Question
-from apps.forum.models.tag_models import Tag
 
 User = get_user_model()
 
@@ -137,3 +136,31 @@ class QuestionDetailSerializer(BaseQuestionSerializer):
 
     class Meta(BaseQuestionSerializer.Meta):
         fields = "__all__"
+
+
+class BookmarkedPostSerializer(BaseQuestionSerializer):
+    """
+    Serializer class for bookmarked posts.
+
+    This serializer is used to serialize bookmarked posts and their associated bookmarked answers.
+    """
+
+    bookmarked_answers = serializers.SerializerMethodField()
+
+    class Meta(BaseQuestionSerializer.Meta):
+        fields = "__all__"
+
+    def get_bookmarked_answers(self, obj):
+        """
+        Retrieve the bookmarked answers for the given post.
+
+        This method filters the bookmarked answers based on the current user and the associated bookmarks.
+        It returns the serialized data of the bookmarked answers.
+        """
+        user = self.context["request"].user
+        bookmarked_answers = Answer.objects.filter(
+            post__bookmarks__user=user,
+            question=obj,
+            post__pk__in=Bookmark.objects.filter(user=user).values_list("object_id", flat=True),
+        ).distinct()
+        return AnswerSerializer(bookmarked_answers, many=True, context=self.context).data

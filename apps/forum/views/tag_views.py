@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from apps.forum.models.tag_models import Tag
+from apps.forum.models.qa_meta_models import Tag
 from apps.forum.serializers.post_serializers import QuestionSerializer
 from apps.forum.serializers.tag_serializers import TagSerializer
 

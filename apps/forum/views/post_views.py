@@ -96,7 +96,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.OrderingFilter,)
     ordering = ("-created_at",)
     ordering_fields = (
-        "-created_at",
+        "created_at",
         "post__vote_count",
     )
 
@@ -106,6 +106,9 @@ class AnswerViewSet(viewsets.ModelViewSet):
         if self.action in ("update", "partial_update", "destroy"):
             return [IsAuthenticated(), IsOwnerOrReadOnly()]
         return super().get_permissions()
+
+    def get_queryset(self):
+        return super().get_queryset().filter(question__slug=self.kwargs.get("question_slug"))
 
     def get_serializer_context(self):
         context = super().get_serializer_context()

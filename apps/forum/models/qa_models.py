@@ -4,8 +4,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from apps.common.models import BaseModel
-from apps.forum.models.comment_models import Comment
-from apps.forum.models.vote_models import Vote
+from apps.forum.models.qa_meta_models import Bookmark, Comment, Vote
 
 
 class Post(BaseModel):
@@ -14,6 +13,7 @@ class Post(BaseModel):
     vote_count = models.IntegerField(default=0)
     comments = GenericRelation(Comment)
     votes = GenericRelation(Vote, related_query_name="post")
+    bookmarks = GenericRelation(Bookmark, related_query_name="post")
 
     def __str__(self):
         return f"Post by {self.user}"
