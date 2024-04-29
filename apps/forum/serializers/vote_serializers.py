@@ -9,7 +9,7 @@ from apps.forum.models.qa_models import Post
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
-        fields = ("pk", "user", "content_type", "object_id", "content_object", "vote_type", "created_at", "updated_at")
+        fields = ("pk", "user", "content_type", "object_id", "vote_type", "created_at", "updated_at")
         read_only_fields = ("user", "content_type")
 
     def validate(self, data):

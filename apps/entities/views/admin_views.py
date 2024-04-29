@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django_filters import rest_framework as django_filters
+from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
 from rest_framework import filters, viewsets
 from rest_framework.permissions import IsAuthenticated
 
@@ -9,6 +10,16 @@ from apps.rbac.permissions import IsUserSuperAdmin, IsUserSuperAdminOrFacultyAdm
 User = get_user_model()
 
 
+@extend_schema(
+    parameters=[
+        OpenApiParameter(
+            name="entity_type",
+            description="Type of entity. Options are `student`, `teacher`, `faculty_admin`",
+            type=OpenApiTypes.STR,
+            location=OpenApiParameter.PATH,
+        )
+    ]
+)
 class EntityViewSet(viewsets.ModelViewSet):
     """
     A viewset for managing entities.
@@ -71,6 +82,9 @@ class EntityViewSet(viewsets.ModelViewSet):
             QuerySet: The filtered queryset of entities.
         """
         entity_type = self.kwargs.get("entity_type")
+        if entity_type is None:
+            return User.objects.none()
+
         filter = {f"{entity_type}__isnull": False}
         queryset = User.objects.filter(**filter)
 

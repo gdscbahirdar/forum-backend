@@ -45,6 +45,7 @@ THIRD_PARTY_APPS = [
     "dj_rest_auth",
     "corsheaders",
     "django_filters",
+    "drf_spectacular",
 ]
 LOCAL_APPS = ["apps.common", "apps.users", "apps.rbac", "apps.entities", "apps.forum"]
 
@@ -169,6 +170,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": ("apps.common.pagination.DynamicPageSizePagination"),
     "PAGE_SIZE": PAGE_SIZE,
     "ORDERING_PARAM": "sort",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 # dj-rest-auth
@@ -191,4 +193,14 @@ REST_AUTH = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=config("ACCESS_TOKEN_LIFETIME", cast=int)),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=config("REFRESH_TOKEN_LIFETIME", cast=int)),
+}
+
+# drf-spectacular
+# -------------------------------------------------------------------------------
+# drf-spectacular - https://drf-spectacular.readthedocs.io/en/latest/settings.html
+SPECTACULAR_SETTINGS = {
+    "TITLE": "BDU Forum API",
+    "DESCRIPTION": "API for BDU Forum",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
