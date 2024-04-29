@@ -200,13 +200,7 @@ SIMPLE_JWT = {
 # drf-spectacular - https://drf-spectacular.readthedocs.io/en/latest/settings.html
 SPECTACULAR_SETTINGS = {
     "TITLE": "An Online Discussion Forum for BiT",
-    "DESCRIPTION": """
-        An Online Discussion Forum for BiT aims to leverage digital solutions to facilitate more
-        effective communication, resource sharing, and collaborative learning among students and faculty.
-        By integrating advanced technological features, the forum is designed not only to complement
-        the existing educational framework but also to expand the avenues through which students and faculty
-        engage, innovate, and excel in their academic and professional pursuits.
-    """,
+    "DESCRIPTION": "An Online Discussion Forum for BiT aims to leverage digital solutions to facilitate more effective communication, resource sharing, and collaborative learning among students and faculty. By integrating advanced technological features, the forum is designed not only to complement the existing educational framework but also to expand the avenues through which students and faculty engage, innovate, and excel in their academic and professional pursuits.",  # noqa E501
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
 }
