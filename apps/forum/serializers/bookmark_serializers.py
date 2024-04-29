@@ -16,8 +16,8 @@ class BookmarkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Bookmark
-        fields = ("pk", "user", "content_type", "object_id", "content_object", "created_at", "updated_at")
-        read_only_fields = ("user", "content_type", "object_id", "content_object")
+        fields = ("pk", "user", "content_type", "object_id", "created_at", "updated_at")
+        read_only_fields = ("user", "content_type", "object_id")
 
     def validate(self, data):
         object_id = self.context.get("object_id")

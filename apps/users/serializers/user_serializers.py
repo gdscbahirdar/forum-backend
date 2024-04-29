@@ -13,7 +13,7 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
     class Meta(UserDetailsSerializer.Meta):
         fields = UserDetailsSerializer.Meta.fields + ("middle_name", "role_name", "is_first_time_login")
 
-    def get_role_name(self, obj):
+    def get_role_name(self, obj) -> str:
         return obj.user_role.role.name
 
 

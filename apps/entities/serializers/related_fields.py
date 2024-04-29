@@ -1,8 +1,10 @@
+from drf_spectacular.utils import OpenApiTypes, extend_schema_field
 from rest_framework import serializers
 
 from apps.entities.models.faculty_models import Department, Faculty
 
 
+@extend_schema_field(OpenApiTypes.STR)
 class FacultyRelatedField(serializers.RelatedField):
     def display_value(self, instance):
         return instance
@@ -17,6 +19,7 @@ class FacultyRelatedField(serializers.RelatedField):
             raise serializers.ValidationError(f"Faculty with name '{data}' does not exist.")
 
 
+@extend_schema_field(OpenApiTypes.STR)
 class DepartmentRelatedField(serializers.RelatedField):
     def display_value(self, instance):
         return instance
