@@ -10,6 +10,7 @@ from apps.entities.models.teacher_models import Teacher
 from apps.entities.serializers.faculty_serializers import FacultyAdminSerializer
 from apps.entities.serializers.student_serializers import StudentSerializer
 from apps.entities.serializers.teacher_serializers import TeacherSerializer
+from apps.entities.utils import generate_password
 from apps.rbac.models.role_models import Role, UserRole
 
 User = get_user_model()
@@ -22,7 +23,8 @@ class EntitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("pk", "username", "first_name", "middle_name", "last_name")
+        fields = ("pk", "username", "first_name", "middle_name", "last_name", "is_first_time_login")
+        read_only_fields = ("is_first_time_login",)
 
     def __init__(self, *args, **kwargs):
         context = kwargs.pop("context", {})
@@ -30,15 +32,23 @@ class EntitySerializer(serializers.ModelSerializer):
 
         entity_type = context.get("entity_type", None)
 
+        # Create a copy of Meta.fields
+        self.fields_to_include = list(self.Meta.fields)
+
         if entity_type == "student":
             self.fields["student"] = StudentSerializer()
-            self.Meta.fields = self.Meta.fields + ("student",)
+            self.fields_to_include.append("student")
         elif entity_type == "teacher":
             self.fields["teacher"] = TeacherSerializer()
-            self.Meta.fields = self.Meta.fields + ("teacher",)
+            self.fields_to_include.append("teacher")
         elif entity_type == "faculty_admin":
             self.fields["faculty_admin"] = FacultyAdminSerializer()
-            self.Meta.fields = self.Meta.fields + ("faculty_admin",)
+            self.fields_to_include.append("faculty_admin")
+
+        # Use the copy of Meta.fields for this instance
+        for field in self.fields.keys():
+            if field not in self.fields_to_include:
+                self.fields.pop(field)
 
     def validate(self, attrs):
         request_user = CurrentUserDefault()
@@ -70,7 +80,19 @@ class EntitySerializer(serializers.ModelSerializer):
         teacher_data = validated_data.pop("teacher", None)
         faculty_admin_data = validated_data.pop("faculty_admin", None)
 
-        user = User.objects.create(**validated_data)
+        username = validated_data.pop("username")
+        first_name = validated_data.pop("first_name")
+        middle_name = validated_data.pop("middle_name")
+        last_name = validated_data.pop("last_name")
+        password = generate_password(first_name, middle_name, last_name)
+        user = User.objects.create_user(
+            username=username,
+            first_name=first_name,
+            middle_name=middle_name,
+            last_name=last_name,
+            password=password,
+            is_first_time_login=True,
+        )
 
         if student_data:
             Student.objects.create(user=user, **student_data)

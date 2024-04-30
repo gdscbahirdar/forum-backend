@@ -45,6 +45,7 @@ THIRD_PARTY_APPS = [
     "dj_rest_auth",
     "corsheaders",
     "django_filters",
+    "drf_spectacular",
 ]
 LOCAL_APPS = ["apps.common", "apps.users", "apps.rbac", "apps.entities", "apps.forum"]
 
@@ -106,12 +107,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {
+            "min_length": 8,
+        },
     },
     {
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
+    {
+        "NAME": "apps.common.validators.CustomPasswordValidator",
     },
 ]
 
@@ -169,6 +176,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": ("apps.common.pagination.DynamicPageSizePagination"),
     "PAGE_SIZE": PAGE_SIZE,
     "ORDERING_PARAM": "sort",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 # dj-rest-auth
@@ -191,4 +199,37 @@ REST_AUTH = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=config("ACCESS_TOKEN_LIFETIME", cast=int)),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=config("REFRESH_TOKEN_LIFETIME", cast=int)),
+}
+
+# drf-spectacular
+# -------------------------------------------------------------------------------
+# drf-spectacular - https://drf-spectacular.readthedocs.io/en/latest/settings.html
+SPECTACULAR_SETTINGS = {
+    "TITLE": "An Online Discussion Forum for BiT",
+    "DESCRIPTION": "An Online Discussion Forum for BiT aims to leverage digital solutions to facilitate more effective communication, resource sharing, and collaborative learning among students and faculty. By integrating advanced technological features, the forum is designed not only to complement the existing educational framework but also to expand the avenues through which students and faculty engage, innovate, and excel in their academic and professional pursuits.",  # noqa E501
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}
+
+# LOGGING
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#logging
+# See https://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "root": {"level": "INFO", "handlers": ["console"]},
 }

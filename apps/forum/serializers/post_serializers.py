@@ -54,7 +54,7 @@ class AnswerSerializer(serializers.ModelSerializer):
         model = Answer
         fields = ("id", "post", "answered_by", "is_accepted")
 
-    def get_answered_by(self, obj):
+    def get_answered_by(self, obj) -> str:
         return obj.post.user.username
 
     def validate(self, data):
@@ -120,7 +120,7 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ("view_count", "answer_count", "is_answered", "is_closed", "asked_by", "slug")
 
-    def get_asked_by(self, obj):
+    def get_asked_by(self, obj) -> str:
         return obj.post.user.username
 
     def create(self, validated_data):
@@ -194,7 +194,7 @@ class BookmarkedPostSerializer(BaseQuestionSerializer):
             "bookmarked_answers",
         )
 
-    def get_bookmarked_answers(self, obj):
+    def get_bookmarked_answers(self, obj) -> list:
         """
         Retrieve the bookmarked answers for the given post.
 

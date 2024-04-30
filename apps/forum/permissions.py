@@ -25,4 +25,4 @@ class IsOwnerOrReadOnly(BasePermission):
         if request.method in ["GET", "HEAD", "OPTIONS"]:
             return True
 
-        return obj.user == request.user
+        return obj.post.user == request.user

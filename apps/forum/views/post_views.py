@@ -52,10 +52,9 @@ class QuestionViewSet(viewsets.ModelViewSet):
         Returns:
             Serializer: The serializer class to be used.
         """
-        if self.action in ("list", "create", "update", "partial_update", "destroy"):
-            return QuestionSerializer
-        elif self.action == "retrieve":
+        if self.action == "retrieve":
             return QuestionDetailSerializer
+        return QuestionSerializer
 
     @action(detail=True, methods=["get"], url_path="others")
     def others(self, request, *args, **kwargs):
