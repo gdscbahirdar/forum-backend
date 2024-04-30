@@ -5,33 +5,54 @@ from django.utils.text import slugify
 from rest_framework import serializers
 
 from apps.forum.models.qa_meta_models import Bookmark, Comment, Tag
-from apps.forum.models.qa_models import Answer, Post, Question
+from apps.forum.models.qa_models import Answer, Post, Question, Vote
+from apps.forum.serializers.comment_serializers import CommentSerializer
 
 User = get_user_model()
 
 
 class PostSerializer(serializers.ModelSerializer):
+    user_vote = serializers.SerializerMethodField()
+    is_bookmarked = serializers.SerializerMethodField()
+    comments = CommentSerializer(many=True, read_only=True)
+
     class Meta:
         model = Post
         fields = "__all__"
-        read_only_fields = ("user", "created_at", "updated_at", "vote_count")
+        read_only_fields = ("user", "created_at", "updated_at", "vote_count", "user_vote")
 
+    def get_user_vote(self, obj):
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
+            if user.is_anonymous:
+                return None
 
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = "__all__"
-        read_only_fields = ("user", "created_at", "updated_at")
+            vote = Vote.objects.filter(user=user, content_type__model="post", object_id=obj.id).first()
+            if vote:
+                return vote.vote_type
+            return None
+        return None
+
+    def get_is_bookmarked(self, obj):
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
+            if user.is_anonymous:
+                return False
+
+            bookmark = Bookmark.objects.filter(user=user, content_type__model="post", object_id=obj.id).first()
+            return bookmark is not None
+        return False
 
 
 class AnswerSerializer(serializers.ModelSerializer):
     post = PostSerializer()
     answered_by = serializers.SerializerMethodField()
-    comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Answer
-        fields = ("id", "post", "answered_by", "comments")
+        fields = ("id", "post", "answered_by", "is_accepted")
 
     def get_answered_by(self, obj):
         return obj.post.user.username
@@ -142,7 +163,6 @@ class QuestionSerializer(BaseQuestionSerializer):
 
 class QuestionDetailSerializer(BaseQuestionSerializer):
     answers = AnswerSerializer(many=True, read_only=True)
-    comments = CommentSerializer(many=True, read_only=True)
 
     class Meta(BaseQuestionSerializer.Meta):
         fields = "__all__"
@@ -188,3 +208,7 @@ class BookmarkedPostSerializer(BaseQuestionSerializer):
             post__pk__in=Bookmark.objects.filter(user=user).values_list("object_id", flat=True),
         ).distinct()
         return AnswerSerializer(bookmarked_answers, many=True, context=self.context).data
+
+
+class AcceptAnswerSerializer(serializers.Serializer):
+    answer_id = serializers.UUIDField(help_text="Enter the ID of the answer to accept.")

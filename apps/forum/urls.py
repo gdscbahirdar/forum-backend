@@ -5,11 +5,13 @@ from apps.forum.views.bookmark_views import BookmarkViewset
 from apps.forum.views.post_views import AnswerViewSet, QuestionViewSet
 from apps.forum.views.tag_views import TagReadOnlyViewSet
 from apps.forum.views.vote_views import VoteViewSet
+from apps.forum.views.comment_views import CommentViewSet
 
 router = DefaultRouter()
 router.register(r"questions", QuestionViewSet, basename="question")
 router.register(r"questions/(?P<question_slug>[-\w]+)/answers", AnswerViewSet, basename="answer")
 router.register(r"tags", TagReadOnlyViewSet, basename="tag")
+router.register(r"(?P<post_id>[-\w]+)/comments", CommentViewSet, basename="comment")
 
 app_name = "forum"
 

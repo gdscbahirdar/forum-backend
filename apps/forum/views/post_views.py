@@ -1,12 +1,17 @@
 from django_filters import rest_framework as django_filters
-from rest_framework import filters, viewsets
+from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from apps.forum.models.qa_models import Answer, Question
 from apps.forum.permissions import IsOwnerOrReadOnly
-from apps.forum.serializers.post_serializers import AnswerSerializer, QuestionDetailSerializer, QuestionSerializer
+from apps.forum.serializers.post_serializers import (
+    AnswerSerializer,
+    QuestionDetailSerializer,
+    QuestionSerializer,
+    AcceptAnswerSerializer,
+)
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
@@ -73,6 +78,43 @@ class QuestionViewSet(viewsets.ModelViewSet):
         related_serializer = QuestionSerializer(related_questions, many=True)
         popular_serializer = QuestionSerializer(popular_questions, many=True)
         return Response({"related_questions": related_serializer.data, "popular_questions": popular_serializer.data})
+
+    @action(detail=True, methods=["post"], url_path="accept_answer")
+    def accept_answer(self, request, *args, **kwargs):
+        serializer = AcceptAnswerSerializer(data=request.data)
+        if serializer.is_valid():
+            question = self.get_object()
+
+            if request.user != question.post.user:
+                return Response(
+                    {"error": "You do not have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN
+                )
+
+            answer_id = serializer.validated_data["answer_id"]
+            if not answer_id:
+                return Response({"error": "Answer ID must be provided."}, status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                answer = Answer.objects.get(id=answer_id, question=question)
+            except Answer.DoesNotExist:
+                return Response(
+                    {"error": "No valid answer found for the provided ID."}, status=status.HTTP_404_NOT_FOUND
+                )
+
+            if question.accepted_answer and question.accepted_answer.id != answer.id:
+                question.accepted_answer.is_accepted = False
+                question.accepted_answer.save()
+
+            question.accepted_answer = answer
+            question.is_answered = True
+            question.save()
+
+            answer.is_accepted = True
+            answer.save()
+
+            return Response({"message": "Answer accepted successfully."}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AnswerViewSet(viewsets.ModelViewSet):

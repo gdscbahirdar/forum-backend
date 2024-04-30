@@ -9,7 +9,7 @@ from apps.forum.models.qa_models import Post
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
-        fields = ("pk", "user", "content_type", "object_id", "content_object", "vote_type", "created_at", "updated_at")
+        fields = ("pk", "user", "content_type", "object_id", "vote_type", "created_at", "updated_at")
         read_only_fields = ("user", "content_type")
 
     def validate(self, data):
@@ -37,9 +37,6 @@ class VoteSerializer(serializers.ModelSerializer):
         existing_vote = Vote.objects.filter(user=user, content_type=content_type, object_id=object_id).first()
         data["existing_vote"] = existing_vote
 
-        if existing_vote and existing_vote.vote_type == vote_type:
-            raise ValidationError(f"You cannot {vote_type} more than once.")
-
         return data
 
     def update_vote_count(self, vote_type, instance, change):
@@ -53,8 +50,14 @@ class VoteSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         vote_type = validated_data["vote_type"]
-
         existing_vote = validated_data.pop("existing_vote", None)
+
+        # TODO The vote deletion logic should be refactored to a separate endpoint.
+        if existing_vote and existing_vote.vote_type == vote_type:
+            self.update_vote_count(vote_type, existing_vote, -1)
+            existing_vote.delete()
+            return existing_vote
+
         if existing_vote:
             existing_vote.vote_type = vote_type
             existing_vote.save()
