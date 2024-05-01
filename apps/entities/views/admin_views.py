@@ -90,7 +90,8 @@ class EntityViewSet(viewsets.ModelViewSet):
 
         if hasattr(self.request.user, "user_role") and self.request.user.user_role.role.name != "Super Admin":
             faculty = self.request.user.faculty_admin.faculty
-            queryset = queryset.filter(faculty=faculty)
+            filter = {f"{entity_type}__faculty": faculty}
+            queryset = queryset.filter(**filter)
 
         return queryset
 
