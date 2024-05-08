@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.utils.text import slugify
 from rest_framework import serializers
 
-from apps.forum.models.qa_meta_models import Bookmark, Comment, Tag
+from apps.forum.models.qa_meta_models import Bookmark, Tag
 from apps.forum.models.qa_models import Answer, Post, Question, Vote
 from apps.forum.serializers.comment_serializers import CommentSerializer
 
@@ -122,6 +122,11 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
 
     def get_asked_by(self, obj) -> str:
         return obj.post.user.username
+
+    def validate_title(self, value):
+        if len(value) < 10:
+            raise serializers.ValidationError("The title must be at least 20 characters long.")
+        return value
 
     def create(self, validated_data):
         post_data = validated_data.pop("post")
