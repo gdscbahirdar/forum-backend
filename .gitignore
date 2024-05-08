@@ -283,3 +283,5 @@ eccounting_backend_api/media/
 .vscode/
 
 .env.prod
+
+media/

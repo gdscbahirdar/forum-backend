@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from apps.common.models import BaseModel
-from apps.forum.models.qa_meta_models import Bookmark, Comment, Vote
+from apps.forum.models.qa_meta_models import Bookmark, Comment, ViewTracker, Vote
 
 
 class Post(BaseModel):
@@ -31,6 +31,7 @@ class Question(BaseModel):
         "Answer", on_delete=models.SET_NULL, null=True, blank=True, related_name="accepted_by_question"
     )
     slug = models.SlugField(max_length=255, unique=True)
+    views = GenericRelation(ViewTracker, related_query_name="question")
 
     def __str__(self):
         return self.title

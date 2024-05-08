@@ -1,16 +1,19 @@
+from django.contrib.contenttypes.models import ContentType
+from django.db.models import F
 from django_filters import rest_framework as django_filters
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
+from apps.forum.models.qa_meta_models import ViewTracker
 from apps.forum.models.qa_models import Answer, Question
 from apps.forum.permissions import IsOwnerOrReadOnly
 from apps.forum.serializers.post_serializers import (
+    AcceptAnswerSerializer,
     AnswerSerializer,
     QuestionDetailSerializer,
     QuestionSerializer,
-    AcceptAnswerSerializer,
 )
 
 
@@ -55,6 +58,19 @@ class QuestionViewSet(viewsets.ModelViewSet):
         if self.action == "retrieve":
             return QuestionDetailSerializer
         return QuestionSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        question = self.get_object()
+
+        content_type = ContentType.objects.get_for_model(Question)
+        if not ViewTracker.objects.filter(
+            user=request.user, content_type=content_type, object_id=question.pk
+        ).exists():
+            ViewTracker.objects.create(user=request.user, content_type=content_type, object_id=question.pk)
+            question.view_count = F("view_count") + 1
+            question.save(update_fields=["view_count"])
+
+        return super().retrieve(request, *args, **kwargs)
 
     @action(detail=True, methods=["get"], url_path="others")
     def others(self, request, *args, **kwargs):

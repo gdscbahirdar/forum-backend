@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
+from django.db.models import F
 from django.utils.text import slugify
 from rest_framework import serializers
 
@@ -19,28 +20,20 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = "__all__"
-        read_only_fields = ("user", "created_at", "updated_at", "vote_count", "user_vote")
+        read_only_fields = ("user", "created_at", "updated_at", "vote_count", "user_vote", "is_bookmarked")
 
-    def get_user_vote(self, obj):
+    def get_user_vote(self, obj) -> str:
         request = self.context.get("request")
         if request and hasattr(request, "user"):
             user = request.user
-            if user.is_anonymous:
-                return None
-
             vote = Vote.objects.filter(user=user, content_type__model="post", object_id=obj.id).first()
-            if vote:
-                return vote.vote_type
-            return None
-        return None
+            return vote.vote_type if vote else ""
+        return ""
 
-    def get_is_bookmarked(self, obj):
+    def get_is_bookmarked(self, obj) -> bool:
         request = self.context.get("request")
         if request and hasattr(request, "user"):
             user = request.user
-            if user.is_anonymous:
-                return False
-
             bookmark = Bookmark.objects.filter(user=user, content_type__model="post", object_id=obj.id).first()
             return bookmark is not None
         return False
@@ -78,6 +71,8 @@ class AnswerSerializer(serializers.ModelSerializer):
         post_data["user"] = post_user
         post = Post.objects.create(**post_data)
         answer = Answer.objects.create(post=post, **validated_data)
+        answer.question.answer_count = F("answer_count") + 1
+        answer.question.save(update_fields=["answer_count"])
         return answer
 
     def update(self, instance, validated_data):

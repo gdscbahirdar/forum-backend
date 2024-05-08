@@ -7,9 +7,24 @@ User = get_user_model()
 
 class CustomUserDetailsSerializer(UserDetailsSerializer):
     role_name = serializers.SerializerMethodField()
+    email = serializers.EmailField(max_length=254, required=False)
+    faculty = serializers.SerializerMethodField(read_only=True)
 
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + ("middle_name", "role_name", "is_first_time_login")
+        fields = UserDetailsSerializer.Meta.fields + (
+            "middle_name",
+            "role_name",
+            "is_first_time_login",
+            "email",
+            "bio",
+            "avatar",
+            "faculty",
+        )
 
     def get_role_name(self, obj) -> str:
         return obj.user_role.role.name
+
+    def get_faculty(self, obj) -> str:
+        if getattr(obj, "faculty_admin", None):
+            return obj.faculty_admin.faculty.name
+        return ""
