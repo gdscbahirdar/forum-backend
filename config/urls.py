@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
@@ -10,6 +11,9 @@ urlpatterns = [
     path("api/entities/", include("apps.entities.urls", namespace="entities")),
     path("api/forum/", include("apps.forum.urls", namespace="forum")),
 ]
+
+# Media Assets
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Schema URLs
 urlpatterns += [
