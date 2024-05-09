@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 def avatar_directory_path(instance, filename):
@@ -15,6 +16,7 @@ class User(AbstractUser):
     )
     bio = models.CharField(max_length=255, blank=True)
     avatar = models.ImageField(blank=True, null=True, upload_to=avatar_directory_path)
+    phone_number = PhoneNumberField(blank=True)
 
     REQUIRED_FIELDS = ["first_name", "middle_name", "last_name"]
 

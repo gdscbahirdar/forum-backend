@@ -46,6 +46,7 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "django_filters",
     "drf_spectacular",
+    "phonenumber_field",
 ]
 LOCAL_APPS = ["apps.common", "apps.users", "apps.rbac", "apps.entities", "apps.forum"]
 
@@ -233,3 +234,9 @@ LOGGING = {
     },
     "root": {"level": "INFO", "handlers": ["console"]},
 }
+
+# Phone Number
+# ------------------------------------------------------------------------------
+# https://django-phonenumber-field.readthedocs.io/en/latest/reference.html#settings
+PHONENUMBER_DEFAULT_REGION = "ET"
+PHONENUMBER_DEFAULT_FORMAT = "NATIONAL"

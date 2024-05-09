@@ -1,5 +1,6 @@
 from dj_rest_auth.serializers import UserDetailsSerializer
 from django.contrib.auth import get_user_model
+from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
 
 User = get_user_model()
@@ -8,6 +9,7 @@ User = get_user_model()
 class CustomUserDetailsSerializer(UserDetailsSerializer):
     role_name = serializers.SerializerMethodField()
     email = serializers.EmailField(max_length=254, required=False)
+    phone_number = PhoneNumberField()
     faculty = serializers.SerializerMethodField(read_only=True)
 
     class Meta(UserDetailsSerializer.Meta):
@@ -16,6 +18,7 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
             "role_name",
             "is_first_time_login",
             "email",
+            "phone_number",
             "bio",
             "avatar",
             "faculty",
