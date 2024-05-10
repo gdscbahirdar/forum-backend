@@ -25,6 +25,7 @@ class TagReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = TagSerializer
     permission_classes = (IsAuthenticated,)
     lookup_field = "name"
+    lookup_value_regex = "[^/]+"
     filter_backends = (django_filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     search_fields = ("name",)
     ordering = ("-created_at",)
@@ -33,7 +34,7 @@ class TagReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     @action(detail=True, methods=["get"], url_path="questions")
     def questions(self, request, *args, **kwargs):
         tag = self.get_object()
-        questions = tag.questions.all()
+        questions = tag.questions.order_by("-created_at")
 
         page = self.paginate_queryset(questions)
         if page is not None:
