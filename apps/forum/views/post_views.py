@@ -171,3 +171,8 @@ class AnswerViewSet(viewsets.ModelViewSet):
         context = super().get_serializer_context()
         context["question_slug"] = self.kwargs.get("question_slug")
         return context
+
+    def perform_destroy(self, instance):
+        instance.question.answer_count = F("answer_count") - 1
+        instance.question.save(update_fields=["answer_count"])
+        return instance.delete()
