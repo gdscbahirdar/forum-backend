@@ -161,10 +161,10 @@ if USE_SPACES:
             "BACKEND": "apps.common.storage_backends.StaticStorage",
         },
     }
-    PUBLIC_MEDIA_LOCATION = "media"
+    AWS_QUERYSTRING_AUTH = False
     STATIC_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_LOCATION}/"
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.fra1.digitaloceanspaces.com"
-    MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{PUBLIC_MEDIA_LOCATION}/"
+    MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/media/"
 else:
     STATIC_URL = "/static/"
     STATIC_ROOT = rel("staticfiles")
