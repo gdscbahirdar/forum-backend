@@ -155,10 +155,12 @@ if USE_SPACES:
     AWS_DEFAULT_ACL = "public-read"
     STORAGES = {
         "default": {
-            "BACKEND": "apps.common.storage_backends.PublicMediaStorage",
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+            "OPTIONS": {"location": "media", "file_overwrite": False, "default_acl": "public-read"},
         },
         "staticfiles": {
-            "BACKEND": "apps.common.storage_backends.StaticStorage",
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+            "OPTIONS": {"location": "static", "default_acl": "public-read"},
         },
     }
     AWS_QUERYSTRING_AUTH = False
