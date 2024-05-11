@@ -31,7 +31,7 @@ class CommentSerializer(serializers.ModelSerializer):
         )
         read_only_fields = ("user", "content_type", "object_id", "content_object", "vote_count", "commented_by")
 
-    def get_commented_by(self, obj):
+    def get_commented_by(self, obj) -> str:
         return obj.user.username
 
     def validate(self, data):
