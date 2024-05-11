@@ -1,8 +1,18 @@
 import uuid
 
 
-def generate_password(first_name, middle_name, last_name):
-    return "123idiot"  # TODO Find a logic to generate password from the name
+def generate_password(last_name: str) -> str:
+    """
+    Generates a password based on the last name for first-time users.
+
+    Args:
+        last_name (str): The last name to generate the password from.
+
+    Returns:
+        str: The generated password.
+
+    """
+    return last_name.lower() + "1234#"
 
 
 def is_valid_uuid(value, version=4):

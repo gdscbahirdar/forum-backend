@@ -23,7 +23,7 @@ class EntitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("pk", "username", "first_name", "middle_name", "last_name", "is_first_time_login")
+        fields = ("pk", "username", "first_name", "middle_name", "last_name", "gender", "is_first_time_login")
         read_only_fields = ("is_first_time_login",)
 
     def __init__(self, *args, **kwargs):
@@ -84,12 +84,14 @@ class EntitySerializer(serializers.ModelSerializer):
         first_name = validated_data.pop("first_name")
         middle_name = validated_data.pop("middle_name")
         last_name = validated_data.pop("last_name")
-        password = generate_password(first_name, middle_name, last_name)
+        gender = validated_data.pop("gender")
+        password = generate_password(last_name)
         user = User.objects.create_user(
             username=username,
             first_name=first_name,
             middle_name=middle_name,
             last_name=last_name,
+            gender=gender,
             password=password,
             is_first_time_login=True,
         )

@@ -8,12 +8,15 @@ def avatar_directory_path(instance, filename):
 
 
 class User(AbstractUser):
+    GENDER_CHOICES = (("M", "M"), ("F", "F"))
+
     first_name = models.CharField(max_length=255)
     middle_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     is_first_time_login = models.BooleanField(
         default=True, help_text="If true, user will be redirected to change password after login."
     )
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     bio = models.CharField(max_length=255, blank=True)
     avatar = models.ImageField(blank=True, null=True, upload_to=avatar_directory_path)
     phone_number = PhoneNumberField(blank=True)

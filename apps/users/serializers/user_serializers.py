@@ -9,7 +9,7 @@ User = get_user_model()
 class CustomUserDetailsSerializer(UserDetailsSerializer):
     role_name = serializers.SerializerMethodField()
     email = serializers.EmailField(max_length=254, required=False)
-    phone_number = PhoneNumberField()
+    phone_number = PhoneNumberField(required=False)
     faculty = serializers.SerializerMethodField(read_only=True)
 
     class Meta(UserDetailsSerializer.Meta):
@@ -22,6 +22,7 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
             "bio",
             "avatar",
             "faculty",
+            "gender",
         )
 
     def get_role_name(self, obj) -> str:
