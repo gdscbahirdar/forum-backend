@@ -122,7 +122,10 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
 
     def get_asked_by_avatar(self, obj) -> str:
         request = self.context.get("request")
-        return request.build_absolute_uri(obj.post.user.avatar.url)
+        try:
+            return request.build_absolute_uri(obj.post.user.avatar.url)
+        except AttributeError:
+            return ""
 
     def validate_title(self, value):
         if len(value) < 10:
