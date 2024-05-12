@@ -14,7 +14,7 @@ class FeedbackSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         try:
             return request.build_absolute_uri(obj.user.avatar.url)
-        except AttributeError:
+        except (AttributeError, ValueError):
             return ""
 
 

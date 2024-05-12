@@ -124,7 +124,7 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         try:
             return request.build_absolute_uri(obj.post.user.avatar.url)
-        except AttributeError:
+        except (AttributeError, ValueError):
             return ""
 
     def validate_title(self, value):
