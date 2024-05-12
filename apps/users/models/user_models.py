@@ -20,6 +20,9 @@ class User(AbstractUser):
     bio = models.CharField(max_length=255, blank=True)
     avatar = models.ImageField(blank=True, null=True, upload_to=avatar_directory_path)
     phone_number = PhoneNumberField(blank=True)
+    reputation = models.IntegerField(
+        default=0, help_text="Reputation points earned by the user through various activities."
+    )
 
     REQUIRED_FIELDS = ["first_name", "middle_name", "last_name"]
 
