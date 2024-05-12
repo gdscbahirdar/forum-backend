@@ -21,7 +21,7 @@ class Post(BaseModel):
 
 class Question(BaseModel):
     post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name="question")
-    title = models.CharField(max_length=255, db_index=True)
+    title = models.CharField(max_length=150, db_index=True)
     tags = models.ManyToManyField("Tag", related_name="questions")
     is_answered = models.BooleanField(default=False)
     is_closed = models.BooleanField(default=False)
