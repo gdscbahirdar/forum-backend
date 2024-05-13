@@ -95,6 +95,7 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
         queryset=Answer.objects.all(), required=False, allow_null=True
     )
     slug = serializers.SlugField(read_only=True)
+    asked_by_avatar = serializers.SerializerMethodField()
 
     class Meta:
         model = Question
@@ -110,6 +111,7 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
             "answer_count",
             "accepted_answer",
             "asked_by",
+            "asked_by_avatar",
             "created_at",
             "updated_at",
         ]
@@ -117,6 +119,13 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
 
     def get_asked_by(self, obj) -> str:
         return obj.post.user.username
+
+    def get_asked_by_avatar(self, obj) -> str:
+        request = self.context.get("request")
+        try:
+            return request.build_absolute_uri(obj.post.user.avatar.url)
+        except (AttributeError, ValueError):
+            return ""
 
     def validate_title(self, value):
         if len(value) < 10:
