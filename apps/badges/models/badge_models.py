@@ -17,7 +17,7 @@ class Badge(BaseModel):
     name = models.CharField(max_length=100, help_text="Name of the badge")
     description = models.TextField(help_text="Description of the badge")
     points = models.IntegerField(help_text="Points required to achieve the badge")
-    level = models.IntegerField(choices=BadgeLevel, help_text="Level of the badge")
+    level = models.IntegerField(choices=BadgeLevel.choices, help_text="Level of the badge")
 
 
 class UserBadge(BaseModel):
