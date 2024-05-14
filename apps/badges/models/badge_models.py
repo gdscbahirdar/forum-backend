@@ -14,10 +14,13 @@ class Badge(BaseModel):
         SILVER = 2
         BRONZE = 3
 
-    name = models.CharField(max_length=100, help_text="Name of the badge")
+    name = models.CharField(max_length=100, unique=True, help_text="Name of the badge")
     description = models.TextField(help_text="Description of the badge")
     points = models.IntegerField(help_text="Points required to achieve the badge")
     level = models.IntegerField(choices=BadgeLevel.choices, help_text="Level of the badge")
+
+    def __str__(self) -> str:
+        return f"{self.name} - {self.level}"
 
 
 class UserBadge(BaseModel):
@@ -27,3 +30,6 @@ class UserBadge(BaseModel):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="badges")
     badge = models.ForeignKey(Badge, on_delete=models.CASCADE, related_name="users")
+
+    def __str__(self) -> str:
+        return f"{self.user} - {self.badge}"
