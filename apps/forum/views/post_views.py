@@ -116,6 +116,14 @@ class QuestionViewSet(viewsets.ModelViewSet):
                     {"error": "No valid answer found for the provided ID."}, status=status.HTTP_404_NOT_FOUND
                 )
 
+            if question.accepted_answer and question.accepted_answer.id == answer.id:
+                question.accepted_answer.is_accepted = False
+                question.accepted_answer.save()
+                question.is_answered = False
+                question.accepted_answer = None
+                question.save()
+                return Response({"message": "Answer unaccepted successfully."}, status=status.HTTP_200_OK)
+
             if question.accepted_answer and question.accepted_answer.id != answer.id:
                 question.accepted_answer.is_accepted = False
                 question.accepted_answer.save()
