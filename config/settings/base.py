@@ -49,7 +49,7 @@ THIRD_PARTY_APPS = [
     "phonenumber_field",
     "storages",
 ]
-LOCAL_APPS = ["apps.common", "apps.users", "apps.rbac", "apps.entities", "apps.forum"]
+LOCAL_APPS = ["apps.common", "apps.users", "apps.rbac", "apps.entities", "apps.forum", "apps.resources"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -143,7 +143,7 @@ USE_TZ = True
 
 USE_SPACES = config("USE_SPACES", default=False, cast=bool)
 
-if USE_SPACES:
+if False:
     AWS_ACCESS_KEY_ID = config("STATIC_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = config("STATIC_SECRET_KEY")
     AWS_STORAGE_BUCKET_NAME = config("STATIC_BUCKET_NAME")
