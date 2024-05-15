@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+from apps.badges.models.badge_models import DailyUserReputation
+
 from .models import Badge, UserBadge
 
 
@@ -13,3 +15,4 @@ class BadgeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Badge, BadgeAdmin)
+admin.site.register(DailyUserReputation)

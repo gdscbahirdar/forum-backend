@@ -35,7 +35,8 @@ class BookmarkViewset(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         content_type = ContentType.objects.get_for_model(Post)
-        Bookmark.objects.create(user=self.request.user, content_type=content_type, object_id=object_id)
+        bookmark = Bookmark.objects.create(user=self.request.user, content_type=content_type, object_id=object_id)
+        bookmark.post.evaluate_bookmark_badges()
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 

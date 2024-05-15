@@ -60,7 +60,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
         return QuestionSerializer
 
     def retrieve(self, request, *args, **kwargs):
-        question = self.get_object()
+        question: Question = self.get_object()
 
         content_type = ContentType.objects.get_for_model(Question)
         if not ViewTracker.objects.filter(
@@ -69,6 +69,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
             ViewTracker.objects.create(user=request.user, content_type=content_type, object_id=question.pk)
             question.view_count = F("view_count") + 1
             question.save(update_fields=["view_count"])
+            question.check_question_view_badges()
 
         return super().retrieve(request, *args, **kwargs)
 
@@ -116,16 +117,22 @@ class QuestionViewSet(viewsets.ModelViewSet):
                     {"error": "No valid answer found for the provided ID."}, status=status.HTTP_404_NOT_FOUND
                 )
 
+            # Take away acceptance from answer
             if question.accepted_answer and question.accepted_answer.id == answer.id:
                 question.accepted_answer.is_accepted = False
                 question.accepted_answer.save()
                 question.is_answered = False
                 question.accepted_answer = None
                 question.save()
+                question.accepted_answer.post.user.subtract_reputation(15)
+                request.user.subtract_reputation(2)
                 return Response({"message": "Answer unaccepted successfully."}, status=status.HTTP_200_OK)
 
+            # Take away acceptance from another answer and give it to the new one
             if question.accepted_answer and question.accepted_answer.id != answer.id:
                 question.accepted_answer.is_accepted = False
+                question.accepted_answer.post.user.subtract_reputation(15)
+                request.user.subtract_reputation(2)
                 question.accepted_answer.save()
 
             question.accepted_answer = answer
@@ -135,6 +142,13 @@ class QuestionViewSet(viewsets.ModelViewSet):
             answer.is_accepted = True
             answer.save()
 
+            # Accepting your own answer does not increase your reputation.
+            if answer.post.user != request.user:
+                answer.post.user.add_reputation(15)
+                request.user.add_reputation(2)
+
+            if answer.post.score >= 40:
+                answer.post.user.assign_badge("Guru")
             return Response({"message": "Answer accepted successfully."}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
