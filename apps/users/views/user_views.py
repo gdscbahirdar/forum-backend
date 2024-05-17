@@ -1,11 +1,15 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from rest_framework import generics
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from apps.forum.models.qa_meta_models import Bookmark
 from apps.forum.models.qa_models import Question
 from apps.forum.serializers.post_serializers import BookmarkedPostSerializer
+from apps.users.serializers.user_serializers import PublicUserProfileSerializer
 
 User = get_user_model()
 
@@ -38,3 +42,21 @@ class GetUserBookmarkList(ListAPIView):
         context = super(GetUserBookmarkList, self).get_serializer_context()
         context.update({"request": self.request})
         return context
+
+
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all().order_by("date_joined")
+    serializer_class = PublicUserProfileSerializer
+    permission_classes = (IsAuthenticated,)
+
+
+class UserProfileView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, username):
+        user = User.objects.filter(username=username).first()
+        if not user:
+            return Response({"error": "User not found"}, status=404)
+
+        serializer = PublicUserProfileSerializer(user)
+        return Response(serializer.data)

@@ -45,3 +45,20 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
     def get_badge(self, obj) -> Dict[str, Any]:
         recent_badge = UserBadge.objects.filter(user=obj).order_by("-created_at").first()
         return BadgeSerializer(recent_badge.badge).data if recent_badge else {}
+
+
+class PublicUserProfileSerializer(CustomUserDetailsSerializer):
+    class Meta(CustomUserDetailsSerializer.Meta):
+        fields = (
+            "username",
+            "first_name",
+            "middle_name",
+            "last_name",
+            "role_name",
+            "bio",
+            "avatar",
+            "faculty",
+            "gender",
+            "reputation",
+            "badge",
+        )

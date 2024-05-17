@@ -3,7 +3,7 @@ from dj_rest_auth.views import LoginView, LogoutView, PasswordResetConfirmView, 
 from django.urls import path
 
 from apps.users.views.auth_views import ChangePasswordView
-from apps.users.views.user_views import GetUserBookmarkList
+from apps.users.views.user_views import GetUserBookmarkList, UserListView, UserProfileView
 
 rest_auth_urls = [
     path("login/", LoginView.as_view(), name="rest_login"),
@@ -25,6 +25,8 @@ rest_password_urls = [
 
 meta_urls = [
     path("user/bookmarks/", GetUserBookmarkList.as_view(), name="user_bookmarks"),
+    path("", UserListView.as_view(), name="user_list"),
+    path("<str:username>/", UserProfileView.as_view(), name="user-profile"),
 ]
 
 urlpatterns = rest_auth_urls + rest_password_urls + meta_urls

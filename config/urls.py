@@ -11,6 +11,7 @@ urlpatterns = [
     path("api/entities/", include("apps.entities.urls", namespace="entities")),
     path("api/forum/", include("apps.forum.urls", namespace="forum")),
     path("api/", include("apps.common.urls", namespace="common")),
+    path("api/", include("apps.badges.urls", namespace="badges")),
 ]
 
 # Media Assets

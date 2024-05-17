@@ -34,6 +34,10 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    @property
+    def get_fullname(self):
+        return f"{self.first_name} {self.middle_name} {self.last_name}"
+
     def add_reputation(self, points: int) -> int:
         daily_reputation, _ = DailyUserReputation.objects.get_or_create(user=self, date=date.today())
         if daily_reputation.reputation + points > 200:
