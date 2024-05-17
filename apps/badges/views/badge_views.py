@@ -15,6 +15,24 @@ User = get_user_model()
 
 
 class LeaderboardView(APIView):
+    """
+    API view for retrieving the leaderboard of users based on reputation.
+
+    The leaderboard can be filtered by timeframe, such as daily, weekly, or all-time.
+    By default, the leaderboard shows the top 10 users based on reputation.
+
+    Usage:
+        GET /leaderboard/?timeframe=daily
+        GET /leaderboard/?timeframe=weekly
+        GET /leaderboard/?timeframe=all
+
+    Parameters:
+        - timeframe (str): The timeframe to filter the leaderboard. Default is 'all-time'.
+
+    Returns:
+        A JSON response.
+    """
+
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
@@ -62,6 +80,22 @@ class LeaderboardView(APIView):
 
 
 class UserBadgesView(APIView):
+    """
+    API view to retrieve the badges of a specific user.
+
+    Requires authentication.
+
+    Parameters:
+    - request: The HTTP request object.
+    - username: The username of the user whose badges are to be retrieved.
+
+    Returns:
+    - Response: The HTTP response containing the serialized user badges data.
+
+    Raises:
+    - 404: If the user is not found.
+    """
+
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, username):

@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import F
 from django_filters import rest_framework as django_filters
@@ -5,7 +6,9 @@ from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from apps.common.pagination import DynamicPageSizePagination
 from apps.forum.models.qa_meta_models import ViewTracker
 from apps.forum.models.qa_models import Answer, Question
 from apps.forum.permissions import IsOwnerOrReadOnly
@@ -15,6 +18,8 @@ from apps.forum.serializers.post_serializers import (
     QuestionDetailSerializer,
     QuestionSerializer,
 )
+
+User = get_user_model()
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
@@ -39,7 +44,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     lookup_field = "slug"
     filter_backends = (django_filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-    filterset_fields = ("is_closed", "tags", "is_answered")
+    filterset_fields = ("is_closed", "tags", "is_answered", "post__user__username")
     search_fields = ("title",)
     ordering = ("-created_at",)
     ordering_fields = (
@@ -198,3 +203,33 @@ class AnswerViewSet(viewsets.ModelViewSet):
         instance.question.answer_count = F("answer_count") - 1
         instance.question.save(update_fields=["answer_count"])
         return instance.delete()
+
+
+class UserAnsweredQuestionsView(APIView):
+    """
+    API view to retrieve questions answered by a specific user.
+
+    Requires authentication.
+
+    Parameters:
+    - username (str): The username of the user whose answered questions are to be retrieved.
+
+    Returns:
+    - Response: A paginated response containing the serialized data of the answered questions.
+
+    Raises:
+    - 404: If the user with the given username is not found.
+    """
+
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, username):
+        user = User.objects.filter(username=username).first()
+        if not user:
+            return Response({"error": "User not found"}, status=404)
+
+        questions = Question.objects.filter(answers__post__user=user).order_by("-created_at")
+        paginator = DynamicPageSizePagination()
+        result_page = paginator.paginate_queryset(questions, request)
+        serializer = QuestionSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)

@@ -26,7 +26,7 @@ rest_password_urls = [
 meta_urls = [
     path("user/bookmarks/", GetUserBookmarkList.as_view(), name="user_bookmarks"),
     path("", UserListView.as_view(), name="user_list"),
-    path("<str:username>/", UserProfileView.as_view(), name="user-profile"),
+    path("<str:username>/", UserProfileView.as_view(), name="user_profile"),
 ]
 
 urlpatterns = rest_auth_urls + rest_password_urls + meta_urls

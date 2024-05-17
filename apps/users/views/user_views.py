@@ -45,12 +45,28 @@ class GetUserBookmarkList(ListAPIView):
 
 
 class UserListView(generics.ListAPIView):
+    """
+    API view for retrieving a list of users.
+
+    This view returns a paginated list of all users in the system,
+    ordered by their date of joining. Only authenticated users can access this view.
+    """
+
     queryset = User.objects.all().order_by("date_joined")
     serializer_class = PublicUserProfileSerializer
     permission_classes = (IsAuthenticated,)
 
 
 class UserProfileView(APIView):
+    """
+    API view to retrieve a user's profile information.
+
+    Requires authentication.
+
+    Methods:
+        - get(request, username): Retrieves the profile information of the user with the given username.
+    """
+
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, username):

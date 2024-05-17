@@ -54,11 +54,8 @@ class PublicUserProfileSerializer(CustomUserDetailsSerializer):
             "first_name",
             "middle_name",
             "last_name",
-            "role_name",
             "bio",
             "avatar",
             "faculty",
-            "gender",
             "reputation",
-            "badge",
         )
