@@ -28,16 +28,6 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
     Inherits from viewsets.ModelViewSet, which provides default implementations for
     the standard list, create, retrieve, update, and destroy actions.
-
-    Attributes:
-        queryset (QuerySet): The queryset of Question objects.
-        permission_classes (tuple): The permission classes required for accessing the viewset.
-        lookup_field (str): The field used for looking up individual Question objects.
-        filter_backends (tuple): The filter backends used for filtering the queryset.
-        filterset_fields (tuple): The fields used for filtering the queryset.
-        search_fields (tuple): The fields used for searching the queryset.
-        ordering (str): The default ordering for the queryset.
-        ordering_fields (tuple): The fields used for ordering the queryset.
     """
 
     queryset = Question.objects.all()
@@ -56,9 +46,6 @@ class QuestionViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         """
         Returns the appropriate serializer class based on the action being performed.
-
-        Returns:
-            Serializer: The serializer class to be used.
         """
         if self.action == "retrieve":
             return QuestionDetailSerializer
@@ -82,14 +69,6 @@ class QuestionViewSet(viewsets.ModelViewSet):
     def others(self, request, *args, **kwargs):
         """
         Retrieves related and popular questions for a specific question.
-
-        Args:
-            request (Request): The request object.
-            *args: Variable length argument list.
-            **kwargs: Arbitrary keyword arguments.
-
-        Returns:
-            Response: The response containing the related and popular questions.
         """
         question = self.get_object()
         related_questions = (
@@ -162,15 +141,6 @@ class QuestionViewSet(viewsets.ModelViewSet):
 class AnswerViewSet(viewsets.ModelViewSet):
     """
     A viewset for managing answers to questions in the forum.
-
-    This viewset provides the following actions:
-    - list: Retrieve a list of all answers.
-    - create: Create a new answer.
-    - retrieve: Retrieve a specific answer.
-    - update: Update an existing answer.
-    - partial_update: Partially update an existing answer.
-    - destroy: Delete an existing answer.
-
     Only authenticated users can create, update, and delete answers.
     """
 

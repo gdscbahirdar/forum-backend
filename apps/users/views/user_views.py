@@ -52,7 +52,7 @@ class UserListView(generics.ListAPIView):
     ordered by their date of joining. Only authenticated users can access this view.
     """
 
-    queryset = User.objects.all().order_by("date_joined")
+    queryset = User.objects.all().order_by("-date_joined")
     serializer_class = PublicUserProfileSerializer
     permission_classes = (IsAuthenticated,)
 
