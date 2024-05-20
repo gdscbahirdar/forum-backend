@@ -70,6 +70,7 @@ class LeaderboardView(APIView):
             {
                 "rank": rank + 1,
                 "fullname": user.get_fullname,
+                "username": user.username,
                 "avatar": user.avatar.url if user.avatar else None,
                 "reputation": user.total_reputation if date_filter else user.reputation,
             }
