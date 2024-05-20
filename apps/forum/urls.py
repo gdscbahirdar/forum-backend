@@ -2,10 +2,10 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
 from apps.forum.views.bookmark_views import BookmarkViewset
-from apps.forum.views.post_views import AnswerViewSet, QuestionViewSet
+from apps.forum.views.comment_views import CommentViewSet
+from apps.forum.views.post_views import AnswerViewSet, QuestionViewSet, UserAnsweredQuestionsView
 from apps.forum.views.tag_views import TagReadOnlyViewSet
 from apps.forum.views.vote_views import VoteViewSet
-from apps.forum.views.comment_views import CommentViewSet
 
 router = DefaultRouter()
 router.register(r"questions", QuestionViewSet, basename="question")
@@ -23,4 +23,5 @@ urlpatterns = [
         BookmarkViewset.as_view({"post": "add_bookmark", "delete": "remove_bookmark"}),
         name="bookmark",
     ),
+    path("questions/answered_by/<str:username>/", UserAnsweredQuestionsView.as_view(), name="user_answered_questions"),
 ]

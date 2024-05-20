@@ -40,13 +40,25 @@ class VoteSerializer(serializers.ModelSerializer):
         return data
 
     def update_vote_count(self, vote_type, instance, change):
-        post = instance.content_object
+        post: Post = instance.content_object
+        user = post.user
 
         if vote_type == Vote.UPVOTE:
             post.vote_count += change
+            if instance.vote_type == Vote.DOWNVOTE:
+                user.add_reputation(12)
+            else:
+                user.add_reputation(10)
         elif vote_type == Vote.DOWNVOTE:
             post.vote_count -= change
+            if instance.vote_type == Vote.UPVOTE:
+                user.subtract_reputation(12)
+            else:
+                user.subtract_reputation(2)
+
         post.save()
+        post.update_score()
+        post.evaluate_score_badges()
 
     def create(self, validated_data):
         vote_type = validated_data["vote_type"]
