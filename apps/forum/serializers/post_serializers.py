@@ -8,6 +8,7 @@ from rest_framework import serializers
 from apps.forum.models.qa_meta_models import Bookmark, Tag
 from apps.forum.models.qa_models import Answer, Post, Question, Vote
 from apps.forum.serializers.comment_serializers import CommentSerializer
+from apps.services.utils import check_toxicity
 
 User = get_user_model()
 
@@ -21,6 +22,11 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = "__all__"
         read_only_fields = ("user", "created_at", "updated_at", "vote_count", "user_vote", "is_bookmarked")
+
+    def validate_body(self, value):
+        if check_toxicity(value):
+            raise serializers.ValidationError("The post contains toxic content.")
+        return value
 
     def get_user_vote(self, obj) -> str:
         request = self.context.get("request")
@@ -130,6 +136,10 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
     def validate_title(self, value):
         if len(value) < 10:
             raise serializers.ValidationError("The title must be at least 20 characters long.")
+
+        if check_toxicity(value):
+            raise serializers.ValidationError("The title contains toxic content.")
+
         return value
 
     def create(self, validated_data):

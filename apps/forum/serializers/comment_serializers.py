@@ -4,6 +4,7 @@ from rest_framework.exceptions import ValidationError
 
 from apps.forum.models.qa_meta_models import Comment
 from apps.forum.models.qa_models import Post
+from apps.services.utils import check_toxicity
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -33,6 +34,11 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def get_commented_by(self, obj) -> str:
         return obj.user.username
+
+    def validate_text(self, value):
+        if check_toxicity(value):
+            raise serializers.ValidationError("The comment contains toxic content.")
+        return value
 
     def validate(self, data):
         object_id = self.context.get("object_id")
