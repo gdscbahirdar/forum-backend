@@ -61,6 +61,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
             ViewTracker.objects.create(user=request.user, content_type=content_type, object_id=question.pk)
             question.view_count = F("view_count") + 1
             question.save(update_fields=["view_count"])
+            question.refresh_from_db(fields=["view_count"])
             question.check_question_view_badges()
 
         return super().retrieve(request, *args, **kwargs)
