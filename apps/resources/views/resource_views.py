@@ -2,10 +2,13 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import F
 from django_filters import rest_framework as django_filters
 from rest_framework import filters, viewsets
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
-from apps.resources.models.resource_models import Resource
-from apps.resources.serializers.resource_serializers import ResourceSerializer
+
+from apps.resources.models.resource_models import Resource, ResourceCategory
+from apps.resources.serializers.resource_serializers import ResourceSerializer, ResourceCategorySerializer
 from apps.resources.permissions import IsOwnerOrSuperUser, IsOwner
 from apps.forum.models.qa_meta_models import ViewTracker
 
@@ -22,12 +25,9 @@ class ResourceViewSet(viewsets.ModelViewSet):
     serializer_class = ResourceSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = (django_filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-    filterset_fields = (
-        "uploader",
-        "categories",
-        "tags",
-    )
+    filterset_fields = ("uploader", "categories", "tags")
     search_fields = ("title",)
+    ordering = ("-created_at",)
     ordering_fields = ("created_at",)
 
     def get_permissions(self):
@@ -55,3 +55,31 @@ class ResourceViewSet(viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         serializer.save(uploader=self.request.user)
+
+    @action(detail=False, methods=["get"], url_path="myUploads")
+    def my_uploads(self, request):
+        queryset = self.get_queryset().filter(uploader=request.user)
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = ResourceSerializer(queryset, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = ResourceSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=["get"], url_path="categories")
+    def categories(self, request):
+        search_query = request.query_params.get("search", None)
+        if search_query:
+            categories = ResourceCategory.objects.filter(name__icontains=search_query)
+        else:
+            categories = ResourceCategory.objects.all()
+
+        page = self.paginate_queryset(categories)
+        if page is not None:
+            serializer = ResourceCategorySerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = ResourceCategorySerializer(categories, many=True)
+        return Response(serializer.data)

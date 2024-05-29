@@ -5,6 +5,7 @@ from django.db import models
 from apps.forum.models.qa_meta_models import Tag
 from apps.common.models import BaseModel
 from apps.forum.models.qa_meta_models import Comment, Vote, Bookmark, ViewTracker
+from apps.resources.constants import ResourceConstants
 
 
 def resource_directory_path(instance, filename):
@@ -40,6 +41,7 @@ class Resource(BaseModel):
     categories = models.ManyToManyField(ResourceCategory, blank=True, related_name="resources")
     tags = models.ManyToManyField(Tag, blank=True, related_name="resources")
     comments = GenericRelation(Comment)
+    vote_count = models.IntegerField(default=0)
     votes = GenericRelation(Vote, related_query_name="resource")
     bookmarks = GenericRelation(Bookmark, related_query_name="resource")
     view_count = models.PositiveIntegerField(default=0)
@@ -60,6 +62,17 @@ class ResourceFile(BaseModel):
 
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE, related_name="files")
     file = models.FileField(upload_to=resource_directory_path)
+    file_name = models.CharField(blank=True, null=True)
+    file_type = models.CharField(max_length=50, blank=True, null=True)
+    file_size = models.FloatField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self._state.adding and self.file:
+            # self.file_type = ResourceConstants.FILE_TYPE_MAPPING[self.file.file.content_type]
+            self.file_type = self.file.file.content_type
+            self.file_size = self.file.size
+            self.file_name = self.file.name
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.resource.title} - File"

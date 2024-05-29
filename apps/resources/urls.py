@@ -7,11 +7,11 @@ from apps.resources.views.comment_views import CommentViewSet
 
 router = DefaultRouter()
 router.register(r"resources", ResourceViewSet)
-router.register(r"(?P<resource_id>[-\w]+)/comments", CommentViewSet, basename="comment")
+router.register(r"resources/(?P<resource_id>[-\w]+)/comments", CommentViewSet, basename="comment")
 
 app_name = "resources"
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("resource/vote/", VoteViewSet.as_view({"post": "create"}), name="vote"),
+    path("<str:model_name>/vote/", VoteViewSet.as_view({"post": "create"}), name="vote"),
 ]

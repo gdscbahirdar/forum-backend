@@ -5,13 +5,14 @@ from apps.resources.models.resource_models import Resource, ResourceCategory, Re
 class ResourceFileInline(admin.TabularInline):
     model = ResourceFile
     extra = 1
+    readonly_fields = ["file_type", "file_size"]
 
 
 @admin.register(Resource)
 class ResourceAdmin(admin.ModelAdmin):
     list_display = ("title", "uploader", "created_at", "updated_at")
-    search_fields = ("title", "description")
-    list_filter = ("created_at", "updated_at")
+    search_fields = ("title", "description", "uploader__username")
+    list_filter = ("categories", "tags", "created_at", "updated_at")
     inlines = [ResourceFileInline]
 
 
@@ -23,5 +24,5 @@ class ResourceCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(ResourceFile)
 class ResourceFileAdmin(admin.ModelAdmin):
-    list_display = ("resource", "file")
+    list_display = ("resource", "file", "file_type", "file_size")
     search_fields = ("resource__title",)

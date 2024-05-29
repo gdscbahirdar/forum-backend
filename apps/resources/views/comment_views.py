@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from apps.forum.models.qa_meta_models import Comment
-from apps.forum.serializers.comment_serializers import CommentSerializer
+from apps.resources.serializers.comment_serializers import CommentSerializer
 from apps.resources.models.resource_models import Resource
 from apps.resources.permissions import IsOwnerOrReadOnly
 
