@@ -275,3 +275,5 @@ LOGGING = {
 # https://django-phonenumber-field.readthedocs.io/en/latest/reference.html#settings
 PHONENUMBER_DEFAULT_REGION = "ET"
 PHONENUMBER_DEFAULT_FORMAT = "NATIONAL"
+
+USE_AI_MODELS = config("USE_AI_MODELS", False)
