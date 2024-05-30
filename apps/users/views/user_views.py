@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.forum.models.qa_meta_models import Bookmark
+from apps.content_actions.models.bookmark_models import Bookmark
 from apps.forum.models.qa_models import Question
 from apps.forum.serializers.post_serializers import BookmarkedPostSerializer
 from apps.users.serializers.user_serializers import PublicUserProfileSerializer

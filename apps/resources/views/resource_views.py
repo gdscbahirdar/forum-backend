@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from apps.resources.models.resource_models import Resource, ResourceCategory
 from apps.resources.serializers.resource_serializers import ResourceSerializer, ResourceCategorySerializer
 from apps.resources.permissions import IsOwnerOrSuperUser, IsOwner
-from apps.forum.models.qa_meta_models import ViewTracker
+from apps.content_actions.models.view_models import ViewTracker
 
 
 class ResourceViewSet(viewsets.ModelViewSet):
@@ -25,7 +25,7 @@ class ResourceViewSet(viewsets.ModelViewSet):
     serializer_class = ResourceSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = (django_filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-    filterset_fields = ("uploader", "categories", "tags")
+    filterset_fields = ("user", "categories", "tags")
     search_fields = ("title",)
     ordering = ("-created_at",)
     ordering_fields = ("created_at",)
@@ -51,14 +51,14 @@ class ResourceViewSet(viewsets.ModelViewSet):
         return super().retrieve(request, *args, **kwargs)
 
     def perform_create(self, serializer):
-        serializer.save(uploader=self.request.user)
+        serializer.save(user=self.request.user)
 
     def perform_update(self, serializer):
-        serializer.save(uploader=self.request.user)
+        serializer.save(user=self.request.user)
 
     @action(detail=False, methods=["get"], url_path="myUploads")
     def my_uploads(self, request):
-        queryset = self.get_queryset().filter(uploader=request.user)
+        queryset = self.get_queryset().filter(user=request.user)
 
         page = self.paginate_queryset(queryset)
         if page is not None:

@@ -10,8 +10,8 @@ class ResourceFileInline(admin.TabularInline):
 
 @admin.register(Resource)
 class ResourceAdmin(admin.ModelAdmin):
-    list_display = ("title", "uploader", "created_at", "updated_at")
-    search_fields = ("title", "description", "uploader__username")
+    list_display = ("title", "user", "created_at", "updated_at")
+    search_fields = ("title", "description", "user__username")
     list_filter = ("categories", "tags", "created_at", "updated_at")
     inlines = [ResourceFileInline]
 

@@ -1,8 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from apps.forum.models.qa_meta_models import Vote
-from apps.forum.serializers.vote_serializers import VoteSerializer
+from apps.content_actions.models.vote_models import Vote
+from apps.content_actions.serializers.vote_serializers import VoteSerializer
 
 
 class VoteViewSet(viewsets.ModelViewSet):

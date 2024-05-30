@@ -2,8 +2,9 @@ from rest_framework import serializers
 from apps.resources.models.resource_models import ResourceCategory, Resource, ResourceFile
 from apps.forum.models import Tag
 from apps.resources.constants import ResourceConstants
-from apps.forum.serializers.comment_serializers import CommentSerializer
-from apps.forum.models.qa_meta_models import Vote
+from apps.content_actions.serializers.comment_serializers import CommentSerializer
+from apps.content_actions.models.vote_models import Vote
+from apps.content_actions.models.bookmark_models import Bookmark
 
 
 class ResourceFileSerializer(serializers.ModelSerializer):
@@ -26,11 +27,12 @@ class ResourceFileSerializer(serializers.ModelSerializer):
 
 class ResourceSerializer(serializers.ModelSerializer):
     files = ResourceFileSerializer(many=True, required=False)
-    uploader = serializers.ReadOnlyField(source="uploader.username")
+    user = serializers.ReadOnlyField(source="user.username")
     tags = serializers.SlugRelatedField(slug_field="name", queryset=Tag.objects.all(), many=True)
     categories = serializers.SlugRelatedField(slug_field="name", queryset=ResourceCategory.objects.all(), many=True)
     comments = CommentSerializer(many=True, read_only=True)
     user_vote = serializers.SerializerMethodField()
+    is_bookmarked = serializers.SerializerMethodField()
 
     class Meta:
         model = Resource
@@ -40,7 +42,7 @@ class ResourceSerializer(serializers.ModelSerializer):
             "description",
             "created_at",
             "updated_at",
-            "uploader",
+            "user",
             "categories",
             "tags",
             "files",
@@ -48,6 +50,7 @@ class ResourceSerializer(serializers.ModelSerializer):
             "view_count",
             "vote_count",
             "user_vote",
+            "is_bookmarked",
         ]
         read_only_fields = [
             "view_count",
@@ -58,9 +61,17 @@ class ResourceSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         if request and hasattr(request, "user"):
             user = request.user
-            vote = Vote.objects.filter(user=user, content_type__model="post", object_id=obj.id).first()
+            vote = Vote.objects.filter(user=user, content_type__model="resource", object_id=obj.id).first()
             return vote.vote_type if vote else ""
         return ""
+
+    def get_is_bookmarked(self, obj) -> bool:
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
+            bookmark = Bookmark.objects.filter(user=user, content_type__model="resource", object_id=obj.id).first()
+            return bookmark is not None
+        return False
 
     def create(self, validated_data):
         tags_data = validated_data.pop("tags")

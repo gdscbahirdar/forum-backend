@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from transformers import pipeline
 
-chatbot = pipeline("text-generation", model="mistralai/Mistral-7B-Instruct-v0.3")
+# chatbot = pipeline("text-generation", model="mistralai/Mistral-7B-Instruct-v0.3")
 
 
 class GenerateTextView(APIView):

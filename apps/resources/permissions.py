@@ -10,7 +10,7 @@ class IsOwnerOrSuperUser(BasePermission):
         if request.user.is_superuser:
             return True
 
-        return obj.uploader == request.user
+        return obj.user == request.user
 
 
 class IsOwner(BasePermission):
@@ -19,7 +19,7 @@ class IsOwner(BasePermission):
     """
 
     def has_object_permission(self, request, view, obj):
-        return obj.uploader == request.user
+        return obj.user == request.user
 
 
 class IsOwnerOrReadOnly(BasePermission):
