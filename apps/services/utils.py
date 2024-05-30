@@ -1,11 +1,6 @@
 from django.conf import settings
 from transformers import pipeline
 
-classifier = None
-
-if settings.USE_AI_MODELS:
-    classifier = pipeline("text-classification", model="unitary/toxic-bert")
-
 
 def chunk_text(text, chunk_size=512):
     """
@@ -34,6 +29,8 @@ def check_toxicity(text, threshold=0.5):
     """
     if not settings.USE_AI_MODELS:
         return False
+
+    classifier = pipeline("text-classification", model="unitary/toxic-bert")
 
     chunks = chunk_text(text)
     for chunk in chunks:

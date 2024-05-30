@@ -4,11 +4,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from transformers import pipeline
 
-chatbot = None
-
-if settings.USE_AI_MODELS:
-    chatbot = pipeline("text-generation", model="mistralai/Mistral-7B-Instruct-v0.3")
-
 
 class GenerateTextView(APIView):
     def post(self, request):
@@ -45,6 +40,7 @@ class GenerateTextView(APIView):
                 {"role": "user", "content": prompt},
             ]
 
+            chatbot = pipeline("text-generation", model="mistralai/Mistral-7B-Instruct-v0.3")
             response = chatbot(messages)
 
             generated_text = response[0]["generated_text"]
