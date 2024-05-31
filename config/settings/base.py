@@ -154,7 +154,7 @@ USE_TZ = True
 
 USE_SPACES = config("USE_SPACES", default=False, cast=bool)
 
-if False:
+if USE_SPACES:
     AWS_ACCESS_KEY_ID = config("STATIC_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = config("STATIC_SECRET_KEY")
     AWS_STORAGE_BUCKET_NAME = config("STATIC_BUCKET_NAME")
