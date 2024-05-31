@@ -1,13 +1,12 @@
 from django.contrib.contenttypes.models import ContentType
-from rest_framework import viewsets, filters
+from rest_framework import filters, viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-
-from apps.content_actions.models.comment_models import Comment
-from apps.forum.permissions import IsOwnerOrReadOnly
-from apps.content_actions.serializers.comment_serializers import CommentSerializer
 from apps.content_actions.constants import MODEL_MAPPING
+from apps.content_actions.models.comment_models import Comment
+from apps.content_actions.serializers.comment_serializers import CommentSerializer
+from apps.forum.permissions import IsOwnerOrReadOnly
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -44,8 +43,6 @@ class CommentViewSet(viewsets.ModelViewSet):
         object_id = self.kwargs.get("object_id")
         model_name = self.kwargs.get("model_name")
 
-        print("objeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ", object_id, model_name)
-
         model = MODEL_MAPPING.get(model_name)
         if not model:
             raise ValidationError("Invalid model type")
@@ -53,14 +50,6 @@ class CommentViewSet(viewsets.ModelViewSet):
         try:
             instance = model.objects.get(id=object_id)
             content_type = ContentType.objects.get_for_model(model)
-            print(
-                ">????????????????>>>>>>>>>. ",
-                content_type,
-                instance,
-                instance.id,
-                model,
-                super().get_queryset().filter(content_type=content_type, object_id=instance.id),
-            )
         except model.DoesNotExist:
             raise ValidationError("Invalid object_id")
 
