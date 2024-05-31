@@ -41,25 +41,25 @@ class VoteSerializer(serializers.ModelSerializer):
         return data
 
     def update_vote_count(self, vote_type, instance, change):
-        post = instance.content_object
-        user = post.user
+        model_instance = instance.content_object
+        user = model_instance.user
 
         if vote_type == Vote.UPVOTE:
-            post.vote_count += change
+            model_instance.vote_count += change
             if instance.vote_type == Vote.DOWNVOTE:
                 user.add_reputation(12)
             else:
                 user.add_reputation(10)
         elif vote_type == Vote.DOWNVOTE:
-            post.vote_count -= change
+            model_instance.vote_count -= change
             if instance.vote_type == Vote.UPVOTE:
                 user.subtract_reputation(12)
             else:
                 user.subtract_reputation(2)
 
-        post.save()
-        post.update_score()
-        post.evaluate_score_badges()
+        model_instance.save()
+        model_instance.update_score()
+        model_instance.evaluate_score_badges()
 
     def create(self, validated_data):
         vote_type = validated_data["vote_type"]
@@ -67,14 +67,24 @@ class VoteSerializer(serializers.ModelSerializer):
 
         # TODO The vote deletion logic should be refactored to a separate endpoint.
         if existing_vote and existing_vote.vote_type == vote_type:
-            self.update_vote_count(vote_type, existing_vote, -1)
+            model_instance = existing_vote.content_object
+            user = model_instance.user
+            if vote_type == Vote.UPVOTE:
+                model_instance.vote_count += -1
+                user.subtract_reputation(10)
+
+            if vote_type == Vote.DOWNVOTE:
+                model_instance.vote_count += 1
+                user.add_reputation(2)
+
+            model_instance.save()
             existing_vote.delete()
             return existing_vote
 
         if existing_vote:
+            self.update_vote_count(vote_type, existing_vote, 2)
             existing_vote.vote_type = vote_type
             existing_vote.save()
-            self.update_vote_count(vote_type, existing_vote, 2)
             return existing_vote
 
         instance = super().create(validated_data)
