@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Lecture Slides",
+    "description": "Slides and presentations used during lectures."
+  },
+  {
+    "name": "Assignments",
+    "description": "Homework and assignment materials."
+  },
+  {
+    "name": "Notes",
+    "description": "Class notes and study guides."
+  },
+  {
+    "name": "Exam Papers",
+    "description": "Previous exam papers and sample questions."
+  },
+  {
+    "name": "Lab Manuals",
+    "description": "Manuals and guides for laboratory exercises."
+  },
+  {
+    "name": "Project Reports",
+    "description": "Reports and documentation for student projects."
+  },
+  {
+    "name": "Reference Materials",
+    "description": "Reference books, articles, and other supplementary materials."
+  },
+  {
+    "name": "Tutorials",
+    "description": "Step-by-step guides and tutorials on various topics."
+  },
+  {
+    "name": "Research Papers",
+    "description": "Research articles and papers published by students and faculty."
+  },
+  {
+    "name": "E-Books",
+    "description": "Electronic books available for reading and download."
+  },
+  {
+    "name": "Multimedia Resources",
+    "description": "Videos, audio files, and other multimedia resources."
+  },
+  {
+    "name": "Course Syllabus",
+    "description": "Detailed course syllabi outlining course structure and content."
+  }
+]
