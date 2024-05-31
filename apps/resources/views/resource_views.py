@@ -13,6 +13,27 @@ from apps.resources.permissions import IsOwnerOrSuperUser, IsOwner
 from apps.content_actions.models.view_models import ViewTracker
 
 
+class ResourceFilter(django_filters.FilterSet):
+    categories = django_filters.CharFilter(method="filter_by_categories")
+    tags = django_filters.CharFilter(method="filter_by_tags")
+
+    class Meta:
+        model = Resource
+        fields = ["user", "categories", "tags"]
+
+    def filter_by_categories(self, queryset, name, value):
+        if value:
+            category_names = value.split(",")
+            return queryset.filter(categories__name__in=category_names).distinct()
+        return queryset
+
+    def filter_by_tags(self, queryset, name, value):
+        if value:
+            tag_names = value.split(",")
+            return queryset.filter(tags__name__in=tag_names).distinct()
+        return queryset
+
+
 class ResourceViewSet(viewsets.ModelViewSet):
     """
     A viewset for managing resources.
@@ -25,10 +46,10 @@ class ResourceViewSet(viewsets.ModelViewSet):
     serializer_class = ResourceSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = (django_filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-    filterset_fields = ("user", "categories", "tags")
+    filterset_class = ResourceFilter
     search_fields = ("title",)
     ordering = ("-created_at",)
-    ordering_fields = ("created_at",)
+    ordering_fields = ("created_at", "view_count")
 
     def get_permissions(self):
         if self.action in ("update", "partial_update"):

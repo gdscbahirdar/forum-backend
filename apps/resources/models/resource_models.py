@@ -16,7 +16,7 @@ def resource_directory_path(instance, filename):
 
 
 class ResourceCategory(BaseModel):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
 
     class Meta:
