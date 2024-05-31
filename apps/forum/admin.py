@@ -1,7 +1,10 @@
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericTabularInline
 
-from apps.forum.models.qa_meta_models import Bookmark, Comment, Tag, Vote
+from apps.content_actions.models.bookmark_models import Bookmark
+from apps.content_actions.models.comment_models import Comment
+from apps.content_actions.models.vote_models import Vote
+from apps.forum.models.qa_meta_models import Tag
 from apps.forum.models.qa_models import Answer, Post, Question
 
 

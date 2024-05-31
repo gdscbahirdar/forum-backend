@@ -2,8 +2,8 @@ from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from apps.forum.models.qa_meta_models import Comment, Vote
-from apps.forum.models.qa_models import Post
+from apps.content_actions.constants import MODEL_MAPPING
+from apps.content_actions.models.vote_models import Vote
 
 
 class VoteSerializer(serializers.ModelSerializer):
@@ -16,16 +16,17 @@ class VoteSerializer(serializers.ModelSerializer):
         user = self.context["request"].user
         object_id = data["object_id"]
         vote_type = data["vote_type"]
+        model_name = self.context["view"].kwargs["model_name"]
+
+        model = MODEL_MAPPING.get(model_name)
+        if not model:
+            raise ValidationError("Invalid model type")
 
         try:
-            instance = Post.objects.get(id=object_id)
-            content_type = ContentType.objects.get_for_model(Post)
-        except Post.DoesNotExist:
-            try:
-                instance = Comment.objects.get(id=object_id)
-                content_type = ContentType.objects.get_for_model(Comment)
-            except Comment.DoesNotExist:
-                raise ValidationError("Invalid object_id")
+            instance = model.objects.get(id=object_id)
+            content_type = ContentType.objects.get_for_model(model)
+        except model.DoesNotExist:
+            raise ValidationError("Invalid object_id")
 
         data["content_type"] = content_type
         data["object_id"] = instance.id
@@ -40,7 +41,7 @@ class VoteSerializer(serializers.ModelSerializer):
         return data
 
     def update_vote_count(self, vote_type, instance, change):
-        post: Post = instance.content_object
+        post = instance.content_object
         user = post.user
 
         if vote_type == Vote.UPVOTE:

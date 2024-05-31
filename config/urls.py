@@ -10,9 +10,11 @@ urlpatterns = [
     path("api/users/", include("apps.users.urls")),
     path("api/entities/", include("apps.entities.urls", namespace="entities")),
     path("api/forum/", include("apps.forum.urls", namespace="forum")),
-    path("api/", include("apps.common.urls", namespace="common")),
+    path("api/", include("apps.resources.urls", namespace="resources")),
+    path("api/", include("apps.feedback.urls", namespace="feedback")),
     path("api/", include("apps.badges.urls", namespace="badges")),
     path("api/", include("apps.services.urls", namespace="services")),
+    path("api/", include("apps.content_actions.urls", namespace="content_actions")),
 ]
 
 # Media Assets

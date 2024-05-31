@@ -43,11 +43,16 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
         return ""
 
     def get_badges(self, obj) -> Dict[str, int]:
-        return UserBadge.objects.filter(user=obj).aggregate(
+        badges = UserBadge.objects.filter(user=obj).aggregate(
             gold_badges=Count("id", filter=Q(badge__level=Badge.BadgeLevel.GOLD)),
             silver_badges=Count("id", filter=Q(badge__level=Badge.BadgeLevel.SILVER)),
             bronze_badges=Count("id", filter=Q(badge__level=Badge.BadgeLevel.BRONZE)),
         )
+        return {
+            "gold_badges": badges.get("gold_badges", 0),
+            "silver_badges": badges.get("silver_badges", 0),
+            "bronze_badges": badges.get("bronze_badges", 0),
+        }
 
 
 class PublicUserProfileSerializer(CustomUserDetailsSerializer):

@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.common.pagination import DynamicPageSizePagination
-from apps.forum.models.qa_meta_models import ViewTracker
+from apps.content_actions.models.view_models import ViewTracker
 from apps.forum.models.qa_models import Answer, Question
 from apps.forum.permissions import IsOwnerOrReadOnly
 from apps.forum.serializers.post_serializers import (
