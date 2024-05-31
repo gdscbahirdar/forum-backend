@@ -58,11 +58,11 @@ class ResourceViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["get"], url_path="myUploads")
     def my_uploads(self, request):
-        queryset = self.get_queryset().filter(user=request.user)
+        queryset = Resource.objects.filter(user=request.user).order_by("-created_at")
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = ResourceSerializer(queryset, many=True)
+            serializer = ResourceSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
         serializer = ResourceSerializer(queryset, many=True)
