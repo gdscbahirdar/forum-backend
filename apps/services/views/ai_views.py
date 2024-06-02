@@ -1,8 +1,9 @@
+import torch
 from django.conf import settings
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from transformers import pipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 
 class GenerateTextView(APIView):
@@ -43,9 +44,13 @@ class GenerateTextView(APIView):
                 {"role": "user", "content": prompt},
             ]
 
-            # chatbot = pipeline("text-generation", model="mistralai/Mistral-7B-Instruct-v0.3")
-            chatbot = pipeline("text-generation", model="TinyLlama/TinyLlama-1.1B-Chat-v0.6")
-            response = chatbot(messages)
+            model = AutoModelForCausalLM.from_pretrained(
+                "TinyLlama/TinyLlama-1.1B-Chat-v0.6", torch_dtype=torch.bfloat16, device_map="auto", pad_token_id=0
+            )
+            tokenizer = AutoTokenizer.from_pretrained("TinyLlama/TinyLlama-1.1B-Chat-v0.6")
+            chatbot = pipeline("text-generation", model=model, tokenizer=tokenizer)
+
+            response = chatbot(messages, max_new_tokens=60)
 
             result = response[0]["generated_text"]
 
