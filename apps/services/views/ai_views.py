@@ -10,7 +10,10 @@ class GenerateTextView(APIView):
     def post(self, request):
         try:
             if not settings.USE_AI_MODELS:
-                return Response({"generated_text": "dummy response"}, status=status.HTTP_200_OK)
+                return Response(
+                    {"generated_text": "AI response coming soon once we upgrade to better hardware."},
+                    status=status.HTTP_200_OK,
+                )
 
             option = request.data.get("option")
             input_text = request.data.get("text")
@@ -45,11 +48,8 @@ class GenerateTextView(APIView):
             chatbot = pipeline("text-generation", model=model, tokenizer=tokenizer)
 
             response = chatbot(messages, max_new_tokens=60)
-            print("response", response)
 
             generated_text = response[0]["generated_text"]
-
-            print("result", generated_text)
 
             return Response({"generated_text": generated_text}, status=status.HTTP_200_OK)
 
