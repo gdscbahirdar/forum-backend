@@ -45,9 +45,9 @@ class GenerateTextView(APIView):
             ]
 
             model = AutoModelForCausalLM.from_pretrained(
-                "TinyLlama/TinyLlama-1.1B-Chat-v0.6", torch_dtype=torch.bfloat16, device_map="auto", pad_token_id=0
+                "state-spaces/mamba-130m-hf", torch_dtype=torch.bfloat16, device_map="auto", pad_token_id=0
             )
-            tokenizer = AutoTokenizer.from_pretrained("TinyLlama/TinyLlama-1.1B-Chat-v0.6")
+            tokenizer = AutoTokenizer.from_pretrained("state-spaces/mamba-130m-hf")
             chatbot = pipeline("text-generation", model=model, tokenizer=tokenizer)
 
             response = chatbot(messages, max_new_tokens=60)
