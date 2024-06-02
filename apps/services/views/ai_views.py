@@ -47,6 +47,7 @@ class GenerateTextView(APIView):
             chatbot = pipeline("text-generation", model=model, tokenizer=tokenizer)
 
             response = chatbot(messages, max_new_tokens=60)
+            print("response", response)
 
             generated_text = response[0]["generated_text"]
 
