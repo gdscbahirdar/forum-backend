@@ -36,13 +36,9 @@ class GenerateTextView(APIView):
 
             prompt = prompt_template.format(input_text)
 
-            messages = [
-                {
-                    "role": "system",
-                    "content": "You are an AI assistant that helps in writing text. Your responses shouldn't be greater than 500 characters.",  # noqa E501
-                },
-                {"role": "user", "content": prompt},
-            ]
+            messages = (
+                f"You are an AI assistant that helps in writing text. Your responses shouldn't be greater than 500 characters. {prompt}",  # noqa E501
+            )
 
             model = AutoModelForCausalLM.from_pretrained(
                 "state-spaces/mamba-130m-hf", torch_dtype=torch.bfloat16, device_map="auto", pad_token_id=0
@@ -52,11 +48,9 @@ class GenerateTextView(APIView):
 
             response = chatbot(messages, max_new_tokens=60)
 
-            result = response[0]["generated_text"]
+            generated_text = response[0]["generated_text"]
 
-            print("result", result)
-
-            generated_text = next(item["content"] for item in result if item["role"] == "assistant")
+            print("result", generated_text)
 
             return Response({"generated_text": generated_text}, status=status.HTTP_200_OK)
 
