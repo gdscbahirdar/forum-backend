@@ -36,7 +36,10 @@ class GenerateTextView(APIView):
             prompt = prompt_template.format(input_text)
 
             messages = [
-                {"role": "system", "content": "You are an AI assistant that helps in writing text."},
+                {
+                    "role": "system",
+                    "content": "You are an AI assistant that helps in writing text. Your responses shouldn't be greater than 500 characters.",  # noqa E501
+                },
                 {"role": "user", "content": prompt},
             ]
 
@@ -45,6 +48,9 @@ class GenerateTextView(APIView):
             response = chatbot(messages)
 
             result = response[0]["generated_text"]
+
+            print("result", result)
+
             generated_text = next(item["content"] for item in result if item["role"] == "assistant")
 
             return Response({"generated_text": generated_text}, status=status.HTTP_200_OK)
