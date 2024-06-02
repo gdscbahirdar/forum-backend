@@ -36,9 +36,7 @@ class GenerateTextView(APIView):
 
             prompt = prompt_template.format(input_text)
 
-            messages = (
-                f"You are an AI assistant that helps in writing text. Your responses shouldn't be greater than 500 characters. {prompt}",  # noqa E501
-            )
+            messages = f"You are an AI assistant that helps in writing text. Your responses shouldn't be greater than 500 characters. {prompt}"  # noqa E501
 
             model = AutoModelForCausalLM.from_pretrained(
                 "state-spaces/mamba-130m-hf", torch_dtype=torch.bfloat16, device_map="auto", pad_token_id=0
