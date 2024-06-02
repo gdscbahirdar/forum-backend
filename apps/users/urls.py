@@ -24,7 +24,7 @@ rest_password_urls = [
 ]
 
 meta_urls = [
-    path("user/bookmarks/", GetUserBookmarkList.as_view(), name="user_bookmarks"),
+    path("user/bookmarks/<str:bookmark_type>", GetUserBookmarkList.as_view(), name="user_bookmarks"),
     path("", UserListView.as_view(), name="user_list"),
     path("<str:username>/", UserProfileView.as_view(), name="user_profile"),
 ]

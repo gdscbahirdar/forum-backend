@@ -128,3 +128,25 @@ class ResourceCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ResourceCategory
         fields = ["id", "name", "description"]
+
+
+class BookmarkedResourceSerializer(ResourceSerializer):
+    """
+    Serializer class for bookmarked resources.
+    """
+
+    class Meta(ResourceSerializer.Meta):
+        fields = (
+            "id",
+            "title",
+            "description",
+            "created_at",
+            "updated_at",
+            "user",
+            "categories",
+            "tags",
+            "files",
+            "comments",
+            "view_count",
+            "vote_count",
+        )
