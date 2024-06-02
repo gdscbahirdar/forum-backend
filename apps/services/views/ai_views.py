@@ -40,7 +40,8 @@ class GenerateTextView(APIView):
                 {"role": "user", "content": prompt},
             ]
 
-            chatbot = pipeline("text-generation", model="mistralai/Mistral-7B-Instruct-v0.3")
+            # chatbot = pipeline("text-generation", model="mistralai/Mistral-7B-Instruct-v0.3")
+            chatbot = pipeline("text-generation", model="TinyLlama/TinyLlama-1.1B-Chat-v0.6")
             response = chatbot(messages)
 
             generated_text = response[0]["generated_text"]
