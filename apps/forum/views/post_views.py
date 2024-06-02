@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import F
 from django_filters import rest_framework as django_filters
@@ -5,8 +6,10 @@ from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from apps.forum.models.qa_meta_models import ViewTracker
+from apps.common.pagination import DynamicPageSizePagination
+from apps.content_actions.models.view_models import ViewTracker
 from apps.forum.models.qa_models import Answer, Question
 from apps.forum.permissions import IsOwnerOrReadOnly
 from apps.forum.serializers.post_serializers import (
@@ -16,6 +19,8 @@ from apps.forum.serializers.post_serializers import (
     QuestionSerializer,
 )
 
+User = get_user_model()
+
 
 class QuestionViewSet(viewsets.ModelViewSet):
     """
@@ -23,23 +28,13 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
     Inherits from viewsets.ModelViewSet, which provides default implementations for
     the standard list, create, retrieve, update, and destroy actions.
-
-    Attributes:
-        queryset (QuerySet): The queryset of Question objects.
-        permission_classes (tuple): The permission classes required for accessing the viewset.
-        lookup_field (str): The field used for looking up individual Question objects.
-        filter_backends (tuple): The filter backends used for filtering the queryset.
-        filterset_fields (tuple): The fields used for filtering the queryset.
-        search_fields (tuple): The fields used for searching the queryset.
-        ordering (str): The default ordering for the queryset.
-        ordering_fields (tuple): The fields used for ordering the queryset.
     """
 
     queryset = Question.objects.all()
     permission_classes = (IsAuthenticated,)
     lookup_field = "slug"
     filter_backends = (django_filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-    filterset_fields = ("is_closed", "tags", "is_answered")
+    filterset_fields = ("is_closed", "tags", "is_answered", "post__user__username")
     search_fields = ("title",)
     ordering = ("-created_at",)
     ordering_fields = (
@@ -51,16 +46,13 @@ class QuestionViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         """
         Returns the appropriate serializer class based on the action being performed.
-
-        Returns:
-            Serializer: The serializer class to be used.
         """
         if self.action == "retrieve":
             return QuestionDetailSerializer
         return QuestionSerializer
 
     def retrieve(self, request, *args, **kwargs):
-        question = self.get_object()
+        question: Question = self.get_object()
 
         content_type = ContentType.objects.get_for_model(Question)
         if not ViewTracker.objects.filter(
@@ -69,6 +61,8 @@ class QuestionViewSet(viewsets.ModelViewSet):
             ViewTracker.objects.create(user=request.user, content_type=content_type, object_id=question.pk)
             question.view_count = F("view_count") + 1
             question.save(update_fields=["view_count"])
+            question.refresh_from_db(fields=["view_count"])
+            question.check_question_view_badges()
 
         return super().retrieve(request, *args, **kwargs)
 
@@ -76,14 +70,6 @@ class QuestionViewSet(viewsets.ModelViewSet):
     def others(self, request, *args, **kwargs):
         """
         Retrieves related and popular questions for a specific question.
-
-        Args:
-            request (Request): The request object.
-            *args: Variable length argument list.
-            **kwargs: Arbitrary keyword arguments.
-
-        Returns:
-            Response: The response containing the related and popular questions.
         """
         question = self.get_object()
         related_questions = (
@@ -116,16 +102,22 @@ class QuestionViewSet(viewsets.ModelViewSet):
                     {"error": "No valid answer found for the provided ID."}, status=status.HTTP_404_NOT_FOUND
                 )
 
+            # Take away acceptance from answer
             if question.accepted_answer and question.accepted_answer.id == answer.id:
                 question.accepted_answer.is_accepted = False
                 question.accepted_answer.save()
                 question.is_answered = False
                 question.accepted_answer = None
                 question.save()
+                question.accepted_answer.post.user.subtract_reputation(15)
+                request.user.subtract_reputation(2)
                 return Response({"message": "Answer unaccepted successfully."}, status=status.HTTP_200_OK)
 
+            # Take away acceptance from another answer and give it to the new one
             if question.accepted_answer and question.accepted_answer.id != answer.id:
                 question.accepted_answer.is_accepted = False
+                question.accepted_answer.post.user.subtract_reputation(15)
+                request.user.subtract_reputation(2)
                 question.accepted_answer.save()
 
             question.accepted_answer = answer
@@ -135,6 +127,13 @@ class QuestionViewSet(viewsets.ModelViewSet):
             answer.is_accepted = True
             answer.save()
 
+            # Accepting your own answer does not increase your reputation.
+            if answer.post.user != request.user:
+                answer.post.user.add_reputation(15)
+                request.user.add_reputation(2)
+
+            if answer.post.score >= 40:
+                answer.post.user.assign_badge("Guru")
             return Response({"message": "Answer accepted successfully."}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -143,15 +142,6 @@ class QuestionViewSet(viewsets.ModelViewSet):
 class AnswerViewSet(viewsets.ModelViewSet):
     """
     A viewset for managing answers to questions in the forum.
-
-    This viewset provides the following actions:
-    - list: Retrieve a list of all answers.
-    - create: Create a new answer.
-    - retrieve: Retrieve a specific answer.
-    - update: Update an existing answer.
-    - partial_update: Partially update an existing answer.
-    - destroy: Delete an existing answer.
-
     Only authenticated users can create, update, and delete answers.
     """
 
@@ -184,3 +174,33 @@ class AnswerViewSet(viewsets.ModelViewSet):
         instance.question.answer_count = F("answer_count") - 1
         instance.question.save(update_fields=["answer_count"])
         return instance.delete()
+
+
+class UserAnsweredQuestionsView(APIView):
+    """
+    API view to retrieve questions answered by a specific user.
+
+    Requires authentication.
+
+    Parameters:
+    - username (str): The username of the user whose answered questions are to be retrieved.
+
+    Returns:
+    - Response: A paginated response containing the serialized data of the answered questions.
+
+    Raises:
+    - 404: If the user with the given username is not found.
+    """
+
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, username):
+        user = User.objects.filter(username=username).first()
+        if not user:
+            return Response({"error": "User not found"}, status=404)
+
+        questions = Question.objects.filter(answers__post__user=user).order_by("-created_at")
+        paginator = DynamicPageSizePagination()
+        result_page = paginator.paginate_queryset(questions, request)
+        serializer = QuestionSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
