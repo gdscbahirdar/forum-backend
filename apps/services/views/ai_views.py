@@ -47,7 +47,8 @@ class GenerateTextView(APIView):
 
             return Response({"generated_text": generated_text}, status=status.HTTP_200_OK)
 
-        except Exception:
+        except Exception as e:
+            print(e)
             return Response(
                 {"error": "Something went wrong. Please try again."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
