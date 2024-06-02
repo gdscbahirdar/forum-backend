@@ -44,7 +44,8 @@ class GenerateTextView(APIView):
             chatbot = pipeline("text-generation", model="TinyLlama/TinyLlama-1.1B-Chat-v0.6")
             response = chatbot(messages)
 
-            generated_text = response[0]["generated_text"]
+            result = response[0]["generated_text"]
+            generated_text = next(item["content"] for item in result if item["role"] == "assistant")
 
             return Response({"generated_text": generated_text}, status=status.HTTP_200_OK)
 
