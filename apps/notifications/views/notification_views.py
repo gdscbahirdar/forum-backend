@@ -49,8 +49,8 @@ class NotificationReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = (django_filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filterset_fields = ("is_read",)
     search_fields = ("title",)
-    ordering = ("-updated_at",)
-    ordering_fields = ("updated_at",)
+    ordering = ("-created_at",)
+    ordering_fields = ("created_at",)
 
     def get_queryset(self):
         return Notification.objects.filter(user=self.request.user)
