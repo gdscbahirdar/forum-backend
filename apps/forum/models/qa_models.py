@@ -6,8 +6,8 @@ from django.utils.translation import gettext_lazy as _
 from apps.common.models import BaseModel
 from apps.content_actions.models.bookmark_models import Bookmark
 from apps.content_actions.models.comment_models import Comment
-from apps.content_actions.models.vote_models import Vote
 from apps.content_actions.models.view_models import ViewTracker
+from apps.content_actions.models.vote_models import Vote
 
 
 class Post(BaseModel):

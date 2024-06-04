@@ -23,7 +23,15 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = "__all__"
-        read_only_fields = ("user", "created_at", "updated_at", "vote_count", "user_vote", "is_bookmarked")
+        read_only_fields = (
+            "user",
+            "created_at",
+            "updated_at",
+            "vote_count",
+            "user_vote",
+            "is_bookmarked",
+            "score",
+        )
 
     def validate_body(self, value):
         if check_toxicity(value):

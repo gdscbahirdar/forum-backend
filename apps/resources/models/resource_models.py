@@ -2,12 +2,12 @@ from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 
-from apps.forum.models.qa_meta_models import Tag
 from apps.common.models import BaseModel
 from apps.content_actions.models.bookmark_models import Bookmark
 from apps.content_actions.models.comment_models import Comment
-from apps.content_actions.models.vote_models import Vote
 from apps.content_actions.models.view_models import ViewTracker
+from apps.content_actions.models.vote_models import Vote
+from apps.forum.models.qa_meta_models import Tag
 from apps.resources.constants import ResourceConstants
 
 
