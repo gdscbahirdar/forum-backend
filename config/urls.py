@@ -15,6 +15,7 @@ urlpatterns = [
     path("api/", include("apps.badges.urls", namespace="badges")),
     path("api/", include("apps.services.urls", namespace="services")),
     path("api/", include("apps.content_actions.urls", namespace="content_actions")),
+    path("api/", include("apps.notifications.urls", namespace="notifications")),
 ]
 
 # Media Assets

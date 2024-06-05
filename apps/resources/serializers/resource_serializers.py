@@ -1,10 +1,13 @@
+from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
-from apps.resources.models.resource_models import ResourceCategory, Resource, ResourceFile
-from apps.forum.models import Tag
-from apps.resources.constants import ResourceConstants
-from apps.content_actions.serializers.comment_serializers import CommentSerializer
-from apps.content_actions.models.vote_models import Vote
+
 from apps.content_actions.models.bookmark_models import Bookmark
+from apps.content_actions.models.vote_models import Vote
+from apps.content_actions.serializers.comment_serializers import CommentSerializer
+from apps.forum.models import Tag
+from apps.notifications.models.notification_models import Subscription
+from apps.resources.constants import ResourceConstants
+from apps.resources.models.resource_models import Resource, ResourceCategory, ResourceFile
 
 
 class ResourceFileSerializer(serializers.ModelSerializer):
@@ -33,6 +36,7 @@ class ResourceSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     user_vote = serializers.SerializerMethodField()
     is_bookmarked = serializers.SerializerMethodField()
+    subscription_id = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Resource
@@ -51,6 +55,7 @@ class ResourceSerializer(serializers.ModelSerializer):
             "vote_count",
             "user_vote",
             "is_bookmarked",
+            "subscription_id",
         ]
         read_only_fields = [
             "view_count",
@@ -72,6 +77,14 @@ class ResourceSerializer(serializers.ModelSerializer):
             bookmark = Bookmark.objects.filter(user=user, content_type__model="resource", object_id=obj.id).first()
             return bookmark is not None
         return False
+
+    def get_subscription_id(self, obj) -> str:
+        user = self.context["request"].user
+        content_type = ContentType.objects.get(model="resource")
+        subscription = Subscription.objects.filter(
+            user=user, target_content_type=content_type, target_object_id=obj.id
+        ).first()
+        return subscription.id if subscription else ""
 
     def create(self, validated_data):
         tags_data = validated_data.pop("tags")

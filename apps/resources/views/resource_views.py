@@ -6,11 +6,10 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-
-from apps.resources.models.resource_models import Resource, ResourceCategory
-from apps.resources.serializers.resource_serializers import ResourceSerializer, ResourceCategorySerializer
-from apps.resources.permissions import IsOwnerOrSuperUser, IsOwner
+from apps.common.permissions import IsOwnerOrSuperUser
 from apps.content_actions.models.view_models import ViewTracker
+from apps.resources.models.resource_models import Resource, ResourceCategory
+from apps.resources.serializers.resource_serializers import ResourceCategorySerializer, ResourceSerializer
 
 
 class ResourceFilter(django_filters.FilterSet):
@@ -53,7 +52,7 @@ class ResourceViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ("update", "partial_update"):
-            self.permission_classes = [IsAuthenticated, IsOwner]
+            self.permission_classes = [IsAuthenticated, IsOwnerOrSuperUser]
         if self.action in ("destroy",):
             self.permission_classes = [IsAuthenticated, IsOwnerOrSuperUser]
         return super().get_permissions()
