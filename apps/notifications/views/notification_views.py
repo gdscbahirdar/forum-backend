@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django_filters import rest_framework as django_filters
 from rest_framework import filters, status, viewsets
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -48,12 +49,17 @@ class NotificationReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (IsAuthenticated, IsOwnerOrSuperUser)
     filter_backends = (django_filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filterset_fields = ("is_read",)
-    search_fields = ("title",)
+    search_fields = ("message",)
     ordering = ("-created_at",)
     ordering_fields = ("created_at",)
 
     def get_queryset(self):
         return Notification.objects.filter(user=self.request.user)
+
+    @action(detail=False, methods=["get"], url_path="unread_count")
+    def unread_count(self, request):
+        unread_count = self.get_queryset().filter(is_read=False).count()
+        return Response({"unread_count": unread_count}, status=status.HTTP_200_OK)
 
 
 class NotificationActionView(APIView):
@@ -76,10 +82,10 @@ class NotificationActionView(APIView):
         if ids:
             filters["id__in"] = ids
 
-        if action == "mark_read":
+        if action == "mark_as_read":
             Notification.objects.filter(**filters, is_read=False).update(is_read=True)
 
-        elif action == "mark_unread":
+        elif action == "mark_as_unread":
             Notification.objects.filter(**filters, is_read=True).update(is_read=False)
 
         elif action == "delete_read":
@@ -87,6 +93,9 @@ class NotificationActionView(APIView):
 
         elif action == "delete_unread":
             Notification.objects.filter(**filters, is_read=False).delete()
+
+        elif action == "delete_any":
+            Notification.objects.filter(**filters).delete()
 
         else:
             return Response({"error": "Invalid action"}, status=status.HTTP_400_BAD_REQUEST)

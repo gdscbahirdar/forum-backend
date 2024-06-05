@@ -1,6 +1,5 @@
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
-from django.urls import reverse
 from rest_framework import serializers
 
 from apps.forum.models.qa_models import Answer, Question
@@ -52,7 +51,9 @@ class NotificationReadOnlySerializer(serializers.ModelSerializer):
     Serializer class for the Notification model in read-only mode.
     """
 
-    target_url = serializers.SerializerMethodField()
+    target_type = serializers.SerializerMethodField()
+    target_slug = serializers.SerializerMethodField()
+    subscription_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Notification
@@ -65,18 +66,42 @@ class NotificationReadOnlySerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "target_object_id",
-            "target_url",
+            "target_type",
+            "target_slug",
+            "subscription_id",
         )
 
-    def get_target_url(self, obj) -> str:
+    def get_target_slug(self, obj) -> str:
         """
-        Generates the URL for the target object based on its type.
+        Returns the slug of the target object.
         """
         target = obj.target
         if isinstance(target, Question):
-            return reverse("forum:question-detail", kwargs={"slug": target.slug})
+            return target.slug
         elif isinstance(target, Answer):
-            return reverse("forum:answer-detail", kwargs={"question_slug": target.question.slug, "pk": target.pk})
-        elif isinstance(target, Resource):
-            return reverse("resources:resource-detail", kwargs={"pk": target.pk})
+            return target.question.slug
         return ""
+
+    def get_target_type(self, obj) -> str:
+        """
+        Returns the type of the target object.
+        """
+        target = obj.target
+        if isinstance(target, Question):
+            return "question"
+        elif isinstance(target, Answer):
+            return "answer"
+        elif isinstance(target, Resource):
+            return "resource"
+        return ""
+
+    def get_subscription_id(self, obj) -> str:
+        """
+        Returns the subscription ID for the notification.
+        """
+        user = self.context["request"].user
+        target_content_type = ContentType.objects.get_for_model(obj.target)
+        subscription = Subscription.objects.filter(
+            user=user, target_content_type=target_content_type, target_object_id=obj.target_object_id
+        ).first()
+        return subscription.id if subscription else ""
