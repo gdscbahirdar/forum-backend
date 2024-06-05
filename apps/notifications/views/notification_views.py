@@ -34,6 +34,12 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    @action(detail=False, methods=["delete"])
+    def bulk_delete(self, request):
+        ids = request.data.get("ids", [])
+        self.get_queryset().filter(id__in=ids).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class NotificationReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     """

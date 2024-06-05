@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import F
 from django.utils.text import slugify
 from rest_framework import serializers
@@ -10,6 +11,7 @@ from apps.content_actions.models.vote_models import Vote
 from apps.content_actions.serializers.comment_serializers import CommentSerializer
 from apps.forum.models.qa_meta_models import Tag
 from apps.forum.models.qa_models import Answer, Post, Question
+from apps.notifications.models.notification_models import Subscription
 from apps.services.utils import check_toxicity
 
 User = get_user_model()
@@ -191,10 +193,18 @@ class QuestionSerializer(BaseQuestionSerializer):
 
 
 class QuestionDetailSerializer(BaseQuestionSerializer):
-    answers = AnswerSerializer(many=True, read_only=True)
+    subscription_id = serializers.SerializerMethodField(read_only=True)
 
     class Meta(BaseQuestionSerializer.Meta):
         fields = "__all__"
+
+    def get_subscription_id(self, obj) -> str:
+        user = self.context["request"].user
+        content_type = ContentType.objects.get(model="question")
+        subscription = Subscription.objects.filter(
+            user=user, target_content_type=content_type, target_object_id=obj.id
+        ).first()
+        return subscription.id if subscription else ""
 
 
 class BookmarkedPostSerializer(BaseQuestionSerializer):
