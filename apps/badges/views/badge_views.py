@@ -55,12 +55,8 @@ class LeaderboardView(APIView):
 
         if date_filter:
             users = (
-                users.filter(daily_reputations__reputation__isnull=False)
-                .annotate(
-                    total_reputation=Sum(
-                        "daily_reputations__reputation", filter=Q(daily_reputations__date__gte=date_filter)
-                    )
-                )
+                users.filter(daily_reputations__date__gte=date_filter)
+                .annotate(total_reputation=Sum("daily_reputations__reputation"))
                 .order_by("-total_reputation")
             )
         else:
