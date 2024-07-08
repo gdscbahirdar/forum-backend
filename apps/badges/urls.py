@@ -1,7 +1,6 @@
 from django.urls import path
 
-from apps.badges.views.badge_views import LeaderboardView
-from apps.badges.views.badge_views import UserBadgesView
+from apps.badges.views.badge_views import LeaderboardView, UserBadgesView
 
 app_name = "badges"
 

@@ -10,9 +10,7 @@ from apps.content_actions.models.bookmark_models import Bookmark
 from apps.content_actions.models.vote_models import Vote
 from apps.content_actions.serializers.comment_serializers import CommentSerializer
 from apps.forum.models.qa_meta_models import Tag
-from apps.forum.models.qa_models import Answer
-from apps.forum.models.qa_models import Post
-from apps.forum.models.qa_models import Question
+from apps.forum.models.qa_models import Answer, Post, Question
 from apps.notifications.models.notification_models import Subscription
 from apps.services.utils import check_toxicity
 

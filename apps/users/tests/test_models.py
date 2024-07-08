@@ -2,8 +2,7 @@ from datetime import date
 
 import pytest
 
-from apps.badges.models.badge_models import Badge
-from apps.badges.models.badge_models import DailyUserReputation
+from apps.badges.models.badge_models import Badge, DailyUserReputation
 
 pytestmark = pytest.mark.django_db
 

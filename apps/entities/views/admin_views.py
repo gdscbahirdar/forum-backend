@@ -1,15 +1,11 @@
 from django.contrib.auth import get_user_model
 from django_filters import rest_framework as django_filters
-from drf_spectacular.utils import OpenApiParameter
-from drf_spectacular.utils import OpenApiTypes
-from drf_spectacular.utils import extend_schema
-from rest_framework import filters
-from rest_framework import viewsets
+from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
+from rest_framework import filters, viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from apps.entities.serializers.entity_serializers import EntitySerializer
-from apps.rbac.permissions import IsUserSuperAdmin
-from apps.rbac.permissions import IsUserSuperAdminOrFacultyAdmin
+from apps.rbac.permissions import IsUserSuperAdmin, IsUserSuperAdminOrFacultyAdmin
 
 User = get_user_model()
 

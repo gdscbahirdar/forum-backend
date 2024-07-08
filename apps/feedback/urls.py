@@ -1,9 +1,7 @@
-from django.urls import include
-from django.urls import path
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from apps.feedback.views.feedback_views import FeedbackReplyViewSet
-from apps.feedback.views.feedback_views import FeedbackViewSet
+from apps.feedback.views.feedback_views import FeedbackReplyViewSet, FeedbackViewSet
 
 app_name = "feedback"
 

@@ -1,8 +1,6 @@
 from django.contrib import admin
 
-from apps.resources.models.resource_models import Resource
-from apps.resources.models.resource_models import ResourceCategory
-from apps.resources.models.resource_models import ResourceFile
+from apps.resources.models.resource_models import Resource, ResourceCategory, ResourceFile
 
 
 class ResourceFileInline(admin.TabularInline):

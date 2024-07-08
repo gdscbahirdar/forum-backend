@@ -1,11 +1,9 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from apps.entities.models.faculty_models import Department
-from apps.entities.models.faculty_models import Faculty
+from apps.entities.models.faculty_models import Department, Faculty
 from apps.entities.models.teacher_models import Teacher
-from apps.entities.serializers.related_fields import DepartmentRelatedField
-from apps.entities.serializers.related_fields import FacultyRelatedField
+from apps.entities.serializers.related_fields import DepartmentRelatedField, FacultyRelatedField
 
 User = get_user_model()
 

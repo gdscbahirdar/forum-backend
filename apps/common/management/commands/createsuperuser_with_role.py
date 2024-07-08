@@ -2,11 +2,9 @@ from getpass import getpass
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
-from django.core.management.base import BaseCommand
-from django.core.management.base import CommandError
+from django.core.management.base import BaseCommand, CommandError
 
-from apps.rbac.models.role_models import Role
-from apps.rbac.models.role_models import UserRole
+from apps.rbac.models.role_models import Role, UserRole
 
 User = get_user_model()
 

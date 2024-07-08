@@ -77,9 +77,6 @@ ignore = ["RUF012"]
 fixable = ["ALL"]
 unfixable = []
 
-[tool.ruff.lint.isort]
-force-single-line = true
-
 [tool.ruff.format]
 skip-magic-trailing-comma = false
 

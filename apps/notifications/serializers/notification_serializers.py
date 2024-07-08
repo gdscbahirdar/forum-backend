@@ -2,10 +2,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
-from apps.forum.models.qa_models import Answer
-from apps.forum.models.qa_models import Question
-from apps.notifications.models.notification_models import Notification
-from apps.notifications.models.notification_models import Subscription
+from apps.forum.models.qa_models import Answer, Question
+from apps.notifications.models.notification_models import Notification, Subscription
 from apps.resources.models.resource_models import Resource
 
 

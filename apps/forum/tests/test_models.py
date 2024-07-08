@@ -2,11 +2,8 @@ import pytest
 
 from apps.badges.models.badge_models import UserBadge
 from apps.content_actions.models.vote_models import Vote
-from apps.forum.models.qa_models import Answer
-from apps.forum.models.qa_models import Post
-from apps.forum.models.qa_models import Question
-from apps.forum.tests.factories import BookmarkFactory
-from apps.forum.tests.factories import VoteFactory
+from apps.forum.models.qa_models import Answer, Post, Question
+from apps.forum.tests.factories import BookmarkFactory, VoteFactory
 
 pytestmark = pytest.mark.django_db
 

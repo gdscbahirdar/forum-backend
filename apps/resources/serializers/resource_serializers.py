@@ -7,9 +7,7 @@ from apps.content_actions.serializers.comment_serializers import CommentSerializ
 from apps.forum.models import Tag
 from apps.notifications.models.notification_models import Subscription
 from apps.resources.constants import ResourceConstants
-from apps.resources.models.resource_models import Resource
-from apps.resources.models.resource_models import ResourceCategory
-from apps.resources.models.resource_models import ResourceFile
+from apps.resources.models.resource_models import Resource, ResourceCategory, ResourceFile
 
 
 class ResourceFileSerializer(serializers.ModelSerializer):

@@ -2,8 +2,7 @@ from django.contrib import admin
 
 from apps.badges.models.badge_models import DailyUserReputation
 
-from .models import Badge
-from .models import UserBadge
+from .models import Badge, UserBadge
 
 
 class UserBadgeInline(admin.TabularInline):

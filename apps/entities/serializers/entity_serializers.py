@@ -11,8 +11,7 @@ from apps.entities.serializers.faculty_serializers import FacultyAdminSerializer
 from apps.entities.serializers.student_serializers import StudentSerializer
 from apps.entities.serializers.teacher_serializers import TeacherSerializer
 from apps.entities.utils import generate_password
-from apps.rbac.models.role_models import Role
-from apps.rbac.models.role_models import UserRole
+from apps.rbac.models.role_models import Role, UserRole
 
 User = get_user_model()
 

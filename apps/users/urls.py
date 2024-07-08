@@ -1,15 +1,9 @@
 from dj_rest_auth.jwt_auth import get_refresh_view
-from dj_rest_auth.views import LoginView
-from dj_rest_auth.views import LogoutView
-from dj_rest_auth.views import PasswordResetConfirmView
-from dj_rest_auth.views import PasswordResetView
-from dj_rest_auth.views import UserDetailsView
+from dj_rest_auth.views import LoginView, LogoutView, PasswordResetConfirmView, PasswordResetView, UserDetailsView
 from django.urls import path
 
 from apps.users.views.auth_views import ChangePasswordView
-from apps.users.views.user_views import GetUserBookmarkList
-from apps.users.views.user_views import UserListView
-from apps.users.views.user_views import UserProfileView
+from apps.users.views.user_views import GetUserBookmarkList, UserListView, UserProfileView
 
 rest_auth_urls = [
     path("login/", LoginView.as_view(), name="rest_login"),

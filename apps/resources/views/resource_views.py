@@ -1,18 +1,15 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import F
 from django_filters import rest_framework as django_filters
-from rest_framework import filters
-from rest_framework import viewsets
+from rest_framework import filters, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from apps.common.permissions import IsOwnerOrSuperUser
 from apps.content_actions.models.view_models import ViewTracker
-from apps.resources.models.resource_models import Resource
-from apps.resources.models.resource_models import ResourceCategory
-from apps.resources.serializers.resource_serializers import ResourceCategorySerializer
-from apps.resources.serializers.resource_serializers import ResourceSerializer
+from apps.resources.models.resource_models import Resource, ResourceCategory
+from apps.resources.serializers.resource_serializers import ResourceCategorySerializer, ResourceSerializer
 
 
 class ResourceFilter(django_filters.FilterSet):

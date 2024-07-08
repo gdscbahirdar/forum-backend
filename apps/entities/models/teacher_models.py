@@ -2,8 +2,7 @@ from django.conf import settings
 from django.db import models
 
 from apps.common.models import BaseModel
-from apps.entities.models.faculty_models import Department
-from apps.entities.models.faculty_models import Faculty
+from apps.entities.models.faculty_models import Department, Faculty
 
 
 class Teacher(BaseModel):

@@ -7,11 +7,9 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from apps.entities.models import Student
-from apps.entities.models.faculty_models import Department
-from apps.entities.models.faculty_models import Faculty
+from apps.entities.models.faculty_models import Department, Faculty
 from apps.entities.utils import generate_password
-from apps.rbac.models.role_models import Role
-from apps.rbac.models.role_models import UserRole
+from apps.rbac.models.role_models import Role, UserRole
 from apps.users.views.user_views import User
 
 

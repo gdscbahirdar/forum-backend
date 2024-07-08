@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from apps.feedback.models.feedback_models import Feedback
-from apps.feedback.models.feedback_models import FeedbackReply
+from apps.feedback.models.feedback_models import Feedback, FeedbackReply
 
 
 class FeedbackReplyInline(admin.TabularInline):

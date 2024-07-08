@@ -2,24 +2,22 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import F
 from django_filters import rest_framework as django_filters
-from rest_framework import filters
-from rest_framework import status
-from rest_framework import viewsets
+from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.common.pagination import DynamicPageSizePagination
 from apps.content_actions.models.view_models import ViewTracker
-from apps.forum.models.qa_models import Answer
-from apps.forum.models.qa_models import Question
+from apps.forum.models.qa_models import Answer, Question
 from apps.forum.permissions import IsOwnerOrReadOnly
-from apps.forum.serializers.post_serializers import AcceptAnswerSerializer
-from apps.forum.serializers.post_serializers import AnswerSerializer
-from apps.forum.serializers.post_serializers import QuestionDetailSerializer
-from apps.forum.serializers.post_serializers import QuestionSerializer
+from apps.forum.serializers.post_serializers import (
+    AcceptAnswerSerializer,
+    AnswerSerializer,
+    QuestionDetailSerializer,
+    QuestionSerializer,
+)
 
 User = get_user_model()
 

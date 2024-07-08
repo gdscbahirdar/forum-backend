@@ -1,9 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
-from rest_framework import filters
-from rest_framework import viewsets
+from rest_framework import filters, viewsets
 from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import AllowAny
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from apps.content_actions.constants import MODEL_MAPPING
 from apps.content_actions.models.comment_models import Comment

@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
-from apps.feedback.models.feedback_models import Feedback
-from apps.feedback.models.feedback_models import FeedbackReply
+from apps.feedback.models.feedback_models import Feedback, FeedbackReply
 
 
 class FeedbackSerializer(serializers.ModelSerializer):

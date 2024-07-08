@@ -2,8 +2,7 @@ from rest_framework import serializers
 
 from apps.entities.models.admin_models import FacultyAdmin
 from apps.entities.models.faculty_models import Faculty
-from apps.entities.serializers.related_fields import DepartmentRelatedField
-from apps.entities.serializers.related_fields import FacultyRelatedField
+from apps.entities.serializers.related_fields import DepartmentRelatedField, FacultyRelatedField
 
 
 class FacultySerializer(serializers.ModelSerializer):

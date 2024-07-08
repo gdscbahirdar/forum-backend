@@ -5,9 +5,7 @@ from apps.content_actions.models.bookmark_models import Bookmark
 from apps.content_actions.models.comment_models import Comment
 from apps.content_actions.models.vote_models import Vote
 from apps.forum.models.qa_meta_models import Tag
-from apps.forum.models.qa_models import Answer
-from apps.forum.models.qa_models import Post
-from apps.forum.models.qa_models import Question
+from apps.forum.models.qa_models import Answer, Post, Question
 
 
 class CommentInline(GenericTabularInline):

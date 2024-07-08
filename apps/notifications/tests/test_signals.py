@@ -1,10 +1,8 @@
 import pytest
 from django.db.models.signals import post_save
 
-from apps.forum.models.qa_models import Answer
-from apps.forum.models.qa_models import Question
-from apps.forum.tests.factories import AnswerFactory
-from apps.forum.tests.factories import QuestionFactory
+from apps.forum.models.qa_models import Answer, Question
+from apps.forum.tests.factories import AnswerFactory, QuestionFactory
 from apps.notifications.models.notification_models import Notification
 
 pytestmark = pytest.mark.unit

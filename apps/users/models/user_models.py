@@ -5,9 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
-from apps.badges.models.badge_models import Badge
-from apps.badges.models.badge_models import DailyUserReputation
-from apps.badges.models.badge_models import UserBadge
+from apps.badges.models.badge_models import Badge, DailyUserReputation, UserBadge
 
 
 def avatar_directory_path(instance, filename):

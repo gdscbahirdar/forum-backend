@@ -2,8 +2,7 @@ import json
 import os
 
 from django.conf import settings
-from django.core.management.base import BaseCommand
-from django.core.management.base import CommandError
+from django.core.management.base import BaseCommand, CommandError
 
 from apps.resources.models.resource_models import ResourceCategory
 

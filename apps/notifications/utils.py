@@ -1,8 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
 
 from apps.forum.models.qa_models import Post
-from apps.notifications.models.notification_models import Notification
-from apps.notifications.models.notification_models import Subscription
+from apps.notifications.models.notification_models import Notification, Subscription
 
 
 def notify_user(

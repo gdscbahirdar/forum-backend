@@ -1,10 +1,8 @@
 from rest_framework import serializers
 
-from apps.entities.models.faculty_models import Department
-from apps.entities.models.faculty_models import Faculty
+from apps.entities.models.faculty_models import Department, Faculty
 from apps.entities.models.student_models import Student
-from apps.entities.serializers.related_fields import DepartmentRelatedField
-from apps.entities.serializers.related_fields import FacultyRelatedField
+from apps.entities.serializers.related_fields import DepartmentRelatedField, FacultyRelatedField
 
 
 class StudentSerializer(serializers.ModelSerializer):

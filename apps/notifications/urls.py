@@ -1,10 +1,11 @@
-from django.urls import include
-from django.urls import path
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from apps.notifications.views.notification_views import NotificationActionView
-from apps.notifications.views.notification_views import NotificationReadOnlyViewSet
-from apps.notifications.views.notification_views import SubscriptionViewSet
+from apps.notifications.views.notification_views import (
+    NotificationActionView,
+    NotificationReadOnlyViewSet,
+    SubscriptionViewSet,
+)
 
 app_name = "notifications"
 

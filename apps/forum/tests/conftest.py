@@ -1,9 +1,7 @@
 import pytest
 from django.core.management import call_command
 
-from apps.forum.tests.factories import AnswerFactory
-from apps.forum.tests.factories import PostFactory
-from apps.forum.tests.factories import QuestionFactory
+from apps.forum.tests.factories import AnswerFactory, PostFactory, QuestionFactory
 
 
 @pytest.fixture(autouse=True)
