@@ -3,6 +3,9 @@
 minversion = "6.0"
 addopts = "--ds=config.settings.test --nomigrations --cov=. --cov-report=html --reuse-db"
 python_files = ["test_*.py"]
+markers = [
+    "unit: tests that are isolated from the db, external api calls and other mockable internal code.",
+]
 
 # ==== Coverage ====
 [tool.coverage.run]

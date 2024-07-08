@@ -67,7 +67,7 @@ class User(AbstractUser):
         if not badge:
             return None
 
-        if user_badge := UserBadge.objects.filter(user=self, badge=badge).exists():
+        if user_badge := UserBadge.objects.filter(user=self, badge=badge).first():
             return user_badge
 
         return UserBadge.objects.create(user=self, badge=badge)
