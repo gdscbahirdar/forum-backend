@@ -33,7 +33,7 @@ class Post(BaseModel):
         answer = getattr(self, "answer", None)
         if question:
             self.check_question_score_badges()
-        elif answer:
+        if answer:
             self.check_answer_score_badges(answer)
 
     def check_question_score_badges(self):
@@ -61,7 +61,7 @@ class Post(BaseModel):
         answer = getattr(self, "answer", None)
         if question:
             self.check_question_bookmark_badges()
-        elif answer:
+        if answer:
             self.check_answer_bookmark_badges()
 
     def check_question_bookmark_badges(self):
@@ -95,7 +95,7 @@ class Question(BaseModel):
         return self.title
 
     def check_question_view_badges(self):
-        if self.view_count >= 10000:
+        if self.view_count >= 10_000:
             self.post.user.assign_badge("Famous Question")
         elif self.view_count >= 2500:
             self.post.user.assign_badge("Notable Question")

@@ -285,3 +285,5 @@ eccounting_backend_api/media/
 .env.prod
 
 media/
+
+todo.txt
