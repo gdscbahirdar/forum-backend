@@ -8,21 +8,22 @@ from apps.content_actions.models.bookmark_models import Bookmark
 from apps.content_actions.models.comment_models import Comment
 from apps.content_actions.models.view_models import ViewTracker
 from apps.content_actions.models.vote_models import Vote
-
-FAMOUS_QUESTION_THRESHOLD = 10_000
-NOTABLE_QUESTION_THRESHOLD = 2_500
-POPULAR_QUESTION_THRESHOLD = 1_000
-GREAT_QUESTION_THRESHOLD = 100
-GOOD_QUESTION_THRESHOLD = 25
-NICE_QUESTION_THRESHOLD = 10
-GREAT_ANSWER = 100
-GOOD_ANSWER = 25
-NICE_ANSWER = 10
-SELF_LEARNER = 3
-STELLAR_QUESTION = 100
-FAVORITE_QUESTION = 25
-STELLAR_ANSWER = 100
-FAVORITE_ANSWER = 25
+from apps.forum.constants import (
+    FAMOUS_QUESTION_THRESHOLD,
+    FAVORITE_ANSWER,
+    FAVORITE_QUESTION,
+    GOOD_ANSWER,
+    GOOD_QUESTION_THRESHOLD,
+    GREAT_ANSWER,
+    GREAT_QUESTION_THRESHOLD,
+    NICE_ANSWER,
+    NICE_QUESTION_THRESHOLD,
+    NOTABLE_QUESTION_THRESHOLD,
+    POPULAR_QUESTION_THRESHOLD,
+    SELF_LEARNER,
+    STELLAR_ANSWER,
+    STELLAR_QUESTION,
+)
 
 
 class Post(BaseModel):
@@ -110,11 +111,11 @@ class Question(BaseModel):
         return self.title
 
     def check_question_view_badges(self):
-        if self.view_count >= self.FAMOUS_QUESTION_THRESHOLD:
+        if self.view_count >= FAMOUS_QUESTION_THRESHOLD:
             self.post.user.assign_badge("Famous Question")
-        elif self.view_count >= self.NOTABLE_QUESTION_THRESHOLD:
+        elif self.view_count >= NOTABLE_QUESTION_THRESHOLD:
             self.post.user.assign_badge("Notable Question")
-        elif self.view_count >= self.POPULAR_QUESTION_THRESHOLD:
+        elif self.view_count >= POPULAR_QUESTION_THRESHOLD:
             self.post.user.assign_badge("Popular Question")
 
 
