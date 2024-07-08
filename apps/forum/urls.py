@@ -1,7 +1,10 @@
-from django.urls import include, path
+from django.urls import include
+from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from apps.forum.views.post_views import AnswerViewSet, QuestionViewSet, UserAnsweredQuestionsView
+from apps.forum.views.post_views import AnswerViewSet
+from apps.forum.views.post_views import QuestionViewSet
+from apps.forum.views.post_views import UserAnsweredQuestionsView
 from apps.forum.views.tag_views import TagReadOnlyViewSet
 
 router = DefaultRouter()

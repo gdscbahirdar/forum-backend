@@ -1,4 +1,6 @@
-from rest_framework import filters, permissions, viewsets
+from rest_framework import filters
+from rest_framework import permissions
+from rest_framework import viewsets
 
 from apps.entities.models.faculty_models import Faculty
 from apps.entities.serializers.faculty_serializers import FacultySerializer

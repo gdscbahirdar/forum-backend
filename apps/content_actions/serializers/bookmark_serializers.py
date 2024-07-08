@@ -2,8 +2,8 @@ from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from apps.content_actions.models.bookmark_models import Bookmark
 from apps.content_actions.constants import MODEL_MAPPING
+from apps.content_actions.models.bookmark_models import Bookmark
 
 
 class BookmarkSerializer(serializers.ModelSerializer):

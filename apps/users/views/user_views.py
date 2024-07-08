@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from rest_framework.exceptions import ValidationError
 from rest_framework import generics
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -15,7 +15,6 @@ from apps.forum.serializers.post_serializers import BookmarkedPostSerializer
 from apps.resources.models.resource_models import Resource
 from apps.resources.serializers.resource_serializers import BookmarkedResourceSerializer
 from apps.users.serializers.user_serializers import PublicUserProfileSerializer
-
 
 User = get_user_model()
 

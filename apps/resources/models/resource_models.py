@@ -38,6 +38,10 @@ class Resource(BaseModel):
         tags (QuerySet): The tags associated with the resource.
     """
 
+    GREAT_RESOURCE_THRESHOLD = 100
+    GOOD_RESOURCE_THRESHOLD = 25
+    NICE_RESOURCE_THRESHOLD = 10
+
     title = models.CharField(max_length=200)
     description = models.TextField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="resources")
@@ -61,11 +65,11 @@ class Resource(BaseModel):
         self.save(update_fields=["score"])
 
     def evaluate_score_badges(self):
-        if self.score >= 100:
+        if self.score >= self.GREAT_RESOURCE_THRESHOLD:
             self.user.assign_badge("Great Resource")
-        elif self.score >= 25:
+        elif self.score >= self.GOOD_RESOURCE_THRESHOLD:
             self.user.assign_badge("Good Resource")
-        elif self.score >= 10:
+        elif self.score >= self.NICE_RESOURCE_THRESHOLD:
             self.user.assign_badge("Nice Resource")
 
 

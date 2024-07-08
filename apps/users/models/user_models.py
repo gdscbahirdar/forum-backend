@@ -5,7 +5,9 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
-from apps.badges.models.badge_models import Badge, DailyUserReputation, UserBadge
+from apps.badges.models.badge_models import Badge
+from apps.badges.models.badge_models import DailyUserReputation
+from apps.badges.models.badge_models import UserBadge
 
 
 def avatar_directory_path(instance, filename):
@@ -14,6 +16,7 @@ def avatar_directory_path(instance, filename):
 
 class User(AbstractUser):
     GENDER_CHOICES = (("M", "M"), ("F", "F"))
+    REPUTATION_CAP = 200
 
     first_name = models.CharField(max_length=255)
     middle_name = models.CharField(max_length=255)
@@ -29,7 +32,7 @@ class User(AbstractUser):
         default=1, help_text="Reputation points earned by the user through various activities. Default is one."
     )
 
-    REQUIRED_FIELDS = ["first_name", "middle_name", "last_name"]
+    REQUIRED_FIELDS = ("first_name", "middle_name", "last_name")
 
     def __str__(self):
         return self.username
@@ -40,7 +43,7 @@ class User(AbstractUser):
 
     def add_reputation(self, points: int) -> int:
         daily_reputation, _ = DailyUserReputation.objects.get_or_create(user=self, date=date.today())
-        if daily_reputation.reputation + points > 200:
+        if daily_reputation.reputation + points > self.REPUTATION_CAP:
             points = 200 - daily_reputation.reputation
         self.reputation += points
         self.save(update_fields=["reputation"])

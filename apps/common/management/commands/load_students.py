@@ -7,9 +7,11 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from apps.entities.models import Student
-from apps.entities.models.faculty_models import Department, Faculty
+from apps.entities.models.faculty_models import Department
+from apps.entities.models.faculty_models import Faculty
 from apps.entities.utils import generate_password
-from apps.rbac.models.role_models import Role, UserRole
+from apps.rbac.models.role_models import Role
+from apps.rbac.models.role_models import UserRole
 from apps.users.views.user_views import User
 
 
@@ -43,7 +45,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR("Failed to retrieve data: The specified key does not exist."))
             return
         except Exception as e:
-            self.stdout.write(self.style.ERROR(f"Failed to retrieve data. Unexpected error occurred. Error: {str(e)}"))
+            self.stdout.write(self.style.ERROR(f"Failed to retrieve data. Unexpected error occurred. Error: {e!s}"))
             return
         finally:
             response["Body"].close()
@@ -84,7 +86,7 @@ class Command(BaseCommand):
             except Exception as e:
                 getattr(user, "delete", lambda: None)()
                 self.stdout.write(
-                    self.style.ERROR(f"Failed to create a student record for {entry['username']}. Error: {str(e)}")
+                    self.style.ERROR(f"Failed to create a student record for {entry['username']}. Error: {e!s}")
                 )
 
         self.stdout.write(self.style.SUCCESS("Successfully loaded students into the database"))

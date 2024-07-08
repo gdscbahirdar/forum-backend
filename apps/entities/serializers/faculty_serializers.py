@@ -2,7 +2,8 @@ from rest_framework import serializers
 
 from apps.entities.models.admin_models import FacultyAdmin
 from apps.entities.models.faculty_models import Faculty
-from apps.entities.serializers.related_fields import DepartmentRelatedField, FacultyRelatedField
+from apps.entities.serializers.related_fields import DepartmentRelatedField
+from apps.entities.serializers.related_fields import FacultyRelatedField
 
 
 class FacultySerializer(serializers.ModelSerializer):
@@ -14,13 +15,13 @@ class FacultySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Faculty
-        fields = [
+        fields = (
             "pk",
             "name",
             "departments",
             "created_at",
             "updated_at",
-        ]
+        )
 
 
 class FacultyAdminSerializer(serializers.ModelSerializer):
@@ -32,9 +33,9 @@ class FacultyAdminSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FacultyAdmin
-        fields = [
+        fields = (
             "pk",
             "faculty",
             "created_at",
             "updated_at",
-        ]
+        )

@@ -4,9 +4,12 @@ from django.dispatch import receiver
 from apps.content_actions.models.bookmark_models import Bookmark
 from apps.content_actions.models.comment_models import Comment
 from apps.content_actions.models.vote_models import Vote
-from apps.forum.models.qa_models import Answer, Question
+from apps.forum.models.qa_models import Answer
+from apps.forum.models.qa_models import Question
 from apps.notifications.models.notification_models import Notification
-from apps.notifications.utils import create_subscription, notify_if_not_owner, notify_subscribers
+from apps.notifications.utils import create_subscription
+from apps.notifications.utils import notify_if_not_owner
+from apps.notifications.utils import notify_subscribers
 from apps.resources.models.resource_models import Resource
 
 

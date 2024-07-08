@@ -1,6 +1,9 @@
 from django.contrib import admin
 
-from apps.rbac.models.role_models import Module, Permission, Role, UserRole
+from apps.rbac.models.role_models import Module
+from apps.rbac.models.role_models import Permission
+from apps.rbac.models.role_models import Role
+from apps.rbac.models.role_models import UserRole
 
 
 class PermissionInline(admin.TabularInline):

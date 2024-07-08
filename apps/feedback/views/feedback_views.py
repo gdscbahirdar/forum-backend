@@ -1,10 +1,12 @@
-from rest_framework import filters, viewsets
+from rest_framework import filters
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from apps.common.permissions import IsOwnerOrSuperUser
-
-from apps.feedback.models.feedback_models import Feedback, FeedbackReply
-from apps.feedback.serializers.feedback_serializers import FeedbackReplySerializer, FeedbackSerializer
+from apps.feedback.models.feedback_models import Feedback
+from apps.feedback.models.feedback_models import FeedbackReply
+from apps.feedback.serializers.feedback_serializers import FeedbackReplySerializer
+from apps.feedback.serializers.feedback_serializers import FeedbackSerializer
 
 
 class FeedbackViewSet(viewsets.ModelViewSet):

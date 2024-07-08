@@ -9,6 +9,21 @@ from apps.content_actions.models.comment_models import Comment
 from apps.content_actions.models.view_models import ViewTracker
 from apps.content_actions.models.vote_models import Vote
 
+FAMOUS_QUESTION_THRESHOLD = 10_000
+NOTABLE_QUESTION_THRESHOLD = 2_500
+POPULAR_QUESTION_THRESHOLD = 1_000
+GREAT_QUESTION_THRESHOLD = 100
+GOOD_QUESTION_THRESHOLD = 25
+NICE_QUESTION_THRESHOLD = 10
+GREAT_ANSWER = 100
+GOOD_ANSWER = 25
+NICE_ANSWER = 10
+SELF_LEARNER = 3
+STELLAR_QUESTION = 100
+FAVORITE_QUESTION = 25
+STELLAR_ANSWER = 100
+FAVORITE_ANSWER = 25
+
 
 class Post(BaseModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="posts", on_delete=models.CASCADE)
@@ -37,21 +52,21 @@ class Post(BaseModel):
             self.check_answer_score_badges(answer)
 
     def check_question_score_badges(self):
-        if self.score >= 100:
+        if self.score >= GREAT_QUESTION_THRESHOLD:
             self.user.assign_badge("Great Question")
-        elif self.score >= 25:
+        elif self.score >= GOOD_QUESTION_THRESHOLD:
             self.user.assign_badge("Good Question")
-        elif self.score >= 10:
+        elif self.score >= NICE_QUESTION_THRESHOLD:
             self.user.assign_badge("Nice Question")
 
     def check_answer_score_badges(self, answer):
-        if self.score >= 100:
+        if self.score >= GREAT_ANSWER:
             self.user.assign_badge("Great Answer")
-        elif self.score >= 25:
+        elif self.score >= GOOD_ANSWER:
             self.user.assign_badge("Good Answer")
-        elif self.score >= 10:
+        elif self.score >= NICE_ANSWER:
             self.user.assign_badge("Nice Answer")
-        elif self.score >= 3 and self.user == answer.question.post.user:
+        elif self.score >= SELF_LEARNER and self.user == answer.question.post.user:
             self.user.assign_badge("Self-Learner")
         elif self.score >= 1:
             self.user.assign_badge("Teacher")
@@ -65,15 +80,15 @@ class Post(BaseModel):
             self.check_answer_bookmark_badges()
 
     def check_question_bookmark_badges(self):
-        if self.bookmarks.count() >= 100:
+        if self.bookmarks.count() >= STELLAR_QUESTION:
             self.user.assign_badge("Stellar Question")
-        elif self.bookmarks.count() >= 25:
+        elif self.bookmarks.count() >= FAVORITE_QUESTION:
             self.user.assign_badge("Favorite Question")
 
     def check_answer_bookmark_badges(self):
-        if self.bookmarks.count() >= 100:
+        if self.bookmarks.count() >= STELLAR_ANSWER:
             self.user.assign_badge("Stellar Answer")
-        elif self.bookmarks.count() >= 25:
+        elif self.bookmarks.count() >= FAVORITE_ANSWER:
             self.user.assign_badge("Favorite Answer")
 
 
@@ -95,11 +110,11 @@ class Question(BaseModel):
         return self.title
 
     def check_question_view_badges(self):
-        if self.view_count >= 10_000:
+        if self.view_count >= self.FAMOUS_QUESTION_THRESHOLD:
             self.post.user.assign_badge("Famous Question")
-        elif self.view_count >= 2500:
+        elif self.view_count >= self.NOTABLE_QUESTION_THRESHOLD:
             self.post.user.assign_badge("Notable Question")
-        elif self.view_count >= 1000:
+        elif self.view_count >= self.POPULAR_QUESTION_THRESHOLD:
             self.post.user.assign_badge("Popular Question")
 
 

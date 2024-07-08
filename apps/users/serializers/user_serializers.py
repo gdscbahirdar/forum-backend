@@ -2,11 +2,13 @@ from typing import Dict
 
 from dj_rest_auth.serializers import UserDetailsSerializer
 from django.contrib.auth import get_user_model
-from django.db.models import Count, Q
+from django.db.models import Count
+from django.db.models import Q
 from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
 
-from apps.badges.models.badge_models import Badge, UserBadge
+from apps.badges.models.badge_models import Badge
+from apps.badges.models.badge_models import UserBadge
 
 User = get_user_model()
 
@@ -19,7 +21,8 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
     badges = serializers.SerializerMethodField(read_only=True)
 
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + (
+        fields = (
+            *UserDetailsSerializer.Meta.fields,
             "middle_name",
             "role_name",
             "is_first_time_login",
@@ -32,7 +35,7 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
             "reputation",
             "badges",
         )
-        read_only_fields = UserDetailsSerializer.Meta.read_only_fields + ("reputation", "badge")
+        read_only_fields = (*UserDetailsSerializer.Meta.read_only_fields, "reputation", "badge")
 
     def get_role_name(self, obj) -> str:
         return obj.user_role.role.name

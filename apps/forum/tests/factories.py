@@ -6,7 +6,9 @@ from apps.content_actions.models.bookmark_models import Bookmark
 from apps.content_actions.models.vote_models import Vote
 from apps.factories import UserFactory
 from apps.forum.models.qa_meta_models import Tag
-from apps.forum.models.qa_models import Answer, Post, Question
+from apps.forum.models.qa_models import Answer
+from apps.forum.models.qa_models import Post
+from apps.forum.models.qa_models import Question
 
 User = get_user_model()
 

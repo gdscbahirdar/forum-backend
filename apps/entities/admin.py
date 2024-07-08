@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 from apps.entities.models.admin_models import FacultyAdmin
-from apps.entities.models.faculty_models import Department, Faculty
+from apps.entities.models.faculty_models import Department
+from apps.entities.models.faculty_models import Faculty
 from apps.entities.models.student_models import Student
 from apps.entities.models.teacher_models import Teacher
 

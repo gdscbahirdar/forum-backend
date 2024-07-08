@@ -1,7 +1,8 @@
 from datetime import timedelta
 
 from django.contrib.auth import get_user_model
-from django.db.models import Q, Sum
+from django.db.models import Q
+from django.db.models import Sum
 from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response

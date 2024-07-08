@@ -1,7 +1,9 @@
-from drf_spectacular.utils import OpenApiTypes, extend_schema_field
+from drf_spectacular.utils import OpenApiTypes
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
-from apps.entities.models.faculty_models import Department, Faculty
+from apps.entities.models.faculty_models import Department
+from apps.entities.models.faculty_models import Faculty
 
 
 @extend_schema_field(OpenApiTypes.STR)

@@ -2,13 +2,18 @@ import pytest
 
 from apps.badges.models.badge_models import UserBadge
 from apps.content_actions.models.vote_models import Vote
-from apps.forum.models.qa_models import Answer, Post, Question
-from apps.forum.tests.factories import BookmarkFactory, VoteFactory
+from apps.forum.models.qa_models import Answer
+from apps.forum.models.qa_models import Post
+from apps.forum.models.qa_models import Question
+from apps.forum.tests.factories import BookmarkFactory
+from apps.forum.tests.factories import VoteFactory
 
 pytestmark = pytest.mark.django_db
 
 
 class TestPostModel:
+    NOTABLE_BOOKMARK_POINT = 2
+
     def test_str(self, post: Post):
         assert str(post) == f"Post by {post.user}"
 
@@ -16,7 +21,7 @@ class TestPostModel:
         VoteFactory.create_batch(size=3, content_object=post, vote_type=Vote.UPVOTE)
         VoteFactory.create(content_object=post, vote_type=Vote.DOWNVOTE)
         post.update_score()
-        assert post.score == 2
+        assert post.score == self.NOTABLE_BOOKMARK_POINT
 
     @pytest.mark.parametrize("score", [100, 25, 10])
     def test_evaluate_score_badges_question(self, question: Question, score):

@@ -10,7 +10,9 @@ from apps.content_actions.models.bookmark_models import Bookmark
 from apps.content_actions.models.vote_models import Vote
 from apps.content_actions.serializers.comment_serializers import CommentSerializer
 from apps.forum.models.qa_meta_models import Tag
-from apps.forum.models.qa_models import Answer, Post, Question
+from apps.forum.models.qa_models import Answer
+from apps.forum.models.qa_models import Post
+from apps.forum.models.qa_models import Question
 from apps.notifications.models.notification_models import Subscription
 from apps.services.utils import check_toxicity
 
@@ -106,6 +108,8 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 
 class BaseQuestionSerializer(serializers.ModelSerializer):
+    MIN_TITLE_LENGTH = 20
+
     post = PostSerializer()
     tags = serializers.SlugRelatedField(slug_field="name", many=True, queryset=Tag.objects.all())
     asked_by = serializers.SerializerMethodField()
@@ -117,7 +121,7 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = [
+        fields = (
             "id",
             "slug",
             "post",
@@ -132,7 +136,7 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
             "asked_by_avatar",
             "created_at",
             "updated_at",
-        ]
+        )
         read_only_fields = ("view_count", "answer_count", "is_answered", "is_closed", "asked_by", "slug")
 
     def get_asked_by(self, obj) -> str:
@@ -146,7 +150,7 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
             return ""
 
     def validate_title(self, value):
-        if len(value) < 10:
+        if len(value) < self.MIN_TITLE_LENGTH:
             raise serializers.ValidationError("The title must be at least 20 characters long.")
 
         if check_toxicity(value):

@@ -11,7 +11,8 @@ from apps.entities.serializers.faculty_serializers import FacultyAdminSerializer
 from apps.entities.serializers.student_serializers import StudentSerializer
 from apps.entities.serializers.teacher_serializers import TeacherSerializer
 from apps.entities.utils import generate_password
-from apps.rbac.models.role_models import Role, UserRole
+from apps.rbac.models.role_models import Role
+from apps.rbac.models.role_models import UserRole
 
 User = get_user_model()
 
@@ -143,7 +144,7 @@ class EntitySerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        optional_fields = ["student", "teacher", "faculty_admin"]
+        optional_fields = ("student", "teacher", "faculty_admin")
         for field in optional_fields:
             if field in representation and representation.get(field) is None:
                 representation.pop(field)

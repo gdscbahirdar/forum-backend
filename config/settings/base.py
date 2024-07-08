@@ -2,7 +2,8 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-from decouple import Csv, config
+from decouple import Csv
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

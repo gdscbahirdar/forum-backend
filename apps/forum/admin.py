@@ -5,7 +5,9 @@ from apps.content_actions.models.bookmark_models import Bookmark
 from apps.content_actions.models.comment_models import Comment
 from apps.content_actions.models.vote_models import Vote
 from apps.forum.models.qa_meta_models import Tag
-from apps.forum.models.qa_models import Answer, Post, Question
+from apps.forum.models.qa_models import Answer
+from apps.forum.models.qa_models import Post
+from apps.forum.models.qa_models import Question
 
 
 class CommentInline(GenericTabularInline):
@@ -30,18 +32,18 @@ class BookmarkInline(GenericTabularInline):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ["user", "body", "vote_count", "created_at"]
-    search_fields = ["body"]
-    list_filter = ["created_at"]
+    list_display = ("user", "body", "vote_count", "created_at")
+    search_fields = ("body",)
+    list_filter = ("created_at",)
     date_hierarchy = "created_at"
-    inlines = [CommentInline, VoteInline, BookmarkInline]
+    inlines = (CommentInline, VoteInline, BookmarkInline)
 
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ["title", "is_answered", "is_closed", "view_count", "answer_count", "get_created_at"]
-    search_fields = ["title", "post__body"]
-    list_filter = ["is_answered", "is_closed", "post__created_at"]
+    list_display = ("title", "is_answered", "is_closed", "view_count", "answer_count", "get_created_at")
+    search_fields = ("title", "post__body")
+    list_filter = ("is_answered", "is_closed", "post__created_at")
     prepopulated_fields = {"slug": ("title",)}
 
     def get_created_at(self, obj):
@@ -50,14 +52,14 @@ class QuestionAdmin(admin.ModelAdmin):
     get_created_at.admin_order_field = "post__created_at"
     get_created_at.short_description = "Created At"
 
-    inlines = [AnswerInline, VoteInline, BookmarkInline]
+    inlines = (AnswerInline, VoteInline, BookmarkInline)
 
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "get_created_at"]
-    search_fields = ["post__body"]
-    list_filter = ["post__created_at"]
+    list_display = ("__str__", "get_created_at")
+    search_fields = ("post__body",)
+    list_filter = ("post__created_at",)
 
     def get_created_at(self, obj):
         return obj.post.created_at
@@ -65,35 +67,33 @@ class AnswerAdmin(admin.ModelAdmin):
     get_created_at.admin_order_field = "post__created_at"
     get_created_at.short_description = "Created At"
 
-    inlines = [VoteInline, BookmarkInline]
+    inlines = (VoteInline, BookmarkInline)
 
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ["name", "created_at"]
-    search_fields = ["name"]
-    list_filter = ["created_at"]
+    list_display = ("name", "created_at")
+    search_fields = ("name",)
+    list_filter = ("created_at",)
 
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ["user", "content_object", "text", "created_at"]
-    search_fields = ["text"]
-    list_filter = ["created_at"]
-    inlines = [VoteInline]
+    list_display = ("user", "content_object", "text", "created_at")
+    search_fields = ("text",)
+    list_filter = ("created_at",)
+    inlines = VoteInline
 
 
 @admin.register(Vote)
 class VoteAdmin(admin.ModelAdmin):
-    list_display = ["user", "vote_type", "content_type", "object_id", "content_object"]
-    search_fields = ["user__username", "vote_type"]
-    list_filter = ["vote_type", "content_type"]
+    list_display = ("user", "vote_type", "content_type", "object_id", "content_object")
+    search_fields = ("user__username", "vote_type")
+    list_filter = ("vote_type", "content_type")
 
 
 @admin.register(Bookmark)
 class BookmarkAdmin(admin.ModelAdmin):
-    list_display = ["user", "content_type", "object_id", "content_object"]
-    search_fields = [
-        "user__username",
-    ]
-    list_filter = ["content_type"]
+    list_display = ("user", "content_type", "object_id", "content_object")
+    search_fields = ("user__username",)
+    list_filter = ("content_type",)
