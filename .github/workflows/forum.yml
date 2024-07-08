@@ -12,7 +12,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.10]
+        python-version: ["3.10"]
 
     steps:
       - uses: actions/checkout@v4
@@ -37,6 +37,7 @@ jobs:
           key: ${{ secrets.DO_PRIVATE_KEY}}
           script: |
             cd forum-backend/
+            git pull origin master
             docker stop forum-backend-container || true
             docker rm forum-backend-container || true
             docker system prune -af
