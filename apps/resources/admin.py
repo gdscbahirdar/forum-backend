@@ -1,11 +1,12 @@
 from django.contrib import admin
+
 from apps.resources.models.resource_models import Resource, ResourceCategory, ResourceFile
 
 
 class ResourceFileInline(admin.TabularInline):
     model = ResourceFile
     extra = 1
-    readonly_fields = ["file_type", "file_size"]
+    readonly_fields = ("file_type", "file_size")
 
 
 @admin.register(Resource)
@@ -13,7 +14,7 @@ class ResourceAdmin(admin.ModelAdmin):
     list_display = ("title", "user", "created_at", "updated_at")
     search_fields = ("title", "description", "user__username")
     list_filter = ("categories", "tags", "created_at", "updated_at")
-    inlines = [ResourceFileInline]
+    inlines = (ResourceFileInline,)
 
 
 @admin.register(ResourceCategory)

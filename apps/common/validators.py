@@ -11,8 +11,10 @@ class CustomPasswordValidator:
         - special characters.
     """
 
+    MIN_PASSWORD_LENGTH = 8
+
     def validate(self, password, user=None):
-        if len(password) < 8:
+        if len(password) < self.MIN_PASSWORD_LENGTH:
             raise ValidationError(
                 _("Password must be at least 8 characters."),
                 code="password_too_short",

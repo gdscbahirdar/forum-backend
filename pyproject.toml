@@ -27,28 +27,57 @@ omit = [
     '*requirements.txt',
 ]
 
-# ==== black ====
-[tool.black]
+
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "migrations"
+]
+
+show-fixes = true
+target-version = "py311"
+
 line-length = 119
-target-version = ['py311']
+indent-width = 4
 
+[tool.ruff.lint]
+extend-select = [
+    "E",
+    "I",
+    "PL",
+    "RUF",
+]
+ignore = ["RUF012"]
 
-# ==== isort ====
-[tool.isort]
-profile = "black"
-line_length = 119
-known_first_party = ["apps", "config"]
-skip = [".venv/"]
-skip_glob = ["**/migrations/*.py"]
+fixable = ["ALL"]
+unfixable = []
 
+[tool.ruff.format]
+skip-magic-trailing-comma = false
 
-# ==== PyLint ====
-[tool.pylint.MASTER]
-load-plugins = ["pylint_django", "pylint_celery"]
-django-settings-module = "config.settings.development"
-
-[tool.pylint.FORMAT]
-max-line-length = 119
-
-[tool.pylint."MESSAGES CONTROL"]
-disable = ["missing-docstring", "invalid-name"]
+line-ending = "auto"

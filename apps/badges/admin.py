@@ -11,7 +11,7 @@ class UserBadgeInline(admin.TabularInline):
 
 
 class BadgeAdmin(admin.ModelAdmin):
-    inlines = [UserBadgeInline]
+    inlines = (UserBadgeInline,)
 
 
 admin.site.register(Badge, BadgeAdmin)

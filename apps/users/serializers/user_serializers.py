@@ -19,7 +19,8 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
     badges = serializers.SerializerMethodField(read_only=True)
 
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + (
+        fields = (
+            *UserDetailsSerializer.Meta.fields,
             "middle_name",
             "role_name",
             "is_first_time_login",
@@ -32,7 +33,7 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
             "reputation",
             "badges",
         )
-        read_only_fields = UserDetailsSerializer.Meta.read_only_fields + ("reputation", "badge")
+        read_only_fields = (*UserDetailsSerializer.Meta.read_only_fields, "reputation", "badge")
 
     def get_role_name(self, obj) -> str:
         return obj.user_role.role.name

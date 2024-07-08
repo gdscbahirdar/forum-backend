@@ -9,6 +9,8 @@ pytestmark = pytest.mark.django_db
 
 
 class TestPostModel:
+    NOTABLE_BOOKMARK_POINT = 2
+
     def test_str(self, post: Post):
         assert str(post) == f"Post by {post.user}"
 
@@ -16,7 +18,7 @@ class TestPostModel:
         VoteFactory.create_batch(size=3, content_object=post, vote_type=Vote.UPVOTE)
         VoteFactory.create(content_object=post, vote_type=Vote.DOWNVOTE)
         post.update_score()
-        assert post.score == 2
+        assert post.score == self.NOTABLE_BOOKMARK_POINT
 
     @pytest.mark.parametrize("score", [100, 25, 10])
     def test_evaluate_score_badges_question(self, question: Question, score):

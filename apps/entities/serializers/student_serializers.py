@@ -10,12 +10,14 @@ class StudentSerializer(serializers.ModelSerializer):
     Serializer for the Student model.
     """
 
+    MAX_YEAR_IN_SCHOOL = 5
+
     faculty = FacultyRelatedField(queryset=Faculty.objects.all())
     department = DepartmentRelatedField(queryset=Department.objects.all())
 
     class Meta:
         model = Student
-        fields = [
+        fields = (
             "pk",
             "faculty",
             "department",
@@ -24,13 +26,13 @@ class StudentSerializer(serializers.ModelSerializer):
             "graduation_date",
             "created_at",
             "updated_at",
-        ]
+        )
 
     def validate(self, attrs):
         if attrs.get("admission_date") >= attrs.get("graduation_date"):
             raise serializers.ValidationError({"admission_date": "Admission date must be before graduation date."})
 
-        if attrs.get("year_in_school") > 5:
+        if attrs.get("year_in_school") > self.MAX_YEAR_IN_SCHOOL:
             raise serializers.ValidationError({"year_in_school": "Year in school must not be greater than 5."})
 
         return attrs

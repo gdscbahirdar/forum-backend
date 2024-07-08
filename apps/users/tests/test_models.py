@@ -8,6 +8,10 @@ pytestmark = pytest.mark.django_db
 
 
 class TestUserModel:
+    REPUTATION_CHANGE = 50
+    REPUTATION_CAP = 200
+    REPUTATION_OVER_CAP = 201
+
     def test_str(self, user):
         assert str(user) == user.username
 
@@ -21,23 +25,23 @@ class TestUserModel:
 
         # Ensure daily reputation is also updated
         daily_reputation = DailyUserReputation.objects.get(user=user, date=date.today())
-        assert daily_reputation.reputation == 50
+        assert daily_reputation.reputation == self.REPUTATION_CHANGE
 
     def test_add_reputation_cap(self, user):
         user.add_reputation(190)
         user.add_reputation(20)  # Should only add 10 points to reach the cap of 200
-        assert user.reputation == 201
+        assert user.reputation == self.REPUTATION_OVER_CAP
 
         # Ensure daily reputation is capped at 200
         daily_reputation = DailyUserReputation.objects.get(user=user, date=date.today())
-        assert daily_reputation.reputation == 200
+        assert daily_reputation.reputation == self.REPUTATION_CAP
 
     def test_subtract_reputation(self, user):
         user.reputation = 100
         user.save()
 
         user.subtract_reputation(50)
-        assert user.reputation == 50
+        assert user.reputation == self.REPUTATION_CHANGE
 
         # Ensure daily reputation is also updated
         daily_reputation = DailyUserReputation.objects.get(user=user, date=date.today())

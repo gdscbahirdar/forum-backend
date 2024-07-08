@@ -33,6 +33,7 @@ pytest-mock==3.14.0
 
 # Code quality
 # ------------------------------------------------------------------------------
+ruff==0.5.0  # https://github.com/astral-sh/ruff
 flake8==7.0.0  # https://github.com/PyCQA/flake8
 flake8-isort==6.1.1  # https://github.com/gforcada/flake8-isort
 coverage==7.4.4  # https://github.com/nedbat/coveragepy

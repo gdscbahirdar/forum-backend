@@ -14,13 +14,13 @@ class FacultySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Faculty
-        fields = [
+        fields = (
             "pk",
             "name",
             "departments",
             "created_at",
             "updated_at",
-        ]
+        )
 
 
 class FacultyAdminSerializer(serializers.ModelSerializer):
@@ -32,9 +32,9 @@ class FacultyAdminSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FacultyAdmin
-        fields = [
+        fields = (
             "pk",
             "faculty",
             "created_at",
             "updated_at",
-        ]
+        )

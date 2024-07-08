@@ -18,10 +18,10 @@ class TeacherSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Teacher
-        fields = [
+        fields = (
             "pk",
             "faculty",
             "departments",
             "created_at",
             "updated_at",
-        ]
+        )

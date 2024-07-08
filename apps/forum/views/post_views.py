@@ -30,6 +30,8 @@ class QuestionViewSet(viewsets.ModelViewSet):
     the standard list, create, retrieve, update, and destroy actions.
     """
 
+    GURU_BADGE_THRESHOLD = 40
+
     queryset = Question.objects.all()
     permission_classes = (IsAuthenticated,)
     lookup_field = "slug"
@@ -132,7 +134,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
                 answer.post.user.add_reputation(15)
                 request.user.add_reputation(2)
 
-            if answer.post.score >= 40:
+            if answer.post.score >= self.GURU_BADGE_THRESHOLD:
                 answer.post.user.assign_badge("Guru")
             return Response({"message": "Answer accepted successfully."}, status=status.HTTP_200_OK)
         else:

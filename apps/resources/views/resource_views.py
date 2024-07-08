@@ -18,7 +18,7 @@ class ResourceFilter(django_filters.FilterSet):
 
     class Meta:
         model = Resource
-        fields = ["user", "categories", "tags"]
+        fields = ("user", "categories", "tags")
 
     def filter_by_categories(self, queryset, name, value):
         if value:
@@ -43,7 +43,7 @@ class ResourceViewSet(viewsets.ModelViewSet):
 
     queryset = Resource.objects.all()
     serializer_class = ResourceSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
     filter_backends = (django_filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filterset_class = ResourceFilter
     search_fields = ("title",)

@@ -4,7 +4,6 @@ from rest_framework.exceptions import ValidationError
 
 from apps.content_actions.constants import MODEL_MAPPING
 from apps.content_actions.models.comment_models import Comment
-from apps.forum.models.qa_models import Post
 from apps.services.utils import check_toxicity
 
 

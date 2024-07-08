@@ -13,7 +13,7 @@ from apps.resources.models.resource_models import Resource, ResourceCategory, Re
 class ResourceFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ResourceFile
-        fields = ["id", "file", "file_name", "file_type", "file_size"]
+        fields = ("id", "file", "file_name", "file_type", "file_size")
 
     def validate(self, data):
         if data["file"].size > 100 * 1024 * 1024:
@@ -40,7 +40,7 @@ class ResourceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Resource
-        fields = [
+        fields = (
             "id",
             "title",
             "description",
@@ -56,11 +56,11 @@ class ResourceSerializer(serializers.ModelSerializer):
             "user_vote",
             "is_bookmarked",
             "subscription_id",
-        ]
-        read_only_fields = [
+        )
+        read_only_fields = (
             "view_count",
             "vote_count",
-        ]
+        )
 
     def get_user_vote(self, obj) -> str:
         request = self.context.get("request")
@@ -140,7 +140,7 @@ class ResourceSerializer(serializers.ModelSerializer):
 class ResourceCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ResourceCategory
-        fields = ["id", "name", "description"]
+        fields = ("id", "name", "description")
 
 
 class BookmarkedResourceSerializer(ResourceSerializer):

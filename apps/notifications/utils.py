@@ -4,7 +4,9 @@ from apps.forum.models.qa_models import Post
 from apps.notifications.models.notification_models import Notification, Subscription
 
 
-def notify_user(user: object, title: str, message: str = None, level: str = "info", target: object = None) -> object:
+def notify_user(
+    user: object, title: str, message: str | None = None, level: str = "info", target: object = None
+) -> object:
     """
     Notifies a user with a given title and message.
 

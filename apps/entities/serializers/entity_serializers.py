@@ -143,7 +143,7 @@ class EntitySerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        optional_fields = ["student", "teacher", "faculty_admin"]
+        optional_fields = ("student", "teacher", "faculty_admin")
         for field in optional_fields:
             if field in representation and representation.get(field) is None:
                 representation.pop(field)
