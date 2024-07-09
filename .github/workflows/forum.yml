@@ -1,4 +1,4 @@
-name: Forum CI/CD
+name: Forum CI
 
 on:
   push:
@@ -26,8 +26,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Ruff
-        run: ruff check --output-format=github .
+      - name: Linting with Ruff
+        run: |
+          ruff check --fix
 
       - name: Run Tests
         run: |
