@@ -20,26 +20,15 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
+
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      # - name: Run Tests
-      #   run: |
-      #     coverage run -m pytest
 
-      - name: Deploy to digital ocean
-        uses: appleboy/ssh-action@master
-        with:
-          host: "161.35.20.217"
-          username: "root"
-          port: 22
-          key: ${{ secrets.DO_PRIVATE_KEY}}
-          script: |
-            cd forum-backend/
-            git pull origin master
-            docker stop forum-backend-container || true
-            docker rm forum-backend-container || true
-            docker system prune -af
-            docker build -t forum-backend:v0 .
-            docker run -d --name forum-backend-container --env-file .env -p 80:8000 forum-backend:v0
+      - name: Run Ruff
+        run: ruff check --output-format=github .
+
+      - name: Run Tests
+        run: |
+          coverage run -m pytest
