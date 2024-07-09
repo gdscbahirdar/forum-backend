@@ -60,7 +60,7 @@ We welcome the BiT community to contribute to this project whether that is provi
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/gdscbahirdar/forum-backend/blob/master/LICENSE) file for details.
 
 ## Contact
 
