@@ -101,12 +101,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": config("DB_ENGINE", default="django.db.backends.postgresql"),
+        "ENGINE": config("DB_ENGINE", default="django.db.backends.sqlite3"),
         "NAME": config("DB_NAME", default="forum"),
-        "USER": config("DB_USERNAME", default="forum"),
-        "PASSWORD": config("DB_PASSWORD", default="forum"),
-        "HOST": config("DB_HOSTNAME", default="127.0.0.1"),
-        "PORT": config("DB_PORT", default=5432, cast=int),
+        "USER": config("DB_USERNAME", default=""),
+        "PASSWORD": config("DB_PASSWORD", default=""),
+        "HOST": config("DB_HOSTNAME", default=""),
+        "PORT": config("DB_PORT", default="", cast=int),
     }
 }
 
