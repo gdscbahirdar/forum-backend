@@ -84,7 +84,7 @@ class ResourceFile(BaseModel):
 
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE, related_name="files")
     file = models.FileField(upload_to=resource_directory_path)
-    file_name = models.CharField(blank=True, null=True)
+    file_name = models.CharField(max_length=50, blank=True, null=True)
     file_type = models.CharField(max_length=50, blank=True, null=True)
     file_size = models.FloatField(blank=True, null=True)
 
