@@ -33,4 +33,4 @@ jobs:
 
       - name: Run Tests
         run: |
-          coverage run -m pytest
+          pytest -n auto
