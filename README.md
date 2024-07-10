@@ -4,7 +4,7 @@ Welcome to the BiT-Forum Backend repository! This project serves as the backend 
 
 ## Purpose
 
-We built is as part of our final-year project but we wanted to open-source it to foster collaboration and learning among BiT students and teachers. By contributing to this project, students can gain hands-on experience with real-world software development and help enhance the forum with new features and improvements.
+We built this forum as part of our final-year project but we wanted to open-source it to foster collaboration and learning among BiT students and teachers. By contributing to this project, students can gain hands-on experience with real-world software development and help enhance the forum with new features and improvements.
 
 ## Vision
 
