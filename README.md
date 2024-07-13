@@ -1,20 +1,24 @@
 # BiT-Forum Backend
 
-Welcome to the BiT-Forum Backend repository! This project serves as the backend for an online forum dedicated to the Bahir Dar Institute of Technology (BiT), built using Django REST framework.
+Welcome to the BiT-Forum Backend repository! This project is the backend for an online forum dedicated to the Bahir Dar Institute of Technology (BiT), built using the Django REST framework.
+
+![API Doc](https://github.com/user-attachments/assets/e9637d9b-a48e-46c5-bba8-54d80cf6b300)
+
+You can find the frontend of this project at https://github.com/gdscbahirdar/forum-frontend
 
 ## Purpose
 
-We built this forum as part of our final-year project but we wanted to open-source it to foster collaboration and learning among BiT students and teachers. By contributing to this project, students can gain hands-on experience with real-world software development and help enhance the forum with new features and improvements.
+We built this forum as part of our final-year project but wanted to open-source it to foster collaboration and learning among BiT students and teachers. By contributing to this project, students can gain hands-on experience with real-world software development and help enhance the forum with new features and improvements.
 
 ## Vision
 
-We envision this forum to be a comprehensive platform for students and teachers to engage in discussions, share resources, and collaborate on projects. Your contributions can help make this vision a reality, whether by adding new features, improving existing functionality, or fixing bugs.
+We envision this forum as a comprehensive platform for students and teachers to engage in discussions, share resources, and collaborate on projects. Your contributions can help make this vision a reality, whether by adding new features, improving existing functionality, or fixing bugs.
 
 ## Features
 
 - Role-based access control for students, teachers, and faculty admins of the university.
 - Question and answer platform with features to upvote, downvote, comment, etc.
-- Resource sharing. You can share files, assignments, notes, links etc.
+- Resource sharing. You can share files, assignments, notes, links, etc.
 - Reward system through badges and reputation. Similar to StackOverflow.
 - Notification updates.
 - AI assistant and AI-driven profanity checks.
@@ -37,7 +41,7 @@ $ pip install -r requirements.txt
 ```
 
 3. Set up a Postgres database for the project.
-4. Run the following commands to setup the database tables and create a superuser.
+4. Run the following commands to set up the database tables and create a superuser.
 
 ```shell
 $ python manage.py migrate
@@ -52,7 +56,7 @@ $ python manage.py runserver
 
 ## API Documentation
 
-API documentation is provided using redoc. You can access the documentation at http://localhost:8000 once the server is running.
+API documentation is provided using Redoc. You can access the documentation at http://localhost:8000 once the server is running.
 
 ## Contributing
 
