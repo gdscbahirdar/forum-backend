@@ -49,3 +49,7 @@ pre-commit==3.7.0  # https://github.com/pre-commit/pre-commit
 transformers==4.41.0
 torch==2.3.0
 accelerate==0.30.1
+
+# Analytics
+# ------------------------------------------------------------------------------
+reportlab==4.2.2
