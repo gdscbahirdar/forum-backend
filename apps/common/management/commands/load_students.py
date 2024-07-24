@@ -50,16 +50,16 @@ class Command(BaseCommand):
 
         for entry in data:
             try:
+                admission_date = self.parse_date(entry["admission_date"])
+                graduation_date = self.parse_date(entry["graduation_date"])
+
+                first_name = entry["first_name"]
+                middle_name = entry["middle_name"]
+                last_name = entry["last_name"]
+
+                password = generate_password(last_name)
+
                 with transaction.atomic():
-                    admission_date = self.parse_date(entry["admission_date"])
-                    graduation_date = self.parse_date(entry["graduation_date"])
-
-                    first_name = entry["first_name"]
-                    middle_name = entry["middle_name"]
-                    last_name = entry["last_name"]
-
-                    password = generate_password(last_name)
-
                     user = User.objects.create_user(
                         first_name=first_name,
                         middle_name=middle_name,
