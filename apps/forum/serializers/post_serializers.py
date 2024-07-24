@@ -135,7 +135,14 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         )
-        read_only_fields = ("view_count", "answer_count", "is_answered", "is_closed", "asked_by", "slug")
+        read_only_fields = (
+            "view_count",
+            "answer_count",
+            "is_answered",
+            "is_closed",
+            "asked_by",
+            "slug",
+        )
 
     def get_asked_by(self, obj) -> str:
         return obj.post.user.username
@@ -201,12 +208,15 @@ class QuestionDetailSerializer(BaseQuestionSerializer):
         fields = "__all__"
 
     def get_subscription_id(self, obj) -> str:
-        user = self.context["request"].user
-        content_type = ContentType.objects.get(model="question")
-        subscription = Subscription.objects.filter(
-            user=user, target_content_type=content_type, target_object_id=obj.id
-        ).first()
-        return subscription.id if subscription else ""
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = self.context["request"].user
+            content_type = ContentType.objects.get(model="question")
+            subscription = Subscription.objects.filter(
+                user=user, target_content_type=content_type, target_object_id=obj.id
+            ).first()
+            return subscription.id if subscription else ""
+        return ""
 
 
 class BookmarkedPostSerializer(BaseQuestionSerializer):

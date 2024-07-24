@@ -7,7 +7,11 @@ from apps.content_actions.serializers.comment_serializers import CommentSerializ
 from apps.forum.models import Tag
 from apps.notifications.models.notification_models import Subscription
 from apps.resources.constants import ResourceConstants
-from apps.resources.models.resource_models import Resource, ResourceCategory, ResourceFile
+from apps.resources.models.resource_models import (
+    Resource,
+    ResourceCategory,
+    ResourceFile,
+)
 
 
 class ResourceFileSerializer(serializers.ModelSerializer):
@@ -79,12 +83,15 @@ class ResourceSerializer(serializers.ModelSerializer):
         return False
 
     def get_subscription_id(self, obj) -> str:
-        user = self.context["request"].user
-        content_type = ContentType.objects.get(model="resource")
-        subscription = Subscription.objects.filter(
-            user=user, target_content_type=content_type, target_object_id=obj.id
-        ).first()
-        return subscription.id if subscription else ""
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = self.context["request"].user
+            content_type = ContentType.objects.get(model="resource")
+            subscription = Subscription.objects.filter(
+                user=user, target_content_type=content_type, target_object_id=obj.id
+            ).first()
+            return subscription.id if subscription else ""
+        return ""
 
     def create(self, validated_data):
         tags_data = validated_data.pop("tags")

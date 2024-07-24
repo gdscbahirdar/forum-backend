@@ -13,7 +13,8 @@ class SubscriptionSerializer(serializers.ModelSerializer):
     """
 
     target_content_type = serializers.SlugRelatedField(
-        slug_field="model", queryset=ContentType.objects.filter(model__in=("question", "answer", "resource"))
+        slug_field="model",
+        queryset=ContentType.objects.filter(model__in=("question", "answer", "resource")),
     )
     target_object_id = serializers.UUIDField()
     target = serializers.SerializerMethodField()
@@ -99,9 +100,14 @@ class NotificationReadOnlySerializer(serializers.ModelSerializer):
         """
         Returns the subscription ID for the notification.
         """
-        user = self.context["request"].user
-        target_content_type = ContentType.objects.get_for_model(obj.target)
-        subscription = Subscription.objects.filter(
-            user=user, target_content_type=target_content_type, target_object_id=obj.target_object_id
-        ).first()
-        return subscription.id if subscription else ""
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = self.context["request"].user
+            target_content_type = ContentType.objects.get_for_model(obj.target)
+            subscription = Subscription.objects.filter(
+                user=user,
+                target_content_type=target_content_type,
+                target_object_id=obj.target_object_id,
+            ).first()
+            return subscription.id if subscription else ""
+        return ""
