@@ -153,17 +153,43 @@ class AnalyticsViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=["get"], url_path="export_excel")
     def export_data_as_excel(self, request):
-        queryset = Question.objects.all().values()
+        fields_mapping = {
+            "id": "ID",
+            "post__user__username": "Created By",
+            "created_at": "Creation Date",
+            "updated_at": "Last Updated",
+            "title": "Title",
+            "post__body": "Body",
+            "tags__name": "Tags",
+            "is_answered": "Is Answered",
+            "post__score": "Score",
+            "view_count": "View Count",
+            "answer_count": "Answer Count",
+            "accepted_answer_id": "Accepted Answer ID",
+            "is_closed": "Is Closed",
+            "post__vote_count": "Vote Count",
+        }
+
+        queryset = Question.objects.all().values(*fields_mapping.keys())
 
         df = pd.DataFrame(list(queryset))
+
+        df.rename(columns=fields_mapping, inplace=True)
+
         if not df.empty:
             for col in df.select_dtypes(include=["datetime64[ns, UTC]"]).columns:
                 df[col] = df[col].dt.tz_localize(None)
+
+            for col in df.select_dtypes(include=["boolean"]).columns:
+                df[col] = df[col].astype(bool)
 
         response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         response["Content-Disposition"] = "attachment; filename=data.xlsx"
 
         with pd.ExcelWriter(response, engine="openpyxl") as writer:
             df.to_excel(writer, index=False, sheet_name="Sheet1")
+
+        response_size = response.tell()
+        print(f"Response size: {response_size}")
 
         return response
