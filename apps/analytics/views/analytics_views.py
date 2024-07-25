@@ -1,5 +1,7 @@
+import pandas as pd
 from django.contrib.auth import get_user_model
 from django.db.models import Count
+from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -77,11 +79,21 @@ class AnalyticsViewSet(viewsets.ViewSet):
 
     def get_top_tags(self, limit=10):
         tags = Tag.objects.annotate(question_count=Count("questions")).order_by("-question_count")[:limit]
-        return [{"tag_name": tag.name, "count": tag.question_count} for tag in tags if tag.question_count]
+
+        tag_names = []
+        tag_counts = []
+        for tag in tags:
+            if not tag.question_count:
+                continue
+            tag_names.append(tag.name)
+            tag_counts.append(tag.question_count)
+
+        return {"labels": tag_names, "data": tag_counts}
 
     def get_questions_per_day(self, start_date, end_date):
         from datetime import datetime, timedelta
 
+        from django.db.models import Count
         from django.db.models.functions import TruncDate
 
         if not end_date:
@@ -90,7 +102,7 @@ class AnalyticsViewSet(viewsets.ViewSet):
             end_date = datetime.strptime(end_date, "%d-%m-%Y")
 
         if not start_date:
-            start_date = end_date - timedelta(weeks=2)
+            start_date = end_date - timedelta(weeks=20)
         else:
             start_date = datetime.strptime(start_date, "%d-%m-%Y")
 
@@ -102,8 +114,56 @@ class AnalyticsViewSet(viewsets.ViewSet):
             .order_by("date")
         )
 
-        return [{"date": entry["date"], "count": entry["count"]} for entry in questions_per_day]
+        answers_per_day = (
+            Answer.objects.filter(post__created_at__range=[start_date, end_date + timedelta(days=1)])
+            .annotate(date=TruncDate("post__created_at"))
+            .values("date")
+            .annotate(count=Count("id"))
+            .order_by("date")
+        )
+
+        dates = []
+        question_counts = []
+        answer_counts = []
+
+        for entry in questions_per_day:
+            dates.append(entry["date"].strftime("%d %b"))
+            question_counts.append(entry["count"])
+
+        for entry in answers_per_day:
+            answer_counts.append(entry["count"])
+
+        return {
+            "series": [
+                {
+                    "name": "Questions",
+                    "data": question_counts,
+                },
+                {
+                    "name": "Answers",
+                    "data": answer_counts,
+                },
+            ],
+            "dates": dates,
+        }
 
     def get_most_active_faculties(self):
         faculties = Student.objects.values("faculty__name").annotate(student_count=Count("id"))
         return sorted(faculties, key=lambda x: x["student_count"], reverse=True)
+
+    @action(detail=False, methods=["get"], url_path="export_excel")
+    def export_data_as_excel(self, request):
+        queryset = Question.objects.all().values()
+
+        df = pd.DataFrame(list(queryset))
+        if not df.empty:
+            for col in df.select_dtypes(include=["datetime64[ns, UTC]"]).columns:
+                df[col] = df[col].dt.tz_localize(None)
+
+        response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response["Content-Disposition"] = "attachment; filename=data.xlsx"
+
+        with pd.ExcelWriter(response, engine="openpyxl") as writer:
+            df.to_excel(writer, index=False, sheet_name="Sheet1")
+
+        return response
